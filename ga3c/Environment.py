@@ -3,7 +3,7 @@ from Paper_Config import Config
 
 class Environment:
     def __init__(self):
-        self.game = environment.PaperRaceEnv(track_name = Config.track_name, car_name = Config.car_name,\
+        self.game = pyper_env.PaperRaceEnv(track_name = Config.track_name, car_name = Config.car_name,\
                                              random_init = Config.random_init, ref_calc = Config.ref_calc, \
                                              save_env_ref_buffer_dir = Config.save_env_ref_buffer_dir, \
                                              save_env_ref_buffer_name = Config.save_env_ref_buffer_name, \
@@ -16,7 +16,8 @@ class Environment:
 
         self.game.reset(Config.SHOW_WINDOW)
 
-    def get_num_actions(self):
+    @staticmethod
+    def get_num_actions():
         return 1
 
     def reset(self):
