@@ -18,10 +18,16 @@ class Environment:
 
     @staticmethod
     def get_num_actions():
-        return 1
+        return Config.ACTION_DIM
+
+    @staticmethod
+    def get_num_states():
+        return Config.STATE_DIM
 
     def reset(self):
         self.game.reset(Config.SHOW_WINDOW)
+        pos, v = self.game.start_game(Config.SHOW_WINDOW)
+        self.current_state = [v[0], v[1], pos[0], pos[1]]
 
     def step(self, action):
         v_new, pos_new, step_reward, pos_reward = self.game.step(action, Config.SHOW_WINDOW, draw_text='little_reward')

@@ -33,6 +33,9 @@ class Config:
     # GAME = 'PongDeterministic-v0'
     GAME = 'Pyperrace'
 
+    STATE_DIM = 4
+    ACTION_DIM = 1
+
     # Enable to see the trained agent in action
     SHOW_WINDOW = True
     # Enable to train
@@ -50,10 +53,9 @@ class Config:
 
     track_name = 'h1'
     ref_calc = 'default'
-    car_name='Gokart'
+    car_name = 'Touring'
     random_init = False
     save_env_ref_buffer_dir = './env_ref_buffer'
     save_env_ref_buffer_name = 'env_ref_buffer_1'
     load_env_ref_buffer = './env_ref_buffer/env_ref_buffer_1'
     load_all_env_ref_buffer_dir = './env_ref_buffer'
-

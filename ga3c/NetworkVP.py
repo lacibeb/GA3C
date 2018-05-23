@@ -30,6 +30,7 @@ import numpy as np
 import tensorflow as tf
 
 from Config import Config
+from Paper_Config import Config as env_config
 
 
 class NetworkVP:
@@ -38,9 +39,7 @@ class NetworkVP:
         self.model_name = model_name
         self.num_actions = num_actions
 
-        self.img_width = Config.IMAGE_WIDTH
-        self.img_height = Config.IMAGE_HEIGHT
-        self.img_channels = Config.STACKED_FRAMES
+        self.state_dim = env_config.STATE_DIM
 
         self.learning_rate = Config.LEARNING_RATE_START
         self.beta = Config.BETA_START
@@ -67,7 +66,7 @@ class NetworkVP:
 
     def _create_graph(self):
         self.x = tf.placeholder(
-            tf.float32, [None, self.img_height, self.img_width, self.img_channels], name='X')
+            tf.float32, [None, self.state_dim], name='X')
         self.y_r = tf.placeholder(tf.float32, [None], name='Yr')
 
         self.var_beta = tf.placeholder(tf.float32, name='beta', shape=[])
@@ -82,7 +81,7 @@ class NetworkVP:
         _input = self.n2
 
         flatten_input_shape = _input.get_shape()
-        nb_elements = flatten_input_shape[1] * flatten_input_shape[2] * flatten_input_shape[3]
+        nb_elements = flatten_input_shape[1]
 
         self.flat = tf.reshape(_input, shape=[-1, nb_elements._value])
         self.d1 = self.dense_layer(self.flat, 256, 'dense1')
