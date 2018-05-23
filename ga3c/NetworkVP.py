@@ -65,6 +65,7 @@ class NetworkVP:
                 
 
     def _create_graph(self):
+        print(self.num_states)
         self.x = tf.placeholder(
             tf.float32, [None, self.num_states], name='X')
         self.y_r = tf.placeholder(tf.float32, [None], name='Yr')
