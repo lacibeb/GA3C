@@ -30,16 +30,16 @@ import numpy as np
 import tensorflow as tf
 
 from Config import Config
-from Paper_Config import Config as env_config
+
 
 
 class NetworkVP:
-    def __init__(self, device, model_name, num_actions):
+    def __init__(self, device, model_name, num_actions, state_dim):
         self.device = device
         self.model_name = model_name
         self.num_actions = num_actions
 
-        self.state_dim = env_config.STATE_DIM
+        self.num_states = state_dim
 
         self.learning_rate = Config.LEARNING_RATE_START
         self.beta = Config.BETA_START
@@ -66,7 +66,7 @@ class NetworkVP:
 
     def _create_graph(self):
         self.x = tf.placeholder(
-            tf.float32, [None, self.state_dim], name='X')
+            tf.float32, [None, self.num_states], name='X')
         self.y_r = tf.placeholder(tf.float32, [None], name='Yr')
 
         self.var_beta = tf.placeholder(tf.float32, name='beta', shape=[])
