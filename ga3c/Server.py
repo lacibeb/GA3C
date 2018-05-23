@@ -45,7 +45,7 @@ class Server:
         self.training_q = Queue(maxsize=Config.MAX_QUEUE_SIZE)
         self.prediction_q = Queue(maxsize=Config.MAX_QUEUE_SIZE)
 
-        self.model = NetworkVP(Config.DEVICE, Config.NETWORK_NAME, Environment.get_num_actions())
+        self.model = NetworkVP(Config.DEVICE, Config.NETWORK_NAME, Environment.get_num_actions(),Environment.get_num_states())
         if Config.LOAD_CHECKPOINT:
             self.stats.episode_count.value = self.model.load()
 
@@ -130,6 +130,3 @@ class Server:
             self.remove_predictor()
         while self.trainers:
             self.remove_trainer()
-
-    def get_state_size():
-        return (Environment.get_num_states())
