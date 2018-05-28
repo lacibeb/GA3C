@@ -74,8 +74,8 @@ class Config:
     REWARD_MAX = 1
 
     # Max size of the queue
-    MAX_QUEUE_SIZE = 100
-    PREDICTION_BATCH_SIZE = 128
+    MAX_QUEUE_SIZE = 2
+    PREDICTION_BATCH_SIZE = 4
 
     # Input of the DNN
     STACKED_FRAMES = 4
