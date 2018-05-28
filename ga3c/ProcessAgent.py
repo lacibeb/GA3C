@@ -97,9 +97,12 @@ class ProcessAgent(Process):
                 continue
 
             prediction, value = self.predict(self.env.current_state)
+            # arcade
             # action = self.select_action(prediction)
             print(prediction)
-            action = prediction * 180.0
+            # contonuous
+            action = prediction[0] * 180.0
+
             reward, done = self.env.step(action)
             reward_sum += reward
             exp = Experience(self.env.previous_state, action, prediction, reward, done)
