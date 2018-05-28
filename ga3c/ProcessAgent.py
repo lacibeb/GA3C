@@ -101,9 +101,9 @@ class ProcessAgent(Process):
             # action = self.select_action(prediction)
             print(prediction)
             # contonuous
-            action = int(prediction[0] * 180.0)
+            action = prediction[0]
 
-            reward, done = self.env.step(action)
+            reward, done = self.env.step(int(action * 180.0))
             reward_sum += reward
             exp = Experience(self.env.previous_state, action, prediction, reward, done)
             experiences.append(exp)
