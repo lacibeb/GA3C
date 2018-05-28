@@ -98,6 +98,7 @@ class ProcessAgent(Process):
 
             prediction, value = self.predict(self.env.current_state)
             # action = self.select_action(prediction)
+            print(prediction)
             action = prediction * 180.0
             reward, done = self.env.step(action)
             reward_sum += reward
