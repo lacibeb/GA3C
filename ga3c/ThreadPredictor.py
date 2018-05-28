@@ -43,7 +43,7 @@ class ThreadPredictor(Thread):
     def run(self):
         ids = np.zeros(Config.PREDICTION_BATCH_SIZE, dtype=np.uint16)
         states = np.zeros(
-            self.server.get_state_size,
+            self.server.get_state_size(),
             dtype=np.float32)
 
         while not self.exit_flag:
