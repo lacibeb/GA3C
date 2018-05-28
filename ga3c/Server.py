@@ -131,5 +131,6 @@ class Server:
         while self.trainers:
             self.remove_trainer()
 
+    @staticmethod
     def get_state_size():
         return Environment.get_num_states()
