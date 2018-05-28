@@ -46,11 +46,11 @@ class Config:
     
     # If the dynamic configuration is on, these are the initial values.
     # Number of Agents
-    AGENTS = 32 
+    AGENTS = 1
     # Number of Predictors
-    PREDICTORS = 2
+    PREDICTORS = 1
     # Number of Trainers
-    TRAINERS = 2
+    TRAINERS = 1
 
     # Device
     DEVICE = 'gpu:0'
