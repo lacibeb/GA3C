@@ -130,3 +130,6 @@ class Server:
             self.remove_predictor()
         while self.trainers:
             self.remove_trainer()
+
+    def get_state_size():
+        return Environment.get_num_states()
