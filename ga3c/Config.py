@@ -46,7 +46,7 @@ class Config:
     
     # If the dynamic configuration is on, these are the initial values.
     # Number of Agents
-    AGENTS = 1
+    AGENTS = 10
     # Number of Predictors
     PREDICTORS = 1
     # Number of Trainers
@@ -100,23 +100,23 @@ class Config:
     RMSPROP_EPSILON = 0.1
 
     # Dual RMSProp - we found that using a single RMSProp for the two cost function works better and faster
-    DUAL_RMSPROP = False
+    DUAL_RMSPROP = True
     
     # Gradient clipping
-    USE_GRAD_CLIP = False
+    USE_GRAD_CLIP = True
     GRAD_CLIP_NORM = 40.0 
     # Epsilon (regularize policy lag in GA3C)
     LOG_EPSILON = 1e-6
     # Training min batch size - increasing the batch size increases the stability of the algorithm, but make learning slower
-    TRAINING_MIN_BATCH_SIZE = 0
+    TRAINING_MIN_BATCH_SIZE = 128
     
     #########################################################################
     # Log and save
 
     # Enable TensorBoard
-    TENSORBOARD = False
+    TENSORBOARD = True
     # Update TensorBoard every X training steps
-    TENSORBOARD_UPDATE_FREQUENCY = 1000
+    TENSORBOARD_UPDATE_FREQUENCY = 100
 
     # Enable to save models every SAVE_FREQUENCY episodes
     SAVE_MODELS = True
@@ -139,4 +139,5 @@ class Config:
     # Minimum policy
     MIN_POLICY = 0.0
     # Use log_softmax() instead of log(softmax())
+    # not used with continuous
     USE_LOG_SOFTMAX = False
