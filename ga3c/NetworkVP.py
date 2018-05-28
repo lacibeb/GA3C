@@ -159,8 +159,8 @@ class NetworkVP:
         for var in tf.trainable_variables():
             summaries.append(tf.summary.histogram("weights_%s" % var.name, var))
 
-        summaries.append(tf.summary.histogram("activation_n1", self.n1))
-        summaries.append(tf.summary.histogram("activation_n2", self.n2))
+        summaries.append(tf.summary.histogram("activation_pd1", self.p_d1))
+        summaries.append(tf.summary.histogram("activation_pd2", self.p_d2))
         summaries.append(tf.summary.histogram("activation_d2", self.d1))
         summaries.append(tf.summary.histogram("activation_v", self.logits_v))
         summaries.append(tf.summary.histogram("activation_p", self.softmax_p))

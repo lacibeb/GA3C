@@ -534,7 +534,7 @@ class PaperRaceEnv:
         if self.gg_actions is None:
             self.gg_actions = [None] * 361 # -180..180-ig, fokonként megnézzük a sugarat.
             for act in range(-180, 181):
-                if -180 <= act < 180:
+                if -180 <= act <= 180:
                     # a GGpic 41x41-es B&W bmp. A közepétől nézzük, meddig fehér. (A közepén,
                     # csak hogy látszódjon, van egy fekete pont!
                     xsrt, ysrt = 21, 21
