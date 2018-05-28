@@ -64,7 +64,10 @@ class ProcessAgent(Process):
 
     def convert_data(self, experiences):
         x_ = np.array([exp.state for exp in experiences])
-        a_ = np.eye(self.num_actions)[np.array([exp.action for exp in experiences])].astype(np.float32)
+        #discreat eaction
+        #a_ = np.eye(self.num_actions)[np.array([exp.action for exp in experiences])].astype(np.float32)
+        #continuous action
+        a_ = np.array([exp.action for exp in experiences])
         r_ = np.array([exp.reward for exp in experiences])
         return x_, r_, a_
 
