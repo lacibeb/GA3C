@@ -13,7 +13,6 @@ class Environment:
         self.previous_state = None
         self.current_state = None
         self.total_reward = 0
-
         self.game.reset(Config.SHOW_WINDOW)
 
     @staticmethod
@@ -26,7 +25,7 @@ class Environment:
 
     def reset(self):
         self.game.reset(Config.SHOW_WINDOW)
-        pos, v = self.game.start_game(Config.SHOW_WINDOW)
+        pos, v = self.game.start_game(Config.SHOW_WINDOW, player='default')
         self.current_state = [v[0], v[1], pos[0], pos[1]]
 
     def step(self, action):
