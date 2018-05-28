@@ -1,5 +1,6 @@
 import pyper_env
 from Paper_Config import Config
+import numpy as np
 
 class Environment:
     def __init__(self):
@@ -39,7 +40,7 @@ class Environment:
         self.previous_state = self.current_state
 
         # TODO it is not markovian because reward depends on past states as well
-        self.current_state = [v_new[0], v_new[1], pos_new[0], pos_new[1]]
+        self.current_state = np.array([v_new[0], v_new[1], pos_new[0], pos_new[1]])
 
         reward = step_reward
         done = end
