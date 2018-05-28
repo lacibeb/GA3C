@@ -69,7 +69,6 @@ class ProcessAgent(Process):
         #continuous action
         a_ = np.array([exp.action for exp in experiences])
         a_ = np.reshape(a_, newshape=[len(a_), 1])
-        print(a_)
         r_ = np.array([exp.reward for exp in experiences])
         return x_, r_, a_
 
@@ -104,7 +103,6 @@ class ProcessAgent(Process):
             prediction, value = self.predict(self.env.current_state)
             # arcade
             # action = self.select_action(prediction)
-            print(prediction)
             # contonuous
             action = prediction[0]
 
