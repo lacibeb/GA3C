@@ -97,7 +97,8 @@ class ProcessAgent(Process):
                 continue
 
             prediction, value = self.predict(self.env.current_state)
-            action = self.select_action(prediction)
+            # action = self.select_action(prediction)
+            action = prediction * 180.0
             reward, done = self.env.step(action)
             reward_sum += reward
             exp = Experience(self.env.previous_state, action, prediction, reward, done)
