@@ -33,7 +33,7 @@ class Config:
     ATARI_GAME = 'PongDeterministic-v0'
 
     # Enable to see the trained agent in action
-    PLAY_MODE = False
+    PLAY_MODE = True
     # Enable to train
     TRAIN_MODELS = True
     # Load old models. Throws if the model doesn't exist
