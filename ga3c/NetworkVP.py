@@ -77,11 +77,11 @@ class NetworkVP:
 
         # As implemented in A3C paper
 
-        self.p_d1 = self.dense_layer(self.x, 64, 'dense11_p')
-        self.p_d2 = self.dense_layer(self.p_d1, 256, 'dense12_p')
+        self.p_d1 = self.dense_layer(self.x, 2048, 'dense11_p')
+        self.p_d2 = self.dense_layer(self.p_d1, 4048, 'dense12_p')
         self.action_index = tf.placeholder(tf.float32, [None, self.num_actions])
 
-        self.d1 = self.dense_layer(self.p_d2, 32, 'dense1')
+        self.d1 = self.dense_layer(self.p_d2, 512, 'dense1')
 
         self.logits_v = tf.squeeze(self.dense_layer(self.d1, 1, 'logits_v', func=None), axis=[1])
 
@@ -170,7 +170,10 @@ class NetworkVP:
 
     def dense_layer(self, input, out_dim, name, func=tf.nn.relu):
         in_dim = input.get_shape().as_list()[-1]
-        d = 1.0 / np.sqrt(in_dim)
+        # with lot of input it is OK
+        # d = 1.0 / np.sqrt(in_dim)
+        # with paperenv it better around 0
+        d = 0.003
         with tf.variable_scope(name):
             w_init = tf.random_uniform_initializer(-d, d)
             b_init = tf.random_uniform_initializer(-d, d)

@@ -32,7 +32,7 @@ class Environment:
     def step(self, action):
         v_new, pos_new, step_reward, pos_reward = self.game.step(action, Config.SHOW_WINDOW, draw_text='little_reward')
 
-        end, time, last_t_diff, game_pos_reward, game_ref_reward = self.game.getstate()
+        end, time, last_t_diff, game_reward, game_ref_reward = self.game.getstate()
 
         # no image, only pos and speed is the observation
         observation = [v_new[0], v_new[1], pos_new[0], pos_new[1]]
@@ -42,9 +42,13 @@ class Environment:
         # TODO it is not markovian because reward depends on past states as well
         self.current_state = np.array([v_new[0], v_new[1], pos_new[0], pos_new[1]])
 
-        reward = step_reward
         done = end
 
-        self.total_reward += reward
+        if end:
+            self.total_reward = game_reward*0.01
+            reward = game_reward*0.01
+        else:
+            self.total_reward += reward
+            reward = step_reward*0.01
 
         return reward, done
