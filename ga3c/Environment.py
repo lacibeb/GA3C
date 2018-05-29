@@ -48,7 +48,7 @@ class Environment:
             self.total_reward = game_reward*0.01
             reward = game_reward*0.01
         else:
-            self.total_reward += reward
             reward = step_reward*0.01
+            self.total_reward += reward
 
         return reward, done
