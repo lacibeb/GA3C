@@ -83,15 +83,15 @@ class Config:
     IMAGE_HEIGHT = 84
 
     # Total number of episodes and annealing frequency
-    EPISODES = 400000
-    ANNEALING_EPISODE_COUNT = 400000
+    EPISODES = 40000
+    ANNEALING_EPISODE_COUNT = 10000
 
     # Entropy regualrization hyper-parameter
     BETA_START = 0.01
     BETA_END = 0.01
 
     # Learning rate
-    LEARNING_RATE_START = 0.0003
+    LEARNING_RATE_START = 0.03
     LEARNING_RATE_END = 0.0003
 
     # RMSProp parameters
