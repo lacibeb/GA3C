@@ -46,7 +46,7 @@ class Config:
     
     # If the dynamic configuration is on, these are the initial values.
     # Number of Agents
-    AGENTS = 32
+    AGENTS = 64
     # Number of Predictors
     PREDICTORS = 1
     # Number of Trainers
@@ -64,10 +64,10 @@ class Config:
     # Algorithm parameters
 
     # Discount factor
-    DISCOUNT = 0.99
+    DISCOUNT = 0.9
     
     # Tmax
-    TIME_MAX = 5
+    TIME_MAX = 100
     
     # Reward Clipping
     REWARD_MIN = -1
