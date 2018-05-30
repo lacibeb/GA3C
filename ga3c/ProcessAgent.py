@@ -112,8 +112,9 @@ class ProcessAgent(Process):
             experiences.append(exp)
 
             if done or time_count == Config.TIME_MAX:
-                terminal_reward = 0 if done else value
-
+                #terminal_reward = 0 if done else value
+                # with pyperrace the final reward is always in last step, it always plays until the end
+                terminal_reward = reward
                 updated_exps = ProcessAgent._accumulate_rewards(experiences, self.discount_factor, terminal_reward)
                 x_, r_, a_ = self.convert_data(updated_exps)
                 yield x_, r_, a_, reward_sum

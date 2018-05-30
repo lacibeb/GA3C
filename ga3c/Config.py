@@ -46,7 +46,7 @@ class Config:
     
     # If the dynamic configuration is on, these are the initial values.
     # Number of Agents
-    AGENTS = 10
+    AGENTS = 32
     # Number of Predictors
     PREDICTORS = 1
     # Number of Trainers
@@ -74,8 +74,8 @@ class Config:
     REWARD_MAX = 1
 
     # Max size of the queue
-    MAX_QUEUE_SIZE = 2
-    PREDICTION_BATCH_SIZE = 4
+    MAX_QUEUE_SIZE = 100
+    PREDICTION_BATCH_SIZE = 128
 
     # Input of the DNN
     STACKED_FRAMES = 4
@@ -83,16 +83,16 @@ class Config:
     IMAGE_HEIGHT = 84
 
     # Total number of episodes and annealing frequency
-    EPISODES = 40000
-    ANNEALING_EPISODE_COUNT = 10000
+    EPISODES = 100000
+    ANNEALING_EPISODE_COUNT = 50000
 
     # Entropy regualrization hyper-parameter
     BETA_START = 0.01
     BETA_END = 0.01
 
     # Learning rate
-    LEARNING_RATE_START = 0.03
-    LEARNING_RATE_END = 0.0003
+    LEARNING_RATE_START = 0.3
+    LEARNING_RATE_END = 0.003
 
     # RMSProp parameters
     RMSPROP_DECAY = 0.99
@@ -108,7 +108,7 @@ class Config:
     # Epsilon (regularize policy lag in GA3C)
     LOG_EPSILON = 1e-6
     # Training min batch size - increasing the batch size increases the stability of the algorithm, but make learning slower
-    TRAINING_MIN_BATCH_SIZE = 128
+    TRAINING_MIN_BATCH_SIZE = 256
     
     #########################################################################
     # Log and save
