@@ -46,7 +46,7 @@ class Config:
     
     # If the dynamic configuration is on, these are the initial values.
     # Number of Agents
-    AGENTS = 1
+    AGENTS = 0
     # Number of human reference Agents
     HUMAN_REF_AGENTS = 1
     # Number of Predictors
