@@ -71,7 +71,7 @@ class Server:
         self.agents.pop()
 
     def add_hr_agent(self):
-        self.agents.append(
+        self.hr_agents.append(
             ProcessHRAgent(len(self.hr_agents), self.prediction_q, self.training_q, self.stats.episode_log_q))
         self.hr_agents[-1].start()
 
