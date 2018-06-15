@@ -43,6 +43,7 @@ class ThreadDynamicAdjustment(Thread):
         self.trainer_count = Config.TRAINERS
         self.predictor_count = Config.PREDICTORS
         self.agent_count = Config.AGENTS
+        self.hr_agent_count = Config.HUMAN_REF_AGENTS
 
         self.temporal_training_count = 0
         self.exit_flag = False
@@ -72,6 +73,14 @@ class ThreadDynamicAdjustment(Thread):
             for _ in np.arange(self.agent_count, cur_len):
                 self.server.remove_agent()
 
+        cur_len = len(self.server.agents)
+        if cur_len < self.hr_agent_count:
+            for _ in np.arange(cur_len, self.hr_agent_count):
+                self.server.add_hr_agent()
+        elif cur_len > self.agent_count:
+            for _ in np.arange(self.hr_agent_count, cur_len):
+                self.server.remove_hr_agent()
+
     def random_walk(self):
         # 3 directions, 1 for Trainers, 1 for Predictors and 1 for Agents
         # 3 outcome for each, -1: remove one, 0: no change, 2: remove one
@@ -98,7 +107,10 @@ class ThreadDynamicAdjustment(Thread):
         while not self.exit_flag:
             old_trainer_count, old_predictor_count, old_agent_count = \
                 self.trainer_count, self.predictor_count, self.agent_count
-            self.random_walk()
+
+            # TODO: is it necesary???
+            # random reset of trainers, agents, predictors
+            # self.random_walk()
 
             # If no change, do nothing
             if self.trainer_count == old_trainer_count \
