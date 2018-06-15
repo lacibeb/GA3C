@@ -35,9 +35,9 @@ from Environment import Environment
 from Experience import Experience
 
 
-class ProcessAgent(Process):
+class ProcessHRAgent(Process):
     def __init__(self, id, prediction_q, training_q, episode_log_q):
-        super(ProcessAgent, self).__init__()
+        super(ProcessHRAgent, self).__init__()
 
         self.id = id
         self.prediction_q = prediction_q
