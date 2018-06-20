@@ -3,7 +3,7 @@ from Paper_Config import Config
 import numpy as np
 
 class Environment:
-    def __init__(self):
+    def __init__(self, player='default'):
         self.game = pyper_env.PaperRaceEnv(track_name = Config.track_name, car_name = Config.car_name,\
                                              random_init = Config.random_init, ref_calc = Config.ref_calc, \
                                              save_env_ref_buffer_dir = Config.save_env_ref_buffer_dir, \
@@ -15,6 +15,11 @@ class Environment:
         self.current_state = None
         self.total_reward = 0
         self.game.reset(Config.SHOW_WINDOW)
+
+        self.game.newplayer('agent', (1, 0, 0))
+        self.game.newplayer('href', (0, 1, 0))
+
+        self.player = player
 
     @staticmethod
     def get_num_actions():
@@ -30,7 +35,8 @@ class Environment:
         self.current_state = [v[0], v[1], pos[0], pos[1]]
 
     def step(self, action):
-        v_new, pos_new, step_reward, pos_reward = self.game.step(action, Config.SHOW_WINDOW, draw_text='little_reward')
+        v_new, pos_new, step_reward, pos_reward = self.game.step(action, Config.SHOW_WINDOW, draw_text='little_reward',
+                                                                 player=self.player)
 
         end, time, last_t_diff, game_reward, game_ref_reward = self.game.getstate()
 
