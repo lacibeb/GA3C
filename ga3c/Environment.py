@@ -16,8 +16,8 @@ class Environment:
         self.total_reward = 0
         self.game.reset(Config.SHOW_WINDOW)
 
-        self.game.newplayer('agent', (1, 0, 0))
-        self.game.newplayer('href', (0, 1, 0))
+        self.game.new_player('agent', (1, 0, 0))
+        self.game.new_player('href', (0, 1, 0))
 
         self.player = player
 
