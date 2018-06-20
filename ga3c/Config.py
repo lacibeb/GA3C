@@ -46,13 +46,13 @@ class Config:
     
     # If the dynamic configuration is on, these are the initial values.
     # Number of Agents
-    AGENTS = 10
+    AGENTS = 32
     # Number of human reference Agents from Agents AGENTS=humref+regular
     HUMAN_REF_AGENTS = 0
     # Number of Predictors
-    PREDICTORS = 1
+    PREDICTORS = 2
     # Number of Trainers
-    TRAINERS = 1
+    TRAINERS = 2
 
     # Device
     DEVICE = 'gpu:0'
@@ -143,3 +143,9 @@ class Config:
     # Use log_softmax() instead of log(softmax())
     # not used with continuous
     USE_LOG_SOFTMAX = False
+
+    # with DDPG
+    actor_lr = 0.003
+    critic_lr = 0.005
+    tau = 0.99
+    gamma =0.99
