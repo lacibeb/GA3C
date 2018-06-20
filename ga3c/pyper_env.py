@@ -237,11 +237,13 @@ class PaperRaceEnv:
         curr_ref_actions = tracks.get_ref_actions(self.track_name, self.car_name)
         # csak egy referencia lepessor van
         if isinstance(curr_ref_actions, (list, tuple)):
-            return curr_ref_actions[int(np.random.uniform(0, int(curr_ref_actions.shape[0]), 1))]
             print('islist')
+            return curr_ref_actions[int(np.random.uniform(0, int(curr_ref_actions.shape[0]), 1))]
+
         else:
-            return curr_ref_actions
             print('notlist')
+            return curr_ref_actions
+
 
     # it draws the track to a current plot
     def draw_track(self):
