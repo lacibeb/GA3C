@@ -39,6 +39,9 @@ class ProcessHRAgent(ProcessAgent):
     def __init__(self, id, prediction_q, training_q, episode_log_q):
         super(ProcessHRAgent, self).__init__(id, prediction_q, training_q, episode_log_q)
 
+        self.player = 'href'
+        self.env.new_player(self.player, (0, 1, 0))
+
     def run_episode(self):
         self.env.reset()
         done = False
@@ -63,7 +66,7 @@ class ProcessHRAgent(ProcessAgent):
 
             action = action + np.random.uniform(0.03, -0.03)
 
-            reward, done = self.env.step(int(action * 180.0))
+            reward, done = self.env.step(int(action * 180.0), player=self.player)
             reward_sum += reward
             exp = Experience(self.env.previous_state, action, prediction, reward, done)
             experiences.append(exp)

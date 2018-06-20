@@ -53,6 +53,9 @@ class ProcessAgent(Process):
         self.wait_q = Queue(maxsize=1)
         self.exit_flag = Value('i', 0)
 
+        self.player = 'agent'
+        self.env.new_player(self.player, (1, 0, 0))
+
     @staticmethod
     def _accumulate_rewards(experiences, discount_factor, terminal_reward):
         reward_sum = terminal_reward
@@ -107,7 +110,7 @@ class ProcessAgent(Process):
             action = prediction[0]
             action = action + np.random.uniform(0.03, -0.03)
 
-            reward, done = self.env.step(int(action * 180.0))
+            reward, done = self.env.step(int(action * 180.0), player=self.player)
             reward_sum += reward
             exp = Experience(self.env.previous_state, action, prediction, reward, done)
             experiences.append(exp)
