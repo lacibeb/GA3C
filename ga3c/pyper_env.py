@@ -1168,3 +1168,57 @@ class PaperRaceEnv:
             self.name = name
             self.color = color
 
+    def get_reference_episode(self, episode, max_episodes):
+        ep_for_exp = np.array([0, 0.005,
+                               1.15, 1.25,
+                               1.35, 1.45]) * int(max_episodes)
+
+        # Minden sor szam pedig hogy abban a fentiekben megadott intervallumokban mennyiről mennyire csökkenjen a szórás.
+        deviations = np.array([0, 5,
+                               10, 0,
+                               20, 0])
+
+        ref_episode = (episode in range(int(ep_for_exp[0]), int(ep_for_exp[1]))) or (
+                episode in range(int(ep_for_exp[2]), int(ep_for_exp[3]))) or (
+                              episode in range(int(ep_for_exp[4]), int(ep_for_exp[5])))
+
+        # a random lepesekhez a szoras:
+        deviation = np.interp(episode, ep_for_exp, deviations)
+
+        if ref_episode:
+            actions, actions_size = self.get_steps_with_reference(deviation)
+        else:
+            actions = []
+            actions_size = 0
+
+        return ref_episode, actions, actions_size
+
+    @staticmethod
+    def get_ref_step(step, max_steps, reference_steps, reference_step_size):
+        # ha nem ért még véget az epizod, de mar a ref lepessor vege, akkor random lepkedunk
+        if step < reference_step_size:
+            a = reference_steps[step]
+            player = 'reference'
+        else:
+            player = 'random'
+            a = int(np.random.uniform(-180, 180, 1))
+
+        return a, player
+
+    def get_steps_with_reference(self, deviation, step_count_from_start = 0):
+        # if null it will be random
+
+        # az emberi lepessorok kozul valasszunk egyet veletlenszeruen mint aktualis epizod lepessor:
+        curr_ref_actions = self.get_random_ref_actions()
+        size_curr_ref_actions = len(curr_ref_actions)
+
+        if step_count_from_start == 0:
+            actions_size = int(np.random.uniform(0, size_curr_ref_actions, 1))
+        else:
+            actions_size = min(abs(step_count_from_start), size_curr_ref_actions)
+
+        actions = []
+        for i in range(actions_size):
+            actions.append(int(np.random.normal(curr_ref_actions[i], deviation, 1)))
+
+        return actions, actions_size

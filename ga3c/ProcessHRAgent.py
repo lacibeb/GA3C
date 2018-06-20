@@ -44,11 +44,16 @@ class ProcessHRAgent(ProcessAgent):
 
     def run_episode(self):
         self.env.reset()
+
+        # human reference
+        actions, actions_size = self.env.game.get_steps_with_reference(0)
+
         done = False
         experiences = []
 
         time_count = 0
         reward_sum = 0.0
+
 
         while not done:
             # very first few frames
@@ -61,12 +66,12 @@ class ProcessHRAgent(ProcessAgent):
             # action = self.select_action(prediction)
             # contonuous
 
-            # TODO human reference action
-            action = 0
+            # human reference action
+            action, player = self.env.game.get_ref_step(time_count, Config.TIME_MAX, actions, actions_size)
+            # action in -180 .. 180
+            action = action + np.random.uniform(5.4, -5.4)
 
-            action = action + np.random.uniform(0.03, -0.03)
-
-            reward, done = self.env.step(int(action * 180.0))
+            reward, done = self.env.step(int(action))
             reward_sum += reward
             exp = Experience(self.env.previous_state, action, prediction, reward, done)
             experiences.append(exp)
