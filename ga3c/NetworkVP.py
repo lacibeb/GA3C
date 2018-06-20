@@ -152,8 +152,6 @@ class NetworkVP:
         summaries = tf.get_collection(tf.GraphKeys.SUMMARIES)
         summaries.append(tf.summary.scalar("Pcost_advantage", self.cost_p_1_agg))
         summaries.append(tf.summary.scalar("Pcost_entropy", self.cost_p_2_agg))
-        summaries.append(tf.summary.scalar("cost_p_1", self.cost_p_1))
-        summaries.append(tf.summary.scalar("cost_p_2", self.cost_p_2))
 
         summaries.append(tf.summary.scalar("Pcost", self.cost_p))
         summaries.append(tf.summary.scalar("Vcost", self.cost_v))
