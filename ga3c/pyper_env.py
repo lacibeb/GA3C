@@ -1219,6 +1219,7 @@ class PaperRaceEnv:
 
         actions = []
         for i in range(actions_size):
-            actions.append(int(curr_ref_actions[i]))
+            actions.append(curr_ref_actions[i])
+            print(curr_ref_actions[i])
 
         return actions, actions_size
