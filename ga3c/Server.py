@@ -134,7 +134,9 @@ class Server:
 
             time.sleep(0.01)
 
+        self.stats.exit_flag = True
         self.dynamic_adjustment.exit_flag = True
+
         while self.agents:
             self.remove_agent()
         while self.predictors:

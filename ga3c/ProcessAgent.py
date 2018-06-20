@@ -63,7 +63,10 @@ class ProcessAgent(Process):
         reward_sum = terminal_reward
         for t in reversed(range(0, len(experiences)-1)):
             r = np.clip(experiences[t].reward, Config.REWARD_MIN, Config.REWARD_MAX)
-            reward_sum = discount_factor * reward_sum + r
+            # without intermediate rewards
+            reward_sum = discount_factor * reward_sum
+            # with intermediate rewards
+            # reward_sum = discount_factor * reward_sum + r
             experiences[t].reward = reward_sum
         return experiences[:-1]
 
