@@ -238,8 +238,10 @@ class PaperRaceEnv:
         # csak egy referencia lepessor van
         if isinstance(curr_ref_actions, (list, tuple)):
             return curr_ref_actions[int(np.random.uniform(0, int(curr_ref_actions.shape[0]), 1))]
+            print('islist')
         else:
             return curr_ref_actions
+            print('notlist')
 
     # it draws the track to a current plot
     def draw_track(self):
