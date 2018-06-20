@@ -31,7 +31,7 @@ class Environment:
 
     def reset(self):
         self.game.reset(Config.SHOW_WINDOW)
-        pos, v = self.game.start_game(player='default')
+        pos, v = self.game.start_game()
         self.current_state = [v[0], v[1], pos[0], pos[1]]
 
     def step(self, action):
