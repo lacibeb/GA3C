@@ -43,6 +43,8 @@ class ThreadDynamicAdjustment(Thread):
         self.trainer_count = Config.TRAINERS
         self.predictor_count = Config.PREDICTORS
         self.agent_count = Config.AGENTS
+        self.agent_actual = 0
+        self.hr_agent_actual = 0
         self.hr_agent_count = Config.HUMAN_REF_AGENTS
 
         self.temporal_training_count = 0
@@ -66,20 +68,28 @@ class ThreadDynamicAdjustment(Thread):
                 self.server.remove_predictor()
 
         cur_len = len(self.server.agents)
-        if cur_len < self.agent_count:
+        # on agent count change only change simple agents
+        cur_agent = cur_len - self.hr_agent_actual
+        req_agent = self.agent_count - self.hr_agent_count
+
+        if cur_agent < req_agent:
             for _ in np.arange(cur_len, self.agent_count):
                 self.server.add_agent()
-        elif cur_len > self.agent_count:
+                self.agent_actual += 1
+        elif cur_agent < req_agent:
             for _ in np.arange(self.agent_count, cur_len):
                 self.server.remove_agent()
+                self.agent_actual -= 1
 
-        cur_len = len(self.server.agents)
         if cur_len < self.hr_agent_count:
             for _ in np.arange(cur_len, self.hr_agent_count):
                 self.server.add_hr_agent()
+                self.hr_agent_actual += 1
+        # TODO this is problematic, now we dont want to delete hr agent -> agent array is messy
         elif cur_len > self.agent_count:
             for _ in np.arange(self.hr_agent_count, cur_len):
                 self.server.remove_hr_agent()
+                self.hr_agent_actual -= 1
 
     def random_walk(self):
         # 3 directions, 1 for Trainers, 1 for Predictors and 1 for Agents

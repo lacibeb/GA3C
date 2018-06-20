@@ -53,14 +53,14 @@ class ProcessHRAgent(ProcessAgent):
                 self.env.step(0)  # 0 == NOOP
                 continue
 
-            #prediction, value = self.predict(self.env.current_state)
+            prediction, value = self.predict(self.env.current_state)
             # arcade
             # action = self.select_action(prediction)
             # contonuous
 
             # TODO human reference action
             action = 0
-            
+
             action = action + np.random.uniform(0.03, -0.03)
 
             reward, done = self.env.step(int(action * 180.0))

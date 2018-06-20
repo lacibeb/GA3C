@@ -55,15 +55,17 @@ class Server:
         self.frame_counter = 0
 
         self.agents = []
-        self.hr_agents = []
+        self.agent_id = 0
+
         self.predictors = []
         self.trainers = []
         self.dynamic_adjustment = ThreadDynamicAdjustment(self)
 
     def add_agent(self):
         self.agents.append(
-            ProcessAgent(len(self.agents), self.prediction_q, self.training_q, self.stats.episode_log_q))
+            ProcessAgent(self.agent_id, self.prediction_q, self.training_q, self.stats.episode_log_q))
         self.agents[-1].start()
+        self.agent_id += 1
 
     def remove_agent(self):
         self.agents[-1].exit_flag.value = True
@@ -71,14 +73,10 @@ class Server:
         self.agents.pop()
 
     def add_hr_agent(self):
-        self.hr_agents.append(
-            ProcessHRAgent(len(self.hr_agents), self.prediction_q, self.training_q, self.stats.episode_log_q))
-        self.hr_agents[-1].start()
-
-    def remove_hr_agent(self):
-        self.hr_agents[-1].exit_flag.value = True
-        self.hr_agents[-1].join()
-        self.hr_agents.pop()
+        self.agents.append(
+            ProcessHRAgent(self.agent_id, self.prediction_q, self.training_q, self.stats.episode_log_q))
+        self.agents[-1].start()
+        self.agent_id += 1
 
     def add_predictor(self):
         self.predictors.append(ThreadPredictor(self, len(self.predictors)))
@@ -139,8 +137,6 @@ class Server:
         self.dynamic_adjustment.exit_flag = True
         while self.agents:
             self.remove_agent()
-        while self.hr_agents:
-            self.remove_hr_agent()
         while self.predictors:
             self.remove_predictor()
         while self.trainers:
