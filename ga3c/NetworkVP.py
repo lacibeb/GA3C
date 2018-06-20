@@ -156,7 +156,6 @@ class NetworkVP:
         summaries.append(tf.summary.scalar("cost_p_2", self.cost_p_2))
 
 
-        summaries.append(tf.summary.scalar("opt_grad_v_clipped", self.opt_grad_v_clipped))
         summaries.append(tf.summary.scalar("train_op_v", self.train_op_v))
         summaries.append(tf.summary.scalar("opt_grad_p", self.opt_grad_p))
         summaries.append(tf.summary.scalar("opt_grad_p_clipped", self.opt_grad_p_clipped))
