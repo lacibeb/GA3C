@@ -46,7 +46,7 @@ class ProcessHRAgent(ProcessAgent):
         self.env.reset()
 
         # human reference
-        actions, actions_size = self.env.game.get_steps_with_reference(0)
+        actions, actions_size = self.env.game.get_steps_with_reference()
 
         done = False
         experiences = []

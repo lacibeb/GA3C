@@ -1205,7 +1205,7 @@ class PaperRaceEnv:
 
         return a, player
 
-    def get_steps_with_reference(self, deviation, step_count_from_start = 0):
+    def get_steps_with_reference(self, step_count_from_start = 0):
         # if null it will be random
 
         # az emberi lepessorok kozul valasszunk egyet veletlenszeruen mint aktualis epizod lepessor:
@@ -1219,6 +1219,6 @@ class PaperRaceEnv:
 
         actions = []
         for i in range(actions_size):
-            actions.append(int(np.random.normal(curr_ref_actions[i], deviation, 1)))
+            actions.append(int(curr_ref_actions[i]))
 
         return actions, actions_size
