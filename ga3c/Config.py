@@ -48,7 +48,7 @@ class Config:
     # Number of Agents
     AGENTS = 32
     # Number of human reference Agents from Agents AGENTS=humref+regular
-    HUMAN_REF_AGENTS = 0
+    HUMAN_REF_AGENTS = 2
     # Number of Predictors
     PREDICTORS = 2
     # Number of Trainers
@@ -86,7 +86,7 @@ class Config:
 
     # Total number of episodes and annealing frequency
     EPISODES = 500000
-    ANNEALING_EPISODE_COUNT = 50000
+    ANNEALING_EPISODE_COUNT = 500000
 
     # Entropy regualrization hyper-parameter
     BETA_START = 0.01
