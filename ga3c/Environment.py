@@ -50,11 +50,20 @@ class Environment:
 
         done = end
 
-        if end:
-            self.total_reward = game_reward*0.01
-            reward = game_reward*0.01
+        if Config.reward_based_on_ref:
+            if end:
+                self.total_reward = game_ref_reward*0.01
+                reward = game_ref_reward*0.01
+            else:
+                reward = last_t_diff*0.01
+                self.total_reward += reward
+        # position based reward
         else:
-            reward = step_reward*0.01
-            self.total_reward += reward
+            if end:
+                self.total_reward = game_reward * 0.01
+                reward = game_reward * 0.01
+            else:
+                reward = step_reward * 0.01
+                self.total_reward += reward
 
         return reward, done

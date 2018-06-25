@@ -59,3 +59,5 @@ class Config:
     save_env_ref_buffer_name = 'env_ref_buffer_1'
     load_env_ref_buffer = './env_ref_buffer/env_ref_buffer_1'
     load_all_env_ref_buffer_dir = './env_ref_buffer'
+
+    reward_based_on_ref = True
