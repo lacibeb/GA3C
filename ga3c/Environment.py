@@ -35,6 +35,13 @@ class Environment:
         self.current_state = [v[0], v[1], pos[0], pos[1]]
 
     def step(self, action):
+        # action randomisation
+        action = action + np.random.uniform(0.03, -0.03)
+
+        # Game requires input -180..180 int
+        action = int(action * 180.0)
+
+        # game step
         v_new, pos_new, step_reward, pos_reward = self.game.step(action, Config.SHOW_WINDOW, draw_text='little_reward',
                                                                  player=self.player)
 

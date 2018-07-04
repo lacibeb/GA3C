@@ -61,3 +61,7 @@ class Config:
     load_all_env_ref_buffer_dir = './env_ref_buffer'
 
     reward_based_on_ref = True
+
+    # define input
+    CONTINUOUS_INPUT = False
+    CONTINUOUS_INPUT_PARTITIONS = 8

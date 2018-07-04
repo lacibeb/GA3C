@@ -30,7 +30,7 @@ import time
 
 from Config import Config
 from Environment import Environment
-from NetworkVP import NetworkVP
+from NetworkVP_discrate import NetworkVP
 from ProcessAgent import ProcessAgent
 from ProcessHRAgent import ProcessHRAgent
 from ProcessStats import ProcessStats

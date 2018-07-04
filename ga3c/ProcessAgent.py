@@ -110,12 +110,16 @@ class ProcessAgent(Process):
 
             prediction, value = self.predict(self.env.current_state)
             # arcade
-            # action = self.select_action(prediction)
-            # contonuous
-            action = prediction[0]
-            action = action + np.random.uniform(0.03, -0.03)
+            if Config.CONTINUOUS_INPUT:
+                action = prediction[0]
+            else:
+                action = self.select_action(prediction)
+                # converting discrate action to continuous
+                action = (360 / Config.CONTINUOUS_INPUT_PARTITION) * action - 180
 
-            reward, done = self.env.step(int(action * 180.0))
+            reward, done = self.env.step(action)
+            # contonuous
+
             reward_sum += reward
             exp = Experience(self.env.previous_state, action, prediction, reward, done)
             experiences.append(exp)
