@@ -149,3 +149,7 @@ class Config:
     critic_lr = 0.005
     tau = 0.99
     gamma =0.99
+
+    # define input
+    CONTINUOUS_INPUT = FALSE
+    CONTINUOUS_INPUT_PARTITIONS = 8
