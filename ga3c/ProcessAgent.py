@@ -49,7 +49,12 @@ class ProcessAgent(Process):
         # change player
         self.env.player = 'agent'
 
-        self.num_actions = self.env.get_num_actions()
+        # countinous or discrate input selection
+        if Config.CONTINUOUS_INPUT:
+            self.num_actions = self.env.get_num_actions()
+        else:
+            self.num_actions = Config.CONTINUOUS_INPUT_PARTITIONS
+
         self.actions = np.arange(self.num_actions)
 
         self.discount_factor = Config.DISCOUNT

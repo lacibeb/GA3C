@@ -30,7 +30,12 @@ import time
 
 from Config import Config
 from Environment import Environment
-from NetworkVP_discrate import NetworkVP
+
+if Config.CONTINUOUS_INPUT:
+    from NetworkVP import NetworkVP
+else:
+    from NetworkVP_discrate import NetworkVP
+
 from ProcessAgent import ProcessAgent
 from ProcessHRAgent import ProcessHRAgent
 from ProcessStats import ProcessStats
@@ -47,7 +52,7 @@ class Server:
         self.prediction_q = Queue(maxsize=Config.MAX_QUEUE_SIZE)
 
         self.model = NetworkVP(Config.DEVICE, Config.NETWORK_NAME,
-                               Environment.get_num_actions(), Environment.get_num_states())
+                               self.get_num_action(), Environment.get_num_states())
         if Config.LOAD_CHECKPOINT:
             self.stats.episode_count.value = self.model.load()
 
@@ -147,3 +152,10 @@ class Server:
     @staticmethod
     def get_state_size():
         return Environment.get_num_states()
+
+    @staticmethod
+    def get_num_action():
+        if Config.CONTINUOUS_INPUT:
+            return Environment.get_num_actions()
+        else:
+            return Config.CONTINUOUS_INPUT_PARTITIONS
