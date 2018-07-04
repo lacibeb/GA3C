@@ -119,6 +119,7 @@ class ProcessAgent(Process):
                 action = prediction[0]
             else:
                 action = self.select_action(prediction)
+                print('action: '+str(action))
                 # converting discrate action to continuous
                 action = (360 / Config.CONTINUOUS_INPUT_PARTITIONS) * action - 180
 
