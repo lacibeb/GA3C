@@ -33,14 +33,12 @@ from Config import Config
 
 
 class NetworkVP:
-    def __init__(self, device, model_name, num_actions):
+    def __init__(self, device, model_name, num_actions, state_dim):
         self.device = device
         self.model_name = model_name
         self.num_actions = num_actions
 
-        self.img_width = Config.IMAGE_WIDTH
-        self.img_height = Config.IMAGE_HEIGHT
-        self.img_channels = Config.STACKED_FRAMES
+        self.num_states = state_dim
 
         self.learning_rate = Config.LEARNING_RATE_START
         self.beta = Config.BETA_START
@@ -66,7 +64,7 @@ class NetworkVP:
 
     def _create_graph(self):
         self.x = tf.placeholder(
-            tf.float32, [None, self.img_height, self.img_width, self.img_channels], name='X')
+            tf.float32, [None, self.num_states], name='X')
         self.y_r = tf.placeholder(tf.float32, [None], name='Yr')
 
         self.var_beta = tf.placeholder(tf.float32, name='beta', shape=[])
@@ -75,16 +73,12 @@ class NetworkVP:
         self.global_step = tf.Variable(0, trainable=False, name='step')
 
         # As implemented in A3C paper
-        self.n1 = self.conv2d_layer(self.x, 8, 16, 'conv11', strides=[1, 4, 4, 1])
-        self.n2 = self.conv2d_layer(self.n1, 4, 32, 'conv12', strides=[1, 2, 2, 1])
+
+        self.p_d1 = self.dense_layer(self.x, 2048, 'dense11_p')
+        self.p_d2 = self.dense_layer(self.p_d1, 4048, 'dense12_p')
         self.action_index = tf.placeholder(tf.float32, [None, self.num_actions])
-        _input = self.n2
 
-        flatten_input_shape = _input.get_shape()
-        nb_elements = flatten_input_shape[1] * flatten_input_shape[2] * flatten_input_shape[3]
-
-        self.flat = tf.reshape(_input, shape=[-1, nb_elements._value])
-        self.d1 = self.dense_layer(self.flat, 256, 'dense1')
+        self.d1 = self.dense_layer(self.p_d2, 512, 'dense1')
 
         self.logits_v = tf.squeeze(self.dense_layer(self.d1, 1, 'logits_v', func=None), axis=[1])
         self.cost_v = 0.5 * tf.reduce_sum(tf.square(self.y_r - self.logits_v), axis=0)
@@ -180,7 +174,10 @@ class NetworkVP:
 
     def dense_layer(self, input, out_dim, name, func=tf.nn.relu):
         in_dim = input.get_shape().as_list()[-1]
-        d = 1.0 / np.sqrt(in_dim)
+        # with lot of input it is OK
+        # d = 1.0 / np.sqrt(in_dim)
+        # with paperenv it better around 0
+        d = 0.003
         with tf.variable_scope(name):
             w_init = tf.random_uniform_initializer(-d, d)
             b_init = tf.random_uniform_initializer(-d, d)
