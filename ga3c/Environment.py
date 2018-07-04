@@ -23,7 +23,10 @@ class Environment:
 
     @staticmethod
     def get_num_actions():
-        return Config.ACTION_DIM
+        if Config.CONTINUOUS_INPUT:
+            return Config.ACTION_DIM
+        else:
+            return Config.CONTINUOUS_INPUT_PARTITIONS
 
     @staticmethod
     def get_num_states():
