@@ -121,7 +121,8 @@ class ProcessAgent(Process):
                 action = self.select_action(prediction)
                 print('action: '+str(action))
                 # converting discrate action to continuous
-                action = (360 / Config.CONTINUOUS_INPUT_PARTITIONS) * action - 180
+                # converting -1 .. 1 to fixed angles
+                action = (2 / Config.CONTINUOUS_INPUT_PARTITIONS) * action - 1
 
             reward, done = self.env.step(action)
             # contonuous
