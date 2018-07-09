@@ -46,7 +46,7 @@ class ProcessHRAgent(ProcessAgent):
         self.env.reset()
 
         # human reference
-        ProcessAgent.steps_with_reference()
+        self.env.steps_with_reference()
 
         done = False
         experiences = []
@@ -67,7 +67,7 @@ class ProcessHRAgent(ProcessAgent):
             # contonuous
 
             # human reference action
-            env_action, player = ProcessAgent.env.get_ref_step(time_count, Config.TIME_MAX)
+            env_action, player = self.env.get_ref_step(time_count, Config.TIME_MAX)
             # action in -1 .. 1
             # add randomness to it
             env_action = action + np.random.uniform(0.03, -0.03)

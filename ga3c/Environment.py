@@ -72,7 +72,7 @@ class Environment:
 
         return reward, done
 
-    def get_steps_with_reference(self):
+    def steps_with_reference(self):
         self.actions, self.actions_size = self.game.get_steps_with_reference()
         ratio = 1/180
         self.actions = [x * ratio for x in self.actions]
