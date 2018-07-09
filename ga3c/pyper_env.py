@@ -404,6 +404,7 @@ class PaperRaceEnv:
         # ref time based part
         self.last_step_ref_time_diff = self.step_ref_time_diff
         self.step_ref_time_diff, remaining_ref_time = self.get_time_diff(self.pos_last, self.pos, self.step_time)
+        self.log("ref: " + str(self.step_ref_time_diff) + " " + str(remaining_ref_time), "game", now = True)
         self.calc_game_ref_time_reward(remaining_ref_time)
 
     def calc_step(self, gg_action):
@@ -485,8 +486,6 @@ class PaperRaceEnv:
         # Ha akarjuk, akkor itt rajzoljuk ki az aktualis lepes abrajat (lehet maskor kene)
         if draw: # kirajzolja az autót
             self.draw_step(draw_text, draw_info_X, draw_info_Y)
-
-        self.log(' r' + str(self.step_ref_time_diff) + ' ' , "game")
 
         return self.v, self.pos, self.step_reward, self.step_pos_reward
 
@@ -961,7 +960,7 @@ class PaperRaceEnv:
         # a kieses helyetol a ref lepessorral, hatra levo ido:
         remain_time = self.ref_steps[-1] - yinterp[1]
 
-        return -rew_dt, remain_time
+        return rew_dt, remain_time
 
     def calc_last_point(self, pos_old, pos_new):
         # a sebessegvektor iranyaban egyre nagyobb vektorral vizsgalja, hogy mar kint van-e
@@ -1239,6 +1238,7 @@ class PaperRaceEnv:
         if now:
             for i in self.log_list:
                 print(i + " ", end = "")
+            self.log_list.clear()
             if tmp != "":
                 print(tmp)
         else:
