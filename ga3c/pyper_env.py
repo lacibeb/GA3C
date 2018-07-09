@@ -377,8 +377,9 @@ class PaperRaceEnv:
 
         if self.end:
             self.log('End of game!', "game")
-            self.log('Reward: ' + '% 3.3f' % self.game_reward + ' Time: ' + '% 3.3f' % self.game_time + \
-                  ' ref_time: ' + '% 3.3f' % self.game_ref_reward, "game", now = True)
+            self.log('Reward: ' + '% 3.3f' % self.game_reward, "game")
+            self.log(' Time: ' + '% 3.3f' % self.game_time, "game")
+            self.log(' ref_time: ' + '% 3.3f' % self.game_ref_reward, "game", now = True)
 
         self.calc_step_reward()
 
@@ -563,12 +564,12 @@ class PaperRaceEnv:
 
         # jatek inditasa
     def start_game(self, player='last'):
-        self.log('New game started!', "game")
+        self.log('\nNew game started!\n', "game")
         # change player if necessary
         if (player != self.player.name and player != 'last'):
             self.player = self.getplayer(player)
-        self.log('  --' + self.player.name + ': ')
-        self.log('    ')
+        self.log('\n  --' + self.player.name + ': ')
+        self.log('\n    ')
         # kezdeti sebeesseg, ahogy a kornyezet adja
         self.v = np.array(self.starting_spd)
 
@@ -1236,7 +1237,7 @@ class PaperRaceEnv:
         if tmp != "":
             if now:
                 for i in self.log_list:
-                    print(i, end = "")
+                    print(i + " ", end = "")
                 print(tmp)
             else:
                 self.log_list.append(tmp)
