@@ -46,7 +46,7 @@ class ProcessHRAgent(ProcessAgent):
         self.env.reset()
 
         # human reference
-        actions, actions_size = self.env.game.get_steps_with_reference()
+        self.env.steps_with_reference()
 
         done = False
         experiences = []
@@ -67,11 +67,11 @@ class ProcessHRAgent(ProcessAgent):
             # contonuous
 
             # human reference action
-            action, player = self.env.game.get_ref_step(time_count, Config.TIME_MAX, actions, actions_size)
+            action, player = self.env.get_ref_step(time_count, Config.TIME_MAX, actions, actions_size)
             # action in -180 .. 180
             action = action + np.random.uniform(5.4, -5.4)
 
-            reward, done = self.env.step(int(action))
+            reward, done = self.env.step(action)
             reward_sum += reward
             exp = Experience(self.env.previous_state, action, prediction, reward, done)
             experiences.append(exp)

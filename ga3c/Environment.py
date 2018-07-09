@@ -74,3 +74,13 @@ class Environment:
                 self.total_reward += reward
 
         return reward, done
+
+    def get_steps_with_reference(self):
+        self.actions, self.actions_size = self.game.get_steps_with_reference()
+        ratio = 1/180
+        self.actions = [x * ratio for x in self.actions]
+
+    def get_ref_step(self, step, max_steps, reference_steps, reference_step_size):
+        action, player = self.game.get_ref_step(step, max_steps, reference_steps, reference_step_size)
+        return action, player
+
