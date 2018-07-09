@@ -1238,4 +1238,4 @@ class PaperRaceEnv:
                     print(i)
                 print(tmp)
             else:
-                self.log_list.append(tmp)
+                self.log_list.add(tmp)
