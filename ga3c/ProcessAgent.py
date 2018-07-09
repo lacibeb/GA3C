@@ -162,6 +162,7 @@ class ProcessAgent(Process):
                 self.training_q.put((x_, r_, a_))
             self.episode_log_q.put((datetime.now(), total_reward, total_length))
 
+    @staticmethod
     def convert_action_angle_to_discrate(action):
         discrate_action = int(round((action + 1) / (2 / Config.CONTINUOUS_INPUT_PARTITIONS)))
 
@@ -182,6 +183,7 @@ class ProcessAgent(Process):
         print(str(action) + " " + str(discrate_action) + " " + str(prediction))
         return discrate_action, prediction
 
+    @staticmethod
     def convert_action_discrate_to_angle(action):
         action = (2 / Config.CONTINUOUS_INPUT_PARTITIONS) * action - 1
         return action
