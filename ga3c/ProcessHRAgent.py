@@ -46,7 +46,7 @@ class ProcessHRAgent(ProcessAgent):
         self.env.reset()
 
         # human reference
-        ProcessAgent.env.steps_with_reference()
+        ProcessAgent.steps_with_reference()
 
         done = False
         experiences = []

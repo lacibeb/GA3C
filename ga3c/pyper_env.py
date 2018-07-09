@@ -333,9 +333,9 @@ class PaperRaceEnv:
             # print
             # ha atszakit egy szakaszhatart, es ez az utolso is, tehat pont celbaert es ugy esett le a palyarol:
             if self.finish:
-                self.log("\033[91m {}\033[00m" .format("\nCELBAERT KI"), "game")
+                self.log("\033[91m {}\033[00m" .format("\n   CELBAERT KI"), "game")
             else:
-                self.log("\033[91m {}\033[00m".format("\nLEMENT"), "game")
+                self.log("\033[91m {}\033[00m".format("\n   LEMENT"), "game")
 
         # Ha nem ment ki a palyarol:
         else:
@@ -343,13 +343,13 @@ class PaperRaceEnv:
             if (start):
                 # szamoljunk megtett palyar a kezdo poziciohoz
                 self.curr_dist_in, self.curr_pos_in, self.curr_dist_out, self.curr_pos_out = self.get_pos_ref_on_side(self.starting_pos)
-                self.log("\nVISSZAKEZD", "game")
+                self.log("\n   VISSZAKEZD", "game")
                 self.end = True
 
             # ha atszakit egy szakaszhatart, es ez az utolso is, tehat pont celbaert:
             elif self.finish:
                 self.curr_dist_in, self.curr_pos_in, self.curr_dist_out, self.curr_pos_out = self.get_pos_ref_on_side(finish_pos)
-                self.log("\033[92m {}\033[00m".format("\nCELBAERT BE"), "game")
+                self.log("\033[92m {}\033[00m".format("\n   CELBAERT BE"), "game")
                 self.end = True
             # ha barmi miatt az autó megáll, sebessege az alábbinál kisebb, akkor vége
             elif sqrt(self.v[0] ** 2 + self.v[1] ** 2) < 1:
@@ -370,14 +370,14 @@ class PaperRaceEnv:
 
         # ha nagyon lassan vagy hatrafele halad szinten legyen vege (egy jo lepes 4-6% ot halad egyenesben
         if self.step_pos_reward < 0.001:
-            self.log("\033[92m {}\033[00m".format("\nVege: tul lassu, vagy hatrafele ment!"), "game")
+            self.log("\033[92m {}\033[00m".format("\n    Vege: tul lassu, vagy hatrafele ment!"), "game")
             self.end = True
 
         # -------- ! ------ modify self.end before this
 
         if self.end:
             self.log('End of game!', "game")
-            self.log('Reward: ' + '% 3.3f' % self.game_reward, "game")
+            self.log('\n    Reward: ' + '% 3.3f' % self.game_reward, "game")
             self.log(' Time: ' + '% 3.3f' % self.game_time, "game")
             self.log(' ref_time: ' + '% 3.3f' % self.game_ref_reward, "game", now = True)
 
@@ -564,12 +564,12 @@ class PaperRaceEnv:
 
         # jatek inditasa
     def start_game(self, player='last'):
-        self.log('\nNew game started!\n', "game")
+        self.log('\n    New game started!', "game")
         # change player if necessary
         if (player != self.player.name and player != 'last'):
             self.player = self.getplayer(player)
-        self.log('\n  --' + self.player.name + ': ')
-        self.log('\n    ')
+        self.log('\n      --' + self.player.name + ': ', "game")
+        self.log('\n        ', "game")
         # kezdeti sebeesseg, ahogy a kornyezet adja
         self.v = np.array(self.starting_spd)
 
