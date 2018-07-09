@@ -150,7 +150,7 @@ class PaperRaceEnv:
         # refference is made now switched to game car
         self.set_car(car_name)
 
-        self.log_list = {}
+        self.log_list = []
 
 
     def reset(self, drawing = False):
@@ -1238,4 +1238,4 @@ class PaperRaceEnv:
                     print(i)
                 print(tmp)
             else:
-                self.log_list.add(tmp)
+                self.log_list.append(tmp)
