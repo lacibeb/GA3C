@@ -486,6 +486,8 @@ class PaperRaceEnv:
         if draw: # kirajzolja az autót
             self.draw_step(draw_text, draw_info_X, draw_info_Y)
 
+        self.log(' r' + str(self.step_ref_time_diff) + ' ' , "game")
+
         return self.v, self.pos, self.step_reward, self.step_pos_reward
 
     def getstate(self):
