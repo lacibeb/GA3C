@@ -563,7 +563,7 @@ class PaperRaceEnv:
 
         # jatek inditasa
     def start_game(self, player='last'):
-        self.log('New game started!')
+        self.log('New game started!', "game")
         # change player if necessary
         if (player != self.player.name and player != 'last'):
             self.player = self.getplayer(player)
@@ -1226,7 +1226,7 @@ class PaperRaceEnv:
 
         return actions, actions_size
 
-    def log(self, s, logging, now = False):
+    def log(self, s, logging = "debug", now = False):
         tmp = ""
         if logging == "game" and logging_game is True:
             tmp = s
@@ -1237,6 +1237,6 @@ class PaperRaceEnv:
             if now:
                 for i in self.log_list:
                     print(i)
-                print(tmp)
+                print(tmp end = "")
             else:
                 self.log_list.append(tmp)
