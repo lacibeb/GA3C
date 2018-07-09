@@ -40,6 +40,9 @@ class PaperRaceEnv:
                  load_env_ref_buffer='', \
                  load_all_env_ref_buffer_dir='',):
 
+        # for logging
+        self.log_list = []
+
         self.car_name = car_name
         self.track_name = track_name
 
@@ -149,8 +152,6 @@ class PaperRaceEnv:
 
         # refference is made now switched to game car
         self.set_car(car_name)
-
-        self.log_list = []
 
 
     def reset(self, drawing = False):
