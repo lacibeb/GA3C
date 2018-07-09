@@ -123,7 +123,7 @@ class ProcessAgent(Process):
                 action = self.select_action(prediction)
                 # converting discrate action to continuous
                 # converting -1 .. 1 to fixed angles
-                action = (2 / Config.CONTINUOUS_INPUT_PARTITIONS) * action - 1
+                action = self.convert_action_discrate_to_angle(action)
 
             reward, done = self.env.step(action)
             # contonuous
@@ -161,3 +161,28 @@ class ProcessAgent(Process):
                 total_length += len(r_) + 1  # +1 for last frame that we drop
                 self.training_q.put((x_, r_, a_))
             self.episode_log_q.put((datetime.now(), total_reward, total_length))
+
+    def convert_action_angle_to_discrate(action):
+        discrate_action = int(round((action + 1) / (2 / Config.CONTINUOUS_INPUT_PARTITIONS)))
+
+        # convert action continous angle to prediction
+        # two nearest action probability will be bigger, others will be 0
+        # from the two nearest, probabilities are linear
+        prediction = []
+        for i in range(Config.CONTINUOUS_INPUT_PARTITIONS - 1):
+            error = i - (action + 1) / (2 / Config.CONTINUOUS_INPUT_PARTITIONS)
+            if abs(error) > 1.0:
+                prediction[i] = 0
+            else:
+                if error > 0.0:
+                    prediction[i] = 1.0 - error
+                else:
+                    prediction[i + 1] = error
+
+        print(str(action) + " " + str(discrate_action) + " " + str(prediction))
+        return discrate_action, prediction
+
+    def convert_action_discrate_to_angle(action):
+        action = (2 / Config.CONTINUOUS_INPUT_PARTITIONS) * action - 1
+        return action
+

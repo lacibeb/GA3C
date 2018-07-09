@@ -61,15 +61,21 @@ class ProcessHRAgent(ProcessAgent):
                 self.env.step(0)  # 0 == NOOP
                 continue
 
-            prediction, value = self.predict(self.env.current_state)
+            # prediction, value = self.predict(self.env.current_state)
             # arcade
             # action = self.select_action(prediction)
             # contonuous
 
             # human reference action
-            action, player = self.env.get_ref_step(time_count, Config.TIME_MAX, actions, actions_size)
-            # action in -180 .. 180
-            action = action + np.random.uniform(5.4, -5.4)
+            action, player = self.env.get_ref_step(time_count, Config.TIME_MAX)
+            # action in -1 .. 1
+            # add randomness to it
+            action = action + np.random.uniform(0.03, -0.03)
+
+            if Config.CONTINUOUS_INPUT:
+                pass
+            else:
+                action, prediction = self.convert_action_angle_to_discrate(action)
 
             reward, done = self.env.step(action)
             reward_sum += reward
