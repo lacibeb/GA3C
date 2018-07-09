@@ -1234,10 +1234,10 @@ class PaperRaceEnv:
         elif logging == "debug" and logging_debug is True:
             tmp = s
 
-        if tmp != "":
-            if now:
-                for i in self.log_list:
-                    print(i + " ", end = "")
+        if now:
+            for i in self.log_list:
+                print(i + " ", end = "")
+            if tmp != "":
                 print(tmp)
-            else:
-                self.log_list.append(tmp)
+        else:
+            self.log_list.append(tmp)

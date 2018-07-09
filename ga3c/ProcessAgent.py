@@ -180,7 +180,7 @@ class ProcessAgent(Process):
                 else:
                     prediction[i + 1] = error
 
-        print(str(action) + " " + str(discrate_action) + " " + str(prediction))
+        # print(str(action) + " " + str(discrate_action) + " " + str(prediction))
         return discrate_action, prediction
 
     @staticmethod
