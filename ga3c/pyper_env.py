@@ -1237,6 +1237,6 @@ class PaperRaceEnv:
             if now:
                 for i in self.log_list:
                     print(i)
-                print(tmp end = "")
+                print(tmp, end = "")
             else:
                 self.log_list.append(tmp)
