@@ -80,13 +80,13 @@ class ProcessAgent(Process):
         if Config.CONTINUOUS_INPUT:
             # continuous action
             a_ = np.array([exp.action for exp in experiences])
+            a_ = np.reshape(a_, newshape=[len(a_), 1])
         else:
             #discreate action
             print("num actions: " + str(self.num_actions))
             for exp in experiences:
                 print(exp.action, sep='\n')
             a_ = np.eye(self.num_actions)[np.array([exp.action for exp in experiences])].astype(np.float32)
-        a_ = np.reshape(a_, newshape=[len(a_), 1])
         r_ = np.array([exp.reward for exp in experiences])
         return x_, r_, a_
 
