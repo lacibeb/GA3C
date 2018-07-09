@@ -169,7 +169,7 @@ class ProcessAgent(Process):
         # convert action continous angle to prediction
         # two nearest action probability will be bigger, others will be 0
         # from the two nearest, probabilities are linear
-        prediction = []
+        prediction = [None]*Config.CONTINUOUS_INPUT_PARTITIONS
         for i in range(Config.CONTINUOUS_INPUT_PARTITIONS - 1):
             error = i - (action + 1) / (2 / Config.CONTINUOUS_INPUT_PARTITIONS)
             if abs(error) > 1.0:
