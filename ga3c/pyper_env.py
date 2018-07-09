@@ -568,7 +568,7 @@ class PaperRaceEnv:
         if (player != self.player.name and player != 'last'):
             self.player = self.getplayer(player)
         self.log('  --' + self.player.name + ': ')
-        self.log('    ', end='')
+        self.log('    ')
         # kezdeti sebeesseg, ahogy a kornyezet adja
         self.v = np.array(self.starting_spd)
 
@@ -1236,7 +1236,7 @@ class PaperRaceEnv:
         if tmp != "":
             if now:
                 for i in self.log_list:
-                    print(i)
-                print(tmp, end = "")
+                    print(i, end = "")
+                print(tmp)
             else:
                 self.log_list.append(tmp)
