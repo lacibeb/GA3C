@@ -27,6 +27,9 @@ import time
 import tracks
 import cars
 
+logging_game = True
+logging_debug = False
+
 class PaperRaceEnv:
     """ez az osztály biztosítja a tanuláshoz a környezetet"""
 
@@ -146,6 +149,8 @@ class PaperRaceEnv:
 
         # refference is made now switched to game car
         self.set_car(car_name)
+
+        self.log_list = {}
 
 
     def reset(self, drawing = False):
@@ -327,9 +332,9 @@ class PaperRaceEnv:
             # print
             # ha atszakit egy szakaszhatart, es ez az utolso is, tehat pont celbaert es ugy esett le a palyarol:
             if self.finish:
-                print("\033[91m {}\033[00m" .format("\nCELBAERT KI"))
+                self.log("\033[91m {}\033[00m" .format("\nCELBAERT KI"), "game")
             else:
-                print("\033[91m {}\033[00m".format("\nLEMENT"))
+                self.log("\033[91m {}\033[00m".format("\nLEMENT"), "game")
 
         # Ha nem ment ki a palyarol:
         else:
@@ -337,13 +342,13 @@ class PaperRaceEnv:
             if (start):
                 # szamoljunk megtett palyar a kezdo poziciohoz
                 self.curr_dist_in, self.curr_pos_in, self.curr_dist_out, self.curr_pos_out = self.get_pos_ref_on_side(self.starting_pos)
-                print("\nVISSZAKEZD")
+                self.log("\nVISSZAKEZD", "game")
                 self.end = True
 
             # ha atszakit egy szakaszhatart, es ez az utolso is, tehat pont celbaert:
             elif self.finish:
                 self.curr_dist_in, self.curr_pos_in, self.curr_dist_out, self.curr_pos_out = self.get_pos_ref_on_side(finish_pos)
-                print("\033[92m {}\033[00m".format("\nCELBAERT BE"))
+                self.log("\033[92m {}\033[00m".format("\nCELBAERT BE"), "game")
                 self.end = True
             # ha barmi miatt az autó megáll, sebessege az alábbinál kisebb, akkor vége
             elif sqrt(self.v[0] ** 2 + self.v[1] ** 2) < 1:
@@ -364,15 +369,15 @@ class PaperRaceEnv:
 
         # ha nagyon lassan vagy hatrafele halad szinten legyen vege (egy jo lepes 4-6% ot halad egyenesben
         if self.step_pos_reward < 0.001:
-            print("\033[92m {}\033[00m".format("\nVege: tul lassu, vagy hatrafele ment!"))
+            self.log("\033[92m {}\033[00m".format("\nVege: tul lassu, vagy hatrafele ment!"), "game")
             self.end = True
 
         # -------- ! ------ modify self.end before this
 
         if self.end:
-            print('End of game!')
-            print('Reward: ' + '% 3.3f' % self.game_reward + ' Time: ' + '% 3.3f' % self.game_time + \
-                  ' ref_time: ' + '% 3.3f' % self.game_ref_reward)
+            self.log('End of game!', "game")
+            self.log('Reward: ' + '% 3.3f' % self.game_reward + ' Time: ' + '% 3.3f' % self.game_time + \
+                  ' ref_time: ' + '% 3.3f' % self.game_ref_reward, "game", now = True)
 
         self.calc_step_reward()
 
@@ -459,10 +464,10 @@ class PaperRaceEnv:
         if player != self.player.name:
             self.player = self.getplayer(player)
 
-            print('\n  --' + self.player.name + ': ')
-            print('    ' + str(action), end='')
+            self.log('\n  --' + self.player.name + ': ', "game")
+            self.log('    ' + str(action), "game")
         else:
-            print(str(action) + ', ', end='')
+            self.log(str(action) + ', ', "game")
         # print("\033[93m {}\033[00m".format("        -------ref action:"), a)
 
         #action = spd_chn
@@ -557,12 +562,12 @@ class PaperRaceEnv:
 
         # jatek inditasa
     def start_game(self, player='last'):
-        print('New game started!')
+        self.log('New game started!')
         # change player if necessary
         if (player != self.player.name and player != 'last'):
             self.player = self.getplayer(player)
-        print('  --' + self.player.name + ': ')
-        print('    ', end='')
+        self.log('  --' + self.player.name + ': ')
+        self.log('    ', end='')
         # kezdeti sebeesseg, ahogy a kornyezet adja
         self.v = np.array(self.starting_spd)
 
@@ -850,7 +855,7 @@ class PaperRaceEnv:
         if self.ref_buffer_unsaved >= 1000:
             self.ref_buffer_unsave = 0
             self.ref_buffer_save()
-        print('dists: ' + str(starttime -time.time()))
+        self.log('dists: ' + str(starttime -time.time()), "debug")
         return curr_dist_in, pos_in, curr_dist_out, pos_out
 
     def ref_buffer_save(self):
@@ -871,7 +876,7 @@ class PaperRaceEnv:
                 for tmp_file_name in os.listdir(load_all_dir):
                     self.ref_buffer_fill(load_all_dir + '/' + tmp_file_name)
         except:
-            print('wrong file name or directory')
+            self.log('wrong file name or directory', "debug")
 
     def ref_buffer_fill(self, file_name):
         try:
@@ -977,7 +982,7 @@ class PaperRaceEnv:
             dist_x = int(tmp_dist * v_x / v_abs)
             dist_y = int(tmp_dist * v_y / v_abs)
         except:
-            print('track side calculation error')
+            self.log('track side calculation error', "debug")
             dist_x = 0
             dist_y = 0
 
@@ -1007,8 +1012,8 @@ class PaperRaceEnv:
             ref_dist[i] = curr_dist_in
             ref_steps[i] = self.game_time
 
-        print(ref_dist)
-        print(ref_steps)
+        self.log(ref_dist, "debug")
+        self.log(ref_steps, "debug")
 
         return ref_dist, ref_steps
 
@@ -1219,3 +1224,18 @@ class PaperRaceEnv:
             actions.append(curr_ref_actions[i])
 
         return actions, actions_size
+
+    def log(self, s, logging, now = False):
+        tmp = ""
+        if logging == "game" and logging_game is True:
+            tmp = s
+        elif logging == "debug" and logging_debug is True:
+            tmp = s
+
+        if tmp != "":
+            if now:
+                for i in self.log_list:
+                    print(i)
+                print(tmp)
+            else:
+                self.log_list.append(tmp)
