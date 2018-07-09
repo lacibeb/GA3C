@@ -67,17 +67,18 @@ class ProcessHRAgent(ProcessAgent):
             # contonuous
 
             # human reference action
-            action, player = ProcessAgent.env.get_ref_step(time_count, Config.TIME_MAX)
+            env_action, player = ProcessAgent.env.get_ref_step(time_count, Config.TIME_MAX)
             # action in -1 .. 1
             # add randomness to it
-            action = action + np.random.uniform(0.03, -0.03)
+            env_action = action + np.random.uniform(0.03, -0.03)
+
+            reward, done = self.env.step(env_action)
 
             if Config.CONTINUOUS_INPUT:
                 pass
             else:
-                action, prediction = self.convert_action_angle_to_discrate(action)
+                action, prediction = self.convert_action_angle_to_discrate(env_action)
 
-            reward, done = self.env.step(action)
             reward_sum += reward
             exp = Experience(self.env.previous_state, action, prediction, reward, done)
             experiences.append(exp)

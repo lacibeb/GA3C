@@ -126,9 +126,9 @@ class ProcessAgent(Process):
                 action = self.select_action(prediction)
                 # converting discrate action to continuous
                 # converting -1 .. 1 to fixed angles
-                action = self.convert_action_discrate_to_angle(action)
+                env_action = self.convert_action_discrate_to_angle(action)
 
-            reward, done = self.env.step(action)
+            reward, done = self.env.step(env_action)
             # contonuous
 
             reward_sum += reward
