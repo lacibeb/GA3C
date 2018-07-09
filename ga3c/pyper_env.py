@@ -335,7 +335,7 @@ class PaperRaceEnv:
             if self.finish:
                 self.log("\033[91m {}\033[00m" .format("\n   CELBAERT KI"), "game")
             else:
-                self.log("\033[91m {}\033[00m".format("\n   LEMENT"), "game")
+                self.log("\033[91m {}\033[00m".format("\n    LEMENT"), "game")
 
         # Ha nem ment ki a palyarol:
         else:
@@ -564,7 +564,7 @@ class PaperRaceEnv:
 
         # jatek inditasa
     def start_game(self, player='last'):
-        self.log('\n    New game started!', "game")
+        self.log('\nNew game started!', "game")
         # change player if necessary
         if (player != self.player.name and player != 'last'):
             self.player = self.getplayer(player)
