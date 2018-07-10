@@ -100,6 +100,7 @@ class ProcessAgent(Process):
         if Config.PLAY_MODE:
             action = np.argmax(prediction)
         else:
+            print( "self.actions " + str(prediction) + " " + str(np.sum(prediction)))
             action = np.random.choice(self.actions, p=prediction)
         return action
 
