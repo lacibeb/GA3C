@@ -103,7 +103,7 @@ class ProcessHRAgent(ProcessAgent):
         # add randomness to it
         env_action = env_action + np.random.uniform(0.03, -0.03)
         env_action = self.env.check_bounds(env_action, 1.0, -1.0, True)
-
+        print("env_a: " + str(env_action)
         prediction = self.convert_action_angle_to_discrate(env_action)
 
         value = None
