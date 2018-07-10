@@ -180,7 +180,7 @@ class ProcessAgent(Process):
                 prediction[i] = 0
             else:
                 if error < 0.0:
-                    prediction[i] = 1.0 - error
+                    prediction[i] = 1.0 + error
                     prediction[i + 1] = error
 
 
