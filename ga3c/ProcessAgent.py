@@ -118,9 +118,10 @@ class ProcessAgent(Process):
                 continue
 
             prediction, value = self.predict(self.env.current_state)
-            # arcade
+
             if Config.CONTINUOUS_INPUT:
                 action = prediction[0]
+                env_action = action
             else:
                 action = self.select_action(prediction)
                 # converting discrate action to continuous
@@ -128,10 +129,8 @@ class ProcessAgent(Process):
                 env_action = self.convert_action_discrate_to_angle(action)
 
             reward, done = self.env.step(env_action)
-            # contonuous
 
             reward_sum += reward
-            print("Aaction: " + str(action) + ' ' + str(len(prediction)))
             exp = Experience(self.env.previous_state, action, prediction, reward, done)
             experiences.append(exp)
 
@@ -167,8 +166,6 @@ class ProcessAgent(Process):
 
     @staticmethod
     def convert_action_angle_to_discrate(action):
-        discrate_action = int(round((action + 1) / (2 / Config.CONTINUOUS_INPUT_PARTITIONS)))
-
         # convert action continous angle to prediction
         # two nearest action probability will be bigger, others will be 0
         # from the two nearest, probabilities are linear
@@ -182,7 +179,7 @@ class ProcessAgent(Process):
                     prediction[i] = 1.0 + error
                     prediction[i + 1] = -1.0*error
         # print(str(action) + " " + str(discrate_action) + " " + str(prediction))
-        return discrate_action, prediction
+        return prediction
 
     @staticmethod
     def convert_action_discrate_to_angle(action):

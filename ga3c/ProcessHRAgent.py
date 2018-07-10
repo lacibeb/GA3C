@@ -62,28 +62,20 @@ class ProcessHRAgent(ProcessAgent):
                 continue
 
             # prediction, value = self.predict(self.env.current_state)
-            # arcade
-            # action = self.select_action(prediction)
-            # contonuous
+            prediction, value = self.hr_predict(time_count)
 
-            # human reference action
-            env_action, player = self.env.get_ref_step(time_count, Config.TIME_MAX)
-            # action in -1 .. 1
-            # add randomness to it
-            env_action = env_action + np.random.uniform(0.03, -0.03)
+            if Config.CONTINUOUS_INPUT:
+                action = prediction[0]
+                env_action = action
+            else:
+                action = self.select_action(prediction)
+                # converting discrate action to continuous
+                # converting -1 .. 1 to fixed angles
+                env_action = self.convert_action_discrate_to_angle(action)
 
             reward, done = self.env.step(env_action)
 
-            if Config.CONTINUOUS_INPUT:
-                pass
-            else:
-                # print("convert: " + str(env_action))
-                env_action = self.env.check_bounds(env_action, 1.0, -1.0, True)
-                # print("convert: " + str(env_action))
-                action, prediction = self.convert_action_angle_to_discrate(env_action)
-
             reward_sum += reward
-            print("action: " + str(action) + ' ' + str(len(prediction)))
             exp = Experience(self.env.previous_state, action, prediction, reward, done)
             experiences.append(exp)
 
@@ -102,3 +94,18 @@ class ProcessHRAgent(ProcessAgent):
                 reward_sum = 0.0
 
             time_count += 1
+
+    def hr_predict(self, time_count):
+
+        # human reference action
+        env_action, player = self.env.get_ref_step(time_count, Config.TIME_MAX)
+        # action in -1 .. 1
+        # add randomness to it
+        env_action = env_action + np.random.uniform(0.03, -0.03)
+        env_action = self.env.check_bounds(env_action, 1.0, -1.0, True)
+
+        prediction = self.convert_action_angle_to_discrate(env_action)
+
+        value = None
+        return prediction, value
+
