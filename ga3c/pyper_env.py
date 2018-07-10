@@ -6,7 +6,7 @@ use_matplotlib = True
 
 if OnHPC:
     # https://stackoverflow.com/questions/9622163/save-plot-to-image-file-instead-of-displaying-it-using-matplotlib
-    #cannot use interactive backend
+    # cannot use interactive backend
     import matplotlib as mpl
     mpl.use('Agg')
 
@@ -934,8 +934,6 @@ class PaperRaceEnv:
 
         visszater a rew_dt, ami azt adja, hogy a referencia lepessorhoz kepest ez mennyivel tobb ido"""
 
-        pre_dist_in, pre_pos_in, pre_dist_out, pre_pos_out = self.get_pos_ref_on_side(pos_old)
-
         # amennyi ido (lepes) alatt a ref_actionok, a pre_dist-ből a curr_dist-be eljutottak--------------------------
         # look-up szerűen lesz. Először a bemenetek:
         x = self.ref_dist
@@ -958,7 +956,7 @@ class PaperRaceEnv:
 
         # amenyivel az aktualis ebben a lepesben jobb, azaz kevesebb ido alatt tette meg ezt a elmozdulat, mint a ref
         # lepessor, az:
-        # ha mint a referencia akkor pozitiv,
+        # ha jobb mint a referencia akkor pozitiv,
         rew_dt = ref_step_time - act_rew
         #print("az aktualis, ebben a lepesben megtett tavot ennyivel kevesebb ido alatt tette meg mint a ref. (ha (-) akkor meg több):", rew_dt)
         # a kieses helyetol a ref lepessorral, hatra levo ido:
