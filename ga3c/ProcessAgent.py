@@ -174,14 +174,14 @@ class ProcessAgent(Process):
         # two nearest action probability will be bigger, others will be 0
         # from the two nearest, probabilities are linear
         prediction = [None]*Config.CONTINUOUS_INPUT_PARTITIONS
-        for i in range(Config.CONTINUOUS_INPUT_PARTITIONS - 1):
+        for i in range(Config.CONTINUOUS_INPUT_PARTITIONS):
             error = i - (action + 1) / (2 / Config.CONTINUOUS_INPUT_PARTITIONS)
             if abs(error) > 1.0:
                 prediction[i] = 0
             else:
                 if error < 0.0:
                     prediction[i] = 1.0 + error
-                    prediction[i + 1] = error
+                    prediction[i + 1] = -1.0*error
 
 
         # print(str(action) + " " + str(discrate_action) + " " + str(prediction))
