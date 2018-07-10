@@ -296,6 +296,13 @@ class PaperRaceEnv:
         if use_matplotlib:
                 plt.text(X, Y, text)
 
+    def update_side_pos(self, pos):
+        self.prev_dist_in = self.curr_dist_in
+        self.prev_dist_out = self.curr_dist_out
+        self.prev_pos_in = self.curr_pos_in
+        self.prev_pos_out = self.curr_pos_out
+        self.curr_dist_in, self.curr_pos_in, self.curr_dist_out, self.curr_pos_out = self.get_pos_ref_on_side(pos)
+
     def update_state(self):
 
         # meghivjuk a sectionpass fuggvenyt, hogy megkapjuk szakitottunk-e at szakaszt, es ha igen melyiket,
@@ -326,9 +333,7 @@ class PaperRaceEnv:
         # Ha lemegy a palyarol:
         if not step_on_track:
             last_pos = self.calc_last_point(self.pos_last, self.pos)
-            self.curr_dist_in, self.curr_pos_in, self.curr_dist_out, self.curr_pos_out = self.get_pos_ref_on_side(
-                last_pos)
-
+            self.update_side_pos(last_pos)
             self.end = True
             # print
             # ha atszakit egy szakaszhatart, es ez az utolso is, tehat pont celbaert es ugy esett le a palyarol:
@@ -342,13 +347,13 @@ class PaperRaceEnv:
             # ha a 0. szakaszt, azaz startvonalat szakit at (nem visszafordult hanem eleve visszafele indul):
             if (start):
                 # szamoljunk megtett palyar a kezdo poziciohoz
-                self.curr_dist_in, self.curr_pos_in, self.curr_dist_out, self.curr_pos_out = self.get_pos_ref_on_side(self.starting_pos)
+                self.update_side_pos(self.starting_pos)
                 self.log("\n   VISSZAKEZD", "game")
                 self.end = True
 
             # ha atszakit egy szakaszhatart, es ez az utolso is, tehat pont celbaert:
             elif self.finish:
-                self.curr_dist_in, self.curr_pos_in, self.curr_dist_out, self.curr_pos_out = self.get_pos_ref_on_side(finish_pos)
+                self.update_side_pos(finish_pos)
                 self.log("\033[92m {}\033[00m".format("\n   CELBAERT BE"), "game")
                 self.end = True
             # ha barmi miatt az autó megáll, sebessege az alábbinál kisebb, akkor vége
@@ -357,8 +362,7 @@ class PaperRaceEnv:
                 self.end = True
             else:
                 # igy mar lehet megtett palyat szelet nezni
-                self.curr_dist_in, self.curr_pos_in, self.curr_dist_out, self.curr_pos_out = self.get_pos_ref_on_side(
-                    self.pos)
+                self.update_side_pos(self.pos)
                 self.end = False
 
         # updatating rewards
@@ -937,7 +941,7 @@ class PaperRaceEnv:
         x = self.ref_dist
         y = self.ref_steps
 
-        xvals = np.array([pre_dist_in, self.curr_dist_in])
+        xvals = np.array([self.prev_dist_in, self.curr_dist_in])
         # print("elozo es aktualis tav:", xvals)
 
         # ezekre a tavolsagokra a referencia lepessor ennyi ido alaptt jutott el
@@ -1000,8 +1004,8 @@ class PaperRaceEnv:
 
         steps_nr = range(0, len(ref_actions))
 
-        ref_steps = np.zeros(len(ref_actions))
-        ref_dist = np.zeros(len(ref_actions))
+        ref_steps = np.zeros(len(ref_actions) + 1)
+        ref_dist = np.zeros(len(ref_actions) + 1)
 
 
         self.draw_clear()
@@ -1012,8 +1016,8 @@ class PaperRaceEnv:
             action = self.ref_actions[i]
             v_new, pos_new, step_reward, reward = self.step(action, draw=True, draw_text='')
             curr_dist_in, pos_in, curr_dist_out, pos_out = self.get_pos_ref_on_side(pos_new)
-            ref_dist[i] = curr_dist_in
-            ref_steps[i] = self.game_time
+            ref_dist[i + 1] = curr_dist_in
+            ref_steps[i + 1] = self.game_time
 
         self.log(ref_dist, "debug")
         self.log(ref_steps, "debug")
