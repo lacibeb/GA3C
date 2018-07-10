@@ -45,7 +45,7 @@ class Environment:
         else:
             size = posbound - negbound
             if value < negbound:
-                value = ((negbound - value) % size) + posbound
+                value = posbound - ((negbound - value) % size)
             if value > posbound:
                 value = ((value - posbound) % size) + negbound
         return value

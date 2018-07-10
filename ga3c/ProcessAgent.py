@@ -83,8 +83,8 @@ class ProcessAgent(Process):
             a_ = np.reshape(a_, newshape=[len(a_), 1])
         else:
             #discreate action
-            for exp in experiences:
-                print ("e " + str(exp.action))
+            # for exp in experiences:
+                #  print ("e " + str(exp.action))
             a_ = np.eye(self.num_actions)[np.array([exp.action for exp in experiences])].astype(np.float32)
         r_ = np.array([exp.reward for exp in experiences])
         return x_, r_, a_
@@ -100,7 +100,7 @@ class ProcessAgent(Process):
         if Config.PLAY_MODE:
             action = np.argmax(prediction)
         else:
-            print( "self.actions " + str(prediction) + " " + str(np.sum(prediction)))
+            # print( "self.actions " + str(prediction) + " " + str(np.sum(prediction)))
             action = np.random.choice(self.actions, p=prediction)
         return action
 
