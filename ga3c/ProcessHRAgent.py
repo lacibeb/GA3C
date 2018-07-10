@@ -83,7 +83,7 @@ class ProcessHRAgent(ProcessAgent):
                 action, prediction = self.convert_action_angle_to_discrate(env_action)
 
             reward_sum += reward
-            print("action: " + str(action) + ' ' + str(len(action)))
+            print("action: " + str(action) + ' ' + str(len(prediction)))
             exp = Experience(self.env.previous_state, action, prediction, reward, done)
             experiences.append(exp)
 
