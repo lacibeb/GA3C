@@ -77,6 +77,7 @@ class ProcessHRAgent(ProcessAgent):
             if Config.CONTINUOUS_INPUT:
                 pass
             else:
+                env_action = self.env.check_bounds(env_action, 1.0, -1.0, True)
                 action, prediction = self.convert_action_angle_to_discrate(env_action)
 
             reward_sum += reward

@@ -164,17 +164,13 @@ class ProcessAgent(Process):
 
     @staticmethod
     def convert_action_angle_to_discrate(action):
-        # if out of bounds then check angle
-        if action < -1.0: action += 2
-        if action > 1.0: action -= 2
-
         discrate_action = int(round((action + 1) / (2 / Config.CONTINUOUS_INPUT_PARTITIONS)))
 
         # convert action continous angle to prediction
         # two nearest action probability will be bigger, others will be 0
         # from the two nearest, probabilities are linear
         prediction = [None]*Config.CONTINUOUS_INPUT_PARTITIONS
-        for i in range(Config.CONTINUOUS_INPUT_PARTITIONS - 1):
+        for i in range(Config.CONTINUOUS_INPUT_PARTITIONS):
             error = i - (action + 1) / (2 / Config.CONTINUOUS_INPUT_PARTITIONS)
             if abs(error) > 1.0:
                 prediction[i] = 0

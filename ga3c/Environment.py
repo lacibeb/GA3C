@@ -34,12 +34,29 @@ class Environment:
         pos, v = self.game.start_game()
         self.current_state = [v[0], v[1], pos[0], pos[1]]
 
+    @staticmethod
+    def check_bounds(value, posbound, negbound = 0, turnaround = True):
+        # if out of bounds then check angle
+        if turnaround is False:
+            if value < negbound:
+                value = negbound
+            if value > posbound:
+                value = posbound
+        else:
+            size = posbound - negbound
+            if value < negbound:
+                value = ((negbound - value) % size) + posbound
+            if value > posbound:
+                value = ((value - posbound) % size) + negbound
+        return value
+
     def step(self, action):
         # action randomisation
         action = action + np.random.uniform(0.03, -0.03)
 
+        self.check_bounds(action, 1.0, -1.0, True)
         # Game requires input -180..180 int
-        action = int(action * 180.0)
+        action = int(round(action * 180.0))
 
         # game step
         v_new, pos_new, step_reward, pos_reward = self.game.step(action, Config.SHOW_WINDOW, draw_text='little_reward',
