@@ -77,9 +77,9 @@ class ProcessHRAgent(ProcessAgent):
             if Config.CONTINUOUS_INPUT:
                 pass
             else:
-                print("convert: " + str(env_action))
+                # print("convert: " + str(env_action))
                 env_action = self.env.check_bounds(env_action, 1.0, -1.0, True)
-                print("convert: " + str(env_action))
+                # print("convert: " + str(env_action))
                 action, prediction = self.convert_action_angle_to_discrate(env_action)
 
             reward_sum += reward
@@ -88,7 +88,7 @@ class ProcessHRAgent(ProcessAgent):
             experiences.append(exp)
 
             if done or time_count == Config.TIME_MAX:
-                #terminal_reward = 0 if done else value
+                # terminal_reward = 0 if done else value
                 # with pyperrace the final reward is always in last step, it always plays until the end
                 terminal_reward = reward
                 updated_exps = ProcessAgent._accumulate_rewards(experiences, self.discount_factor, terminal_reward)

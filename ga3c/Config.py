@@ -48,7 +48,7 @@ class Config:
     # Number of Agents
     AGENTS = 2
     # Number of human reference Agents from Agents AGENTS=humref+regular
-    HUMAN_REF_AGENTS = 2
+    HUMAN_REF_AGENTS = 1
     # Number of Predictors
     PREDICTORS = 2
     # Number of Trainers
