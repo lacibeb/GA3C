@@ -77,7 +77,8 @@ class Environment:
         if Config.reward_based_on_ref:
             reward = last_t_diff*0.01
             if end:
-                self.total_reward = game_ref_reward
+                self.total_reward = game_ref_reward*0.01
+                reward += game_ref_reward*0.01
         # position based reward
         else:
             if end:
