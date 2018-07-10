@@ -129,7 +129,7 @@ class ProcessAgent(Process):
             # contonuous
 
             reward_sum += reward
-            print("Aaction: " + str(action) + ' ' + str(prediction))
+            print("Aaction: " + str(action) + ' ' + str(len(action)))
             exp = Experience(self.env.previous_state, action, prediction, reward, done)
             experiences.append(exp)
 
