@@ -167,7 +167,7 @@ class ProcessAgent(Process):
         # if out of bounds then check angle
         if action < -1.0: action += 2
         if action > 1.0: action -= 2
-        
+
         discrate_action = int(round((action + 1) / (2 / Config.CONTINUOUS_INPUT_PARTITIONS)))
 
         # convert action continous angle to prediction
@@ -182,7 +182,6 @@ class ProcessAgent(Process):
                 if error < 0.0:
                     prediction[i] = 1.0 - error
                     prediction[i + 1] = error
-                else:
 
 
         # print(str(action) + " " + str(discrate_action) + " " + str(prediction))
