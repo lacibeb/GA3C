@@ -408,7 +408,7 @@ class PaperRaceEnv:
         # ref time based part
         self.last_step_ref_time_diff = self.step_ref_time_diff
         self.step_ref_time_diff, remaining_ref_time = self.get_time_diff(self.pos_last, self.pos, self.step_time)
-        self.log("ref: " + str(self.step_ref_time_diff) + " " + str(remaining_ref_time), "debug", now = True)
+        # self.log("ref: " + str(self.step_ref_time_diff) + " " + str(remaining_ref_time), "debug", now = True)
         self.calc_game_ref_time_reward(remaining_ref_time)
 
     def calc_step(self, gg_action):
