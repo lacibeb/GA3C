@@ -66,7 +66,7 @@ class Config:
     # Algorithm parameters
 
     # Discount factor
-    DISCOUNT = 0.9
+    DISCOUNT = 0.97
     
     # Tmax
     TIME_MAX = 100
@@ -93,7 +93,7 @@ class Config:
     BETA_END = 0.01
 
     # Learning rate
-    LEARNING_RATE_START = 0.0003
+    LEARNING_RATE_START = 0.003
     LEARNING_RATE_END = 0.000003
 
     # RMSProp parameters
@@ -110,7 +110,7 @@ class Config:
     # Epsilon (regularize policy lag in GA3C)
     LOG_EPSILON = 1e-6
     # Training min batch size - increasing the batch size increases the stability of the algorithm, but make learning slower
-    TRAINING_MIN_BATCH_SIZE = 256
+    TRAINING_MIN_BATCH_SIZE = 128
     
     #########################################################################
     # Log and save
