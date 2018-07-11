@@ -76,9 +76,11 @@ class NetworkVP:
 
         self.p_d1 = self.dense_layer(self.x, 2048, 'dense11_p')
         self.p_d2 = self.dense_layer(self.p_d1, 4048, 'dense12_p')
+        self.p_d3 = self.dense_layer(self.p_d2, 4048, 'dense12_p')
+        self.p_d4 = self.dense_layer(self.p_d3, 4048, 'dense12_p')
         self.action_index = tf.placeholder(tf.float32, [None, self.num_actions])
 
-        self.d1 = self.dense_layer(self.p_d2, 512, 'dense1')
+        self.d1 = self.dense_layer(self.p_d4, 512, 'dense1')
 
         self.logits_v = tf.squeeze(self.dense_layer(self.d1, 1, 'logits_v', func=None), axis=[1])
         self.cost_v = 0.5 * tf.reduce_sum(tf.square(self.y_r - self.logits_v), axis=0)

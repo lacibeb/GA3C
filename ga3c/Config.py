@@ -86,7 +86,7 @@ class Config:
 
     # Total number of episodes and annealing frequency
     EPISODES = 500000
-    ANNEALING_EPISODE_COUNT = 50000
+    ANNEALING_EPISODE_COUNT = 100000
 
     # Entropy regualrization hyper-parameter
     BETA_START = 0.01
@@ -102,7 +102,7 @@ class Config:
     RMSPROP_EPSILON = 0.1
 
     # Dual RMSProp - we found that using a single RMSProp for the two cost function works better and faster
-    DUAL_RMSPROP = True
+    DUAL_RMSPROP = False
     
     # Gradient clipping
     USE_GRAD_CLIP = True
