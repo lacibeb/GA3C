@@ -42,60 +42,7 @@ class ProcessHRAgent(ProcessAgent):
         # change player
         self.env.player = 'href'
 
-    def run_episode(self):
-        self.env.reset()
-
-        # human reference
-        self.env.steps_with_reference()
-
-        done = False
-        experiences = []
-
-        time_count = 0
-        reward_sum = 0.0
-
-
-        while not done:
-            # very first few frames
-            if self.env.current_state is None:
-                self.env.step(0)  # 0 == NOOP
-                continue
-
-            # prediction, value = self.predict(self.env.current_state)
-            prediction, value = self.hr_predict(time_count)
-
-            if Config.CONTINUOUS_INPUT:
-                action = prediction[0]
-                env_action = action
-            else:
-                action = self.select_action(prediction)
-                # converting discrate action to continuous
-                # converting -1 .. 1 to fixed angle
-                env_action = self.convert_action_discrate_to_angle(action)
-
-            reward, done = self.env.step(env_action)
-
-            reward_sum += reward
-            exp = Experience(self.env.previous_state, action, prediction, reward, done)
-            experiences.append(exp)
-
-            if done or time_count == Config.TIME_MAX:
-                # terminal_reward = 0 if done else value
-                # with pyperrace the final reward is always in last step, it always plays until the end
-                terminal_reward = reward
-                updated_exps = ProcessAgent._accumulate_rewards(experiences, self.discount_factor, terminal_reward)
-                x_, r_, a_ = self.convert_data(updated_exps)
-                yield x_, r_, a_, reward_sum
-
-                # reset the tmax count
-                time_count = 0
-                # keep the last experience for the next batch
-                experiences = [experiences[-1]]
-                reward_sum = 0.0
-
-            time_count += 1
-
-    def hr_predict(self, time_count):
+    def predict(self, time_count):
 
         # human reference action
         env_action, player = self.env.get_ref_step(time_count, Config.TIME_MAX)

@@ -156,3 +156,4 @@ class Config:
 
     # use ddpg model it works only with continuous input
     USE_DDPG = True
+

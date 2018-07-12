@@ -14,6 +14,7 @@ class Network(NetworkVP):
     def __init__(self, device, model_name, num_actions, state_dim):
         super(Network, self).__init__(device, model_name, num_actions, state_dim)
 
+        print("numaction: " + str(num_actions) + " " + str(state_dim))
         # Initialize target network weights
         self.actor.update_target_network(self.sess)
         print("target actor initialised")
