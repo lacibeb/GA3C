@@ -39,7 +39,7 @@ class Network:
         self.model_name = model_name
         self.num_actions = num_actions
 
-        self.num_states = state_dim
+        self.state_dim = state_dim
 
         self.learning_rate = Config.LEARNING_RATE_START
         self.beta = Config.BETA_START
@@ -66,7 +66,7 @@ class Network:
 
     def _create_graph(self):
         self.x = tf.placeholder(
-            tf.float32, [None, self.num_states], name='X')
+            tf.float32, [None, self.state_dim], name='X')
         self.y_r = tf.placeholder(tf.float32, [None], name='Yr')
 
         self.var_beta = tf.placeholder(tf.float32, name='beta', shape=[])

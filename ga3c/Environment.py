@@ -26,7 +26,7 @@ class Environment:
         return Config.ACTION_DIM
 
     @staticmethod
-    def get_num_states():
+    def get_state_dim():
         return Config.STATE_DIM
 
     def reset(self):

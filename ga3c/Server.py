@@ -55,7 +55,7 @@ class Server:
         self.prediction_q = Queue(maxsize=Config.MAX_QUEUE_SIZE)
 
         self.model = Network(Config.DEVICE, Config.NETWORK_NAME,
-                               self.get_num_action(), Environment.get_num_states())
+                               self.get_num_action(), Environment.get_state_dim())
         if Config.LOAD_CHECKPOINT:
             self.stats.episode_count.value = self.model.load()
 
@@ -154,7 +154,7 @@ class Server:
 
     @staticmethod
     def get_state_size():
-        return Environment.get_num_states()
+        return Environment.get_state_dim()
 
     @staticmethod
     def get_num_action():
