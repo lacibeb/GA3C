@@ -344,7 +344,7 @@ class CriticNetwork(object):
             self.action: actions
         })
 
-    def update_target_network(sess, self):
+    def update_target_network(self, sess):
         sess.run(self.update_target_network_params)
 
     def load(self, sess, path):
