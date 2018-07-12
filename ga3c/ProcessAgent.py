@@ -145,7 +145,19 @@ class ProcessAgent(Process):
                 terminal_reward = reward
                 updated_exps = ProcessAgent._accumulate_rewards(experiences, self.discount_factor, terminal_reward)
                 x_, r_, a_, x2_, done_ = self.convert_data(updated_exps)
-                yield x_, r_, a_, reward_sum, x2_, done_
+                if x_ is None:
+                    print("x_")
+                if x2_ is None:
+                    print("x2_")
+                if r_ is None:
+                    print("r_")
+                if a_ is None:
+                    print("a_")
+                if done_ is None:
+                    print("done_")
+                if reward_sum is None:
+                    print("rewsum_")
+                yield x_, r_, a_, x2_, done_, reward_sum
 
                 # reset the tmax count
                 time_count = 0
@@ -163,7 +175,7 @@ class ProcessAgent(Process):
         while self.exit_flag.value == 0:
             total_reward = 0
             total_length = 0
-            for x_, r_, a_, reward_sum, x2_, done_ in self.run_episode():
+            for x_, r_, a_, x2_, done_, reward_sum in self.run_episode():
                 total_reward += reward_sum
                 total_length += len(r_) + 1  # +1 for last frame that we drop
                 self.training_q.put((x_, r_, a_, x2_, done_))
