@@ -40,7 +40,7 @@ class Network(NetworkVP):
 
         print("critic created")
 
-        self.actor_noise = OrnsteinUhlenbeckActionNoise(mu=np.zeros(self.action_dim))
+        self.actor_noise = OrnsteinUhlenbeckActionNoise(mu=np.zeros(self.num_actions))
 
         print("actor noise created")
 
