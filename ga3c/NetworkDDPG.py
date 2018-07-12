@@ -15,9 +15,9 @@ class Network(NetworkVP):
         super(Network, self).__init__(device, model_name, num_actions, state_dim)
 
         # Initialize target network weights
-        self.actor.update_target_network()
+        self.actor.update_target_network(self.sess)
         print("target actor initialised")
-        self.critic.update_target_network()
+        self.critic.update_target_network(self.sess)
         print("target critic initialised")
 
     def _create_graph(self):
