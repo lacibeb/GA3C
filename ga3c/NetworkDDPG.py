@@ -76,7 +76,8 @@ class Network(NetworkVP):
         return np.amax(predicted_q_value*100)
 
     def predict_p_and_v(self, x):
-        action = self.actor.predict(self.sess, np.reshape(x, (1, self.state_dim)))
+        # feed_dict={self.x: x}
+        action = self.actor.predict(self.sess, x)
         # it seems to be not used, this done to have no dimension error
         value = action
         return action, value
@@ -124,7 +125,7 @@ class ActorNetwork(object):
         self.network_params = tf.trainable_variables()
 
         # Target Network
-        self.target_inputs, self.target_out, self.target_scaled_out = self.create_actor_network(
+        self.target_inputs, self.target_out, self.target_out = self.create_actor_network(
             scope='actor_target')
 
         self.target_network_params = tf.trainable_variables()[
@@ -144,7 +145,7 @@ class ActorNetwork(object):
         # TODOdone:  miért minus az action gradient?
         # http://pemami4911.github.io/blog/2016/08/21/ddpg-rl.html
         self.actor_gradients = tf.gradients(
-            self.scaled_out, self.network_params, -self.action_gradient, name='actor_grads')
+            self.out, self.network_params, -self.action_gradient, name='actor_grads')
 
         # Optimization Op
         self.optimize = tf.train.AdamOptimizer(self.learning_rate). \
@@ -200,7 +201,7 @@ class ActorNetwork(object):
         })
 
     def predict(self, sess, inputs, add_uncertainity = True):
-        prediction = sess.run(self.scaled_out, feed_dict={
+        prediction = sess.run(self.out, feed_dict={
                 self.inputs: inputs})
 
         if add_uncertainity:
@@ -210,7 +211,7 @@ class ActorNetwork(object):
 
 
     def predict_target(self, sess, inputs):
-        return sess.run(self.target_scaled_out, feed_dict={
+        return sess.run(self.target_out, feed_dict={
             self.target_inputs: inputs
         })
 

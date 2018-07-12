@@ -56,3 +56,9 @@ class ProcessHRAgent(ProcessAgent):
         value = None
         return prediction, value
 
+    def run_episode(self):
+        # human reference
+        self.env.steps_with_reference()
+
+        super(ProcessHRAgent, self).run_episode()
+
