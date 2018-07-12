@@ -40,7 +40,7 @@ class Network(NetworkVP):
 
         print("critic created")
 
-        # self.actor_noise = OrnsteinUhlenbeckActionNoise(mu=np.zeros(self.action_dim))
+        self.actor_noise = OrnsteinUhlenbeckActionNoise(mu=np.zeros(self.action_dim))
 
         print("actor noise created")
 
@@ -201,13 +201,14 @@ class ActorNetwork(object):
             self.action_gradient: a_gradient
         })
 
-    def predict(self, sess, inputs, add_uncertainity = False):
+    def predict(self, sess, inputs):
         prediction = sess.run(self.out, feed_dict={
                 self.inputs: inputs})
 
-        if add_uncertainity:
+        if Config.add_uncertainity:
             return prediction + self.uncertanity()
-
+        if Config.add_OUnoise:
+            return prediction + self.actior_noise
         return prediction
 
 

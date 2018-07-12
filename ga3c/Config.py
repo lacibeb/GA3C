@@ -157,3 +157,7 @@ class Config:
     # use ddpg model it works only with continuous input
     USE_DDPG = True
 
+    add_uncertainity = False
+    add_OUnoise = False
+
+    
