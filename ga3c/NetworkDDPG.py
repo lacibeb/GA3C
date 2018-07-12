@@ -12,10 +12,6 @@ from NetworkVP import Network as NetworkVP
 # interface for GA3C
 class Network(NetworkVP):
     def __init__(self, device, model_name, num_actions, state_dim):
-        # in order to ddpg actor and critic use sess
-        # an empty is created to run normally, after it is properly inicialized by NetworkVP
-        self.sess = None
-        
         super(Network, self).__init__(device, model_name, num_actions, state_dim)
 
         # Initialize target network weights
@@ -32,12 +28,12 @@ class Network(NetworkVP):
         self.critic_lr = Config.critic_lr
         self.tau = Config.tau
         self.gamma = Config.gamma
-        self.actor = ActorNetwork(self.sess, self.state_dim, self.num_actions, self.action_bound,
+        self.actor = ActorNetwork(self.state_dim, self.num_actions, self.action_bound,
                                   self.actor_lr, self.tau)
 
         print("actor created")
 
-        self.critic = CriticNetwork(self.sess, self.state_dim, self.num_actions,
+        self.critic = CriticNetwork(self.state_dim, self.num_actions,
                                     self.critic_lr, self.tau, self.gamma,
                                      self.actor.get_num_trainable_vars())
 
@@ -52,7 +48,7 @@ class Network(NetworkVP):
 
     def train_DDPG(self, s_batch, a_batch, r_batch, t_batch, s2_batch):
         # Calculate targets
-        target_q = self.critic.predict_target(s2_batch, self.actor.predict_target(s2_batch))
+        target_q = self.critic.predict_target(self.sess, s2_batch, self.actor.predict_target(s2_batch))
 
         y_i = []
         batch_size = np.size(t_batch)
@@ -64,22 +60,22 @@ class Network(NetworkVP):
                 y_i.append(r_batch[k]*0.01 + self.critic.gamma * target_q[k][0])
 
         # Update the critic given the targets
-        predicted_q_value, _ = self.critic.train(s_batch, a_batch, np.reshape(y_i, (batch_size, 1)))
+        predicted_q_value, _ = self.critic.train(self.sess, s_batch, a_batch, np.reshape(y_i, (batch_size, 1)))
 
         # Update the actor policy using the sampled gradient
-        a_outs = self.actor.predict(s_batch)
+        a_outs = self.actor.predict(self.sess, s_batch)
 
         # gradienseket ezzel kiolvassa a tensorflow graph-ból és visszamásolja
-        grads = self.critic.action_gradients(s_batch, a_outs)
+        grads = self.critic.action_gradients(self.sess, s_batch, a_outs)
         self.actor.train(s_batch, grads[0])
 
         # Update target networks
-        self.actor.update_target_network()
-        self.critic.update_target_network()
+        self.actor.update_target_network(self.sess)
+        self.critic.update_target_network(self.sess)
         return np.amax(predicted_q_value*100)
 
     def predict_p_and_v(self, x):
-        action = self.actor.predict(np.reshape(x, (1, self.state_dim)))
+        action = self.actor.predict(self.sess, np.reshape(x, (1, self.state_dim)))
         # it seems to be not used, this done to have no dimension error
         value = action
         return action, value
@@ -114,14 +110,12 @@ class ActorNetwork(object):
     between -action_bound and action_bound
     """
 
-    def __init__(self, sess, state_dim, action_dim, action_bound, learning_rate, tau):
+    def __init__(self, state_dim, action_dim, action_bound, learning_rate, tau):
         self.state_dim = state_dim
         self.action_dim = action_dim
         self.action_bound = action_bound
         self.learning_rate = learning_rate
         self.tau = tau
-
-        self.sess = sess
 
         # Actor Network
         self.inputs, self.out, self.scaled_out = self.create_actor_network(scope='actor')
@@ -198,14 +192,14 @@ class ActorNetwork(object):
             # scaled_out = np.sign(out)
             return inputs, out, scaled_out
 
-    def train(self, inputs, a_gradient):
-        self.sess.run(self.optimize, feed_dict={
+    def train(self, sess, inputs, a_gradient):
+        sess.run(self.optimize, feed_dict={
             self.inputs: inputs,
             self.action_gradient: a_gradient
         })
 
-    def predict(self, inputs, add_uncertainity = True):
-        prediction =  self.sess.run(self.scaled_out, feed_dict={
+    def predict(self, sess, inputs, add_uncertainity = True):
+        prediction = sess.run(self.scaled_out, feed_dict={
                 self.inputs: inputs})
 
         if add_uncertainity:
@@ -214,13 +208,13 @@ class ActorNetwork(object):
         return prediction
 
 
-    def predict_target(self, inputs):
-        return self.sess.run(self.target_scaled_out, feed_dict={
+    def predict_target(self, sess, inputs):
+        return sess.run(self.target_scaled_out, feed_dict={
             self.target_inputs: inputs
         })
 
-    def update_target_network(self):
-        self.sess.run(self.update_target_network_params)
+    def update_target_network(self, sess):
+        sess.run(self.update_target_network_params)
 
     def get_num_trainable_vars(self):
         return self.num_trainable_vars
@@ -235,17 +229,13 @@ class CriticNetwork(object):
     The action must be obtained from the output of the Actor network.
     """
 
-    def __init__(self, sess, state_dim, action_dim, learning_rate, tau, gamma, num_actor_vars):
+    def __init__(self, state_dim, action_dim, learning_rate, tau, gamma, num_actor_vars):
         self.state_dim = state_dim
         self.action_dim = action_dim
         self.tau = tau
         self.gamma = gamma
 
-        self.sess = sess
-
         # Create the critic network
-
-        # self.sess = tf.Session(graph = self.graph)
 
         self.inputs, self.action, self.out = self.create_critic_network(scope='critic')
 
@@ -325,40 +315,40 @@ class CriticNetwork(object):
             # self.model = model = tflearn.DNN(out)
             return inputs, action, out
 
-    def train(self, inputs, action, predicted_q_value):
+    def train(self, sess, inputs, action, predicted_q_value):
         with tf.variable_scope('critic'):
-            return self.sess.run([self.out, self.optimize], feed_dict={
+            return sess.run([self.out, self.optimize], feed_dict={
                 self.inputs: inputs,
                 self.action: action,
                 self.tf_learning_rate: self.learning_rate,
                 self.predicted_q_value: predicted_q_value
             })
 
-    def predict(self, inputs, action):
+    def predict(self, sess, inputs, action):
         with tf.variable_scope('critic'):
-            return self.sess.run(self.out, feed_dict={
+            return sess.run(self.out, feed_dict={
                 self.inputs: inputs,
                 self.action: action
             })
 
-    def predict_target(self, inputs, action):
+    def predict_target(self, sess, inputs, action):
         with tf.variable_scope('critic'):
-            return self.sess.run(self.target_out, feed_dict={
+            return sess.run(self.target_out, feed_dict={
                 self.target_inputs: inputs,
                 self.target_action: action
             })
 
-    def action_gradients(self, inputs, actions):
-        return self.sess.run(self.action_grads, feed_dict={
+    def action_gradients(self, sess, inputs, actions):
+        return sess.run(self.action_grads, feed_dict={
             self.inputs: inputs,
             self.action: actions
         })
 
-    def update_target_network(self):
-        self.sess.run(self.update_target_network_params)
+    def update_target_network(sess, self):
+        sess.run(self.update_target_network_params)
 
-    def load(self, path):
-        self.saver.load(self.sess, path)
+    def load(self, sess, path):
+        self.saver.load(sess, path)
 
 # Taken from https://github.com/openai/baselines/blob/master/baselines/ddpg/noise.py, which is
 # based on http://math.stackexchange.com/questions/1287634/implementing-ornstein-uhlenbeck-in-matlab
