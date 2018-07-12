@@ -28,12 +28,12 @@ class Network(NetworkVP):
         self.critic_lr = Config.critic_lr
         self.tau = Config.tau
         self.gamma = Config.gamma
-        self.actor = ActorNetwork(self.state_dim, self.num_actions, self.action_bound,
+        self.actor = ActorNetwork(self.sess, self.state_dim, self.num_actions, self.action_bound,
                                   self.actor_lr, self.tau)
 
         print("actor created")
 
-        self.critic = CriticNetwork(self.state_dim, self.num_actions,
+        self.critic = CriticNetwork(self, sess, self.state_dim, self.num_actions,
                                     self.critic_lr, self.tau, self.gamma,
                                      self.actor.get_num_trainable_vars())
 
@@ -110,7 +110,7 @@ class ActorNetwork(object):
     between -action_bound and action_bound
     """
 
-    def __init__(self, state_dim, action_dim, action_bound, learning_rate, tau):
+    def __init__(self, sess, state_dim, action_dim, action_bound, learning_rate, tau):
         self.state_dim = state_dim
         self.action_dim = action_dim
         self.action_bound = action_bound
@@ -231,7 +231,7 @@ class CriticNetwork(object):
     The action must be obtained from the output of the Actor network.
     """
 
-    def __init__(self, state_dim, action_dim, learning_rate, tau, gamma, num_actor_vars):
+    def __init__(self, sess, state_dim, action_dim, learning_rate, tau, gamma, num_actor_vars):
         self.state_dim = state_dim
         self.action_dim = action_dim
         self.tau = tau
