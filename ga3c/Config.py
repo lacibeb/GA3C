@@ -58,7 +58,7 @@ class Config:
     DEVICE = 'gpu:0'
 
     # Enable the dynamic adjustment (+ waiting time to start it)
-    DYNAMIC_SETTINGS = True
+    DYNAMIC_SETTINGS = False
     DYNAMIC_SETTINGS_STEP_WAIT = 20
     DYNAMIC_SETTINGS_INITIAL_WAIT = 10
 
@@ -66,7 +66,7 @@ class Config:
     # Algorithm parameters
 
     # Discount factor
-    DISCOUNT = 0.97
+    DISCOUNT = 0.99
     
     # Tmax
     TIME_MAX = 100
@@ -89,11 +89,11 @@ class Config:
     ANNEALING_EPISODE_COUNT = 100000
 
     # Entropy regualrization hyper-parameter
-    BETA_START = 0.01
-    BETA_END = 0.01
+    BETA_START = 0.001
+    BETA_END = 0.001
 
     # Learning rate
-    LEARNING_RATE_START = 0.003
+    LEARNING_RATE_START = 0.0003
     LEARNING_RATE_END = 0.000003
 
     # RMSProp parameters
@@ -151,5 +151,5 @@ class Config:
     gamma =0.99
 
     # define input
-    CONTINUOUS_INPUT = False
+    CONTINUOUS_INPUT = True
     CONTINUOUS_INPUT_PARTITIONS = 8
