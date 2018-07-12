@@ -289,8 +289,8 @@ class CriticNetwork(object):
 
         if Config.USE_GRAD_CLIP:
             # clipping gradient
-            self.opt_grad_mod = [(tf.clip_by_average_norm(g, Config.GRAD_CLIP_NORM), v) for g, v in
-                                 self.opt_grad]
+            self.opt_grad_mod = [(tf.clip_by_norm(g, Config.GRAD_CLIP_NORM),v) 
+                                            for g,v in self.opt_grad if not g is None]
         else:
             self.opt_grad_mod = self.opt_grad
 
