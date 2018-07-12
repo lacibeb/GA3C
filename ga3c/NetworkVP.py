@@ -33,7 +33,7 @@ from Config import Config
 
 
 
-class NetworkVP:
+class Network:
     def __init__(self, device, model_name, num_actions, state_dim):
         self.device = device
         self.model_name = model_name

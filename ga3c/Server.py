@@ -33,11 +33,11 @@ from Environment import Environment
 
 if Config.CONTINUOUS_INPUT:
     if Config.USE_DDPG:
-        from NetworkDDPG import NetworkVP
+        from NetworkDDPG import Network
     else:
-        from NetworkVP import NetworkVP
+        from NetworkVP import Network
 else:
-    from NetworkVP_discrate import NetworkVP
+    from NetworkVP_discrate import Network
 
 from ProcessAgent import ProcessAgent
 from ProcessHRAgent import ProcessHRAgent
@@ -54,7 +54,7 @@ class Server:
         self.training_q = Queue(maxsize=Config.MAX_QUEUE_SIZE)
         self.prediction_q = Queue(maxsize=Config.MAX_QUEUE_SIZE)
 
-        self.model = NetworkVP(Config.DEVICE, Config.NETWORK_NAME,
+        self.model = Network(Config.DEVICE, Config.NETWORK_NAME,
                                self.get_num_action(), Environment.get_num_states())
         if Config.LOAD_CHECKPOINT:
             self.stats.episode_count.value = self.model.load()

@@ -7,12 +7,12 @@ import numpy as np
 import tflearn
 
 from Config import Config
-from NetworkVP import NetworkVP
+from NetworkVP import Network as NetworkVP
 
 # interface for GA3C
-class NetworkDDPG(NetworkVP):
+class Network(NetworkVP):
     def __init__(self, device, model_name, num_actions, state_dim):
-        super(NetworkDDPG, self).__init__()
+        super(Network, self).__init__(device, model_name, num_actions, state_dim)
 
         # Initialize target network weights
         self.actor.update_target_network()
