@@ -68,7 +68,7 @@ class Network(NetworkVP):
 
         # gradienseket ezzel kiolvassa a tensorflow graph-ból és visszamásolja
         grads = self.critic.action_gradients(self.sess, s_batch, a_outs)
-        self.actor.train(s_batch, grads[0])
+        self.actor.train(self.sess, s_batch, grads[0])
 
         # Update target networks
         self.actor.update_target_network(self.sess)
@@ -201,7 +201,7 @@ class ActorNetwork(object):
             self.action_gradient: a_gradient
         })
 
-    def predict(self, sess, inputs, add_uncertainity = True):
+    def predict(self, sess, inputs, add_uncertainity = False):
         prediction = sess.run(self.out, feed_dict={
                 self.inputs: inputs})
 

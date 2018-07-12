@@ -37,7 +37,7 @@ class Config:
     ACTION_DIM = 1
 
     # Enable to see the trained agent in action
-    SHOW_WINDOW = True
+    SHOW_WINDOW = False
     # Enable to train
     TRAIN_MODELS = True
 
