@@ -87,8 +87,8 @@ class Network(NetworkVP):
 
         # summaries.append(tf.summary.scalar("Pcost", self.cost_p))
         # summaries.append(tf.summary.scalar("Vcost", self.cost_v))
-        summaries.append(tf.summary.scalar("LearningRate", self.var_learning_rate))
-        summaries.append(tf.summary.scalar("Beta", self.var_beta))
+        # summaries.append(tf.summary.scalar("LearningRate", self.var_learning_rate))
+        # summaries.append(tf.summary.scalar("Beta", self.var_beta))
         # for var in tf.trainable_variables():
         #     summaries.append(tf.summary.histogram("weights_%s" % var.name, var))
 
