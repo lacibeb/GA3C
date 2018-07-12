@@ -25,9 +25,10 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 class Experience:
-    def __init__(self, state, action, prediction, reward, done):
+    def __init__(self, state, action, prediction, reward, next_state, done):
         self.state = state
         self.action = action
         self.prediction = prediction
         self.reward = reward
         self.done = done
+        self.next_state = next_state

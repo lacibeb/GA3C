@@ -153,3 +153,6 @@ class Config:
     # define input
     CONTINUOUS_INPUT = True
     CONTINUOUS_INPUT_PARTITIONS = 8
+
+    # use ddpg model it works only with continuous input
+    USE_DDPG = True

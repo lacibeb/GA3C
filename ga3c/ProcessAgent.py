@@ -77,6 +77,8 @@ class ProcessAgent(Process):
 
     def convert_data(self, experiences):
         x_ = np.array([exp.state for exp in experiences])
+        x2_ = np.array([exp.next_state for exp in experiences])
+        done_ = np.array([exp.done for exp in experiences])
         if Config.CONTINUOUS_INPUT:
             # continuous action
             a_ = np.array([exp.action for exp in experiences])
@@ -87,7 +89,7 @@ class ProcessAgent(Process):
                 #  print ("e " + str(exp.action))
             a_ = np.eye(self.num_actions)[np.array([exp.action for exp in experiences])].astype(np.float32)
         r_ = np.array([exp.reward for exp in experiences])
-        return x_, r_, a_
+        return x_, r_, a_, x2_, done_
 
     def predict(self, state):
         # put the state in the prediction q
@@ -132,7 +134,7 @@ class ProcessAgent(Process):
             reward, done = self.env.step(env_action)
 
             reward_sum += reward
-            exp = Experience(self.env.previous_state, action, prediction, reward, done)
+            exp = Experience(self.env.previous_state, action, prediction, reward, self.env.current_state, done)
             experiences.append(exp)
 
             if done or time_count == Config.TIME_MAX:
@@ -140,8 +142,8 @@ class ProcessAgent(Process):
                 # with pyperrace the final reward is always in last step, it always plays until the end
                 terminal_reward = reward
                 updated_exps = ProcessAgent._accumulate_rewards(experiences, self.discount_factor, terminal_reward)
-                x_, r_, a_ = self.convert_data(updated_exps)
-                yield x_, r_, a_, reward_sum
+                x_, r_, a_, x2_, done_ = self.convert_data(updated_exps)
+                yield x_, r_, a_, reward_sum, x2_, done_
 
                 # reset the tmax count
                 time_count = 0
@@ -159,10 +161,10 @@ class ProcessAgent(Process):
         while self.exit_flag.value == 0:
             total_reward = 0
             total_length = 0
-            for x_, r_, a_, reward_sum in self.run_episode():
+            for x_, r_, a_, reward_sum, x2_, done_ in self.run_episode():
                 total_reward += reward_sum
                 total_length += len(r_) + 1  # +1 for last frame that we drop
-                self.training_q.put((x_, r_, a_))
+                self.training_q.put((x_, r_, a_, x2_, done_))
             self.episode_log_q.put((datetime.now(), total_reward, total_length))
 
     @staticmethod

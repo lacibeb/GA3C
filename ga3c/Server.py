@@ -32,7 +32,10 @@ from Config import Config
 from Environment import Environment
 
 if Config.CONTINUOUS_INPUT:
-    from NetworkVP import NetworkVP
+    if Config.USE_DDPG:
+        from NetworkDDPG import NetworkVP
+    else:
+        from NetworkVP import NetworkVP
 else:
     from NetworkVP_discrate import NetworkVP
 
@@ -101,8 +104,8 @@ class Server:
         self.trainers[-1].join()
         self.trainers.pop()
 
-    def train_model(self, x_, r_, a_, trainer_id):
-        self.model.train(x_, r_, a_, trainer_id)
+    def train_model(self, x_, r_, a_, x2, done, trainer_id):
+        self.model.train(x_, r_, a_, x2, done, trainer_id)
         self.training_step += 1
         self.frame_counter += x_.shape[0]
 
