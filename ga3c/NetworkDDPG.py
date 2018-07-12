@@ -49,7 +49,7 @@ class Network(NetworkVP):
 
     def train_DDPG(self, s_batch, a_batch, r_batch, t_batch, s2_batch):
         # Calculate targets
-        target_q = self.critic.predict_target(self.sess, s2_batch, self.actor.predict_target(s2_batch))
+        target_q = self.critic.predict_target(self.sess, s2_batch, self.actor.predict_target(self.sess, s2_batch))
 
         y_i = []
         batch_size = np.size(t_batch)
