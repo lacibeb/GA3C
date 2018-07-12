@@ -67,12 +67,14 @@ class ProcessAgent(Process):
     def _accumulate_rewards(experiences, discount_factor, terminal_reward):
         reward_sum = terminal_reward
         for t in reversed(range(0, len(experiences)-1)):
-            r = np.clip(experiences[t].reward, Config.REWARD_MIN, Config.REWARD_MAX)
+            if Config.REWARD_CLIPPING:
+                r = np.clip(experiences[t].reward, Config.REWARD_MIN, Config.REWARD_MAX)
             # without intermediate rewards
-            reward_sum = discount_factor * reward_sum
-            # with intermediate rewards
-            # reward_sum = discount_factor * reward_sum + r
-            experiences[t].reward = reward_sum
+            if Config.DISCOUNTING:
+                reward_sum = discount_factor * reward_sum
+                # with intermediate rewards
+                # reward_sum = discount_factor * reward_sum + r
+                experiences[t].reward = reward_sum
         return experiences[:-1]
 
     def convert_data(self, experiences):

@@ -35,13 +35,14 @@ class Network(NetworkVP):
 
         self.critic = CriticNetwork(self.state_dim, self.num_actions,
                                     self.critic_lr, self.tau, self.gamma,
-                                     self.actor.get_num_trainable_vars())
+                                    self.actor.get_num_trainable_vars())
 
         print("critic created")
 
         self.actor_noise = OrnsteinUhlenbeckActionNoise(mu=np.zeros(self.num_actions))
 
         print("actor noise created")
+
 
     def train(self, x, y_r, a, x2, done, trainer_id):
         self.train_DDPG(x, a, y_r, done, x2)
@@ -55,9 +56,9 @@ class Network(NetworkVP):
         #terminal is a boolen 1d array
         for k in range(batch_size):
             if t_batch[k]:
-                y_i.append(r_batch[k]*0.01)
+                y_i.append(r_batch[k])
             else:
-                y_i.append(r_batch[k]*0.01 + self.critic.gamma * target_q[k][0])
+                y_i.append(r_batch[k] + self.critic.gamma * target_q[k][0])
 
         # Update the critic given the targets
         predicted_q_value, _ = self.critic.train(self.sess, s_batch, a_batch, np.reshape(y_i, (batch_size, 1)))
@@ -265,16 +266,37 @@ class CriticNetwork(object):
 
         # Define loss and optimization Op
         self.loss = tflearn.mean_square(self.predicted_q_value, self.out)
-        self.optimize = tf.train.AdamOptimizer(
-            learning_rate=self.tf_learning_rate).minimize(self.loss)
+        #self.optimize = tf.train.AdamOptimizer(
+        #    learning_rate=self.tf_learning_rate).minimize(self.loss)
 
         # Get the gradient of the net w.r.t. the action.
         # For each action in the minibatch (i.e., for each x in xs),
         # this will sum up the gradients of each critic output in the minibatch
         # w.r.t. that action. Each output is independent of all
         # actions except for one.
-        self.action_grads = tf.gradients(self.out, self.action, name='critic_action_grads')
+        # self.action_grads = tf.gradients(self.out, self.action, name='critic_action_grads')
 
+        # no dual optimization
+        # if Config.DUAL_RMSPROP:
+        self.opt_loss = tf.train.RMSPropOptimizer(
+            learning_rate=self.var_learning_rate,
+            decay=Config.RMSPROP_DECAY,
+            momentum=Config.RMSPROP_MOMENTUM,
+            epsilon=Config.RMSPROP_EPSILON)
+
+        # gradiens for critic
+        self.opt_grad = self.opt_loss.compute_gradients(self.loss)
+
+        if Config.USE_GRAD_CLIP:
+            # clipping gradient
+            self.opt_grad_mod = [(tf.clip_by_average_norm(g, Config.GRAD_CLIP_NORM), v) for g, v in
+                                 self.opt_grad]
+        else:
+            self.opt_grad_mod = self.opt_grad
+
+        self.action_grads = self.opt_grad_mod
+
+        self.train_op = self.opt_loss.apply_gradients(self.opt_grad_mod)
         # initialise variables
         # init = tf.global_variables_initializer()
         # self.sess.run(init)
@@ -315,11 +337,12 @@ class CriticNetwork(object):
             w_init = tflearn.initializations.uniform(minval=-0.003, maxval=0.003)
             out = tflearn.fully_connected(net, 1, weights_init=w_init, name='critic_output')
             # self.model = model = tflearn.DNN(out)
+
             return inputs, action, out
 
     def train(self, sess, inputs, action, predicted_q_value):
         with tf.variable_scope('critic'):
-            return sess.run([self.out, self.optimize], feed_dict={
+            return sess.run([self.out, self.train_op], feed_dict={
                 self.inputs: inputs,
                 self.action: action,
                 self.tf_learning_rate: self.learning_rate,
@@ -351,6 +374,10 @@ class CriticNetwork(object):
 
     def load(self, sess, path):
         self.saver.load(sess, path)
+
+    def get_variables(self):
+        return self.out, self.loss
+
 
 # Taken from https://github.com/openai/baselines/blob/master/baselines/ddpg/noise.py, which is
 # based on http://math.stackexchange.com/questions/1287634/implementing-ornstein-uhlenbeck-in-matlab

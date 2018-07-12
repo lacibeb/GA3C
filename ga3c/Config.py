@@ -66,12 +66,14 @@ class Config:
     # Algorithm parameters
 
     # Discount factor
+    DISCOUNTING = False
     DISCOUNT = 0.99
     
     # Tmax
     TIME_MAX = 100
     
     # Reward Clipping
+    REWARD_CLIPPING = True
     REWARD_MIN = -1
     REWARD_MAX = 1
 
