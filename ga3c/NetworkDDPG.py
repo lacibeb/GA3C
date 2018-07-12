@@ -12,6 +12,10 @@ from NetworkVP import Network as NetworkVP
 # interface for GA3C
 class Network(NetworkVP):
     def __init__(self, device, model_name, num_actions, state_dim):
+        # in order to ddpg actor and critic use sess
+        # an empty is created to run normally, after it is properly inicialized by NetworkVP
+        self.sess = None
+        
         super(Network, self).__init__(device, model_name, num_actions, state_dim)
 
         # Initialize target network weights
@@ -33,7 +37,7 @@ class Network(NetworkVP):
 
         print("actor created")
 
-        self.critic = CriticNetwork(self, sess, self.state_dim, self.num_actions,
+        self.critic = CriticNetwork(self.sess, self.state_dim, self.num_actions,
                                     self.critic_lr, self.tau, self.gamma,
                                      self.actor.get_num_trainable_vars())
 
