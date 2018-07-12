@@ -14,7 +14,6 @@ class Network(NetworkVP):
     def __init__(self, device, model_name, num_actions, state_dim):
         super(Network, self).__init__(device, model_name, num_actions, state_dim)
 
-        print("numaction: " + str(num_actions) + " " + str(state_dim))
         # Initialize target network weights
         self.actor.update_target_network(self.sess)
         print("target actor initialised")
@@ -78,7 +77,6 @@ class Network(NetworkVP):
     def predict_p_and_v(self, x):
         # feed_dict={self.x: x}
         action = self.actor.predict(self.sess, x)
-        print(action)
         # it seems to be not used, this done to have no dimension error
         value = action
         return action, value
