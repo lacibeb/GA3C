@@ -262,7 +262,7 @@ class CriticNetwork(object):
         self.predicted_q_value = tf.placeholder(tf.float32, [None, 1], name='critc_predicted_q')
 
         self.learning_rate = learning_rate
-        self.tf_learning_rate = tf.placeholder(tf.float32, name='learning_rate')
+        self.cr_learning_rate = tf.placeholder(tf.float32, name='cr_learning_rate')
 
         # Define loss and optimization Op
         self.loss = tflearn.mean_square(self.predicted_q_value, self.out)
@@ -279,7 +279,7 @@ class CriticNetwork(object):
         # no dual optimization
         # if Config.DUAL_RMSPROP:
         self.opt_loss = tf.train.RMSPropOptimizer(
-            learning_rate=self.var_learning_rate,
+            learning_rate=self.learning_rate,
             decay=Config.RMSPROP_DECAY,
             momentum=Config.RMSPROP_MOMENTUM,
             epsilon=Config.RMSPROP_EPSILON)
