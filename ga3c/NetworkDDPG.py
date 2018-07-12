@@ -45,7 +45,7 @@ class Network(NetworkVP):
         print("actor noise created")
 
     def train(self, x, y_r, a, x2, done, trainer_id):
-        self.train_DDPG(x, a, y_r, done, x2, trainer_id)
+        self.train_DDPG(x, a, y_r, done, x2)
 
     def train_DDPG(self, s_batch, a_batch, r_batch, t_batch, s2_batch):
         # Calculate targets
@@ -78,6 +78,7 @@ class Network(NetworkVP):
     def predict_p_and_v(self, x):
         # feed_dict={self.x: x}
         action = self.actor.predict(self.sess, x)
+        print(action)
         # it seems to be not used, this done to have no dimension error
         value = action
         return action, value
