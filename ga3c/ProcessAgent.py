@@ -145,15 +145,15 @@ class ProcessAgent(Process):
                 terminal_reward = reward
                 updated_exps = ProcessAgent._accumulate_rewards(experiences, self.discount_factor, terminal_reward)
                 x_, r_, a_, x2_, done_ = self.convert_data(updated_exps)
-                if x_ is:
+                if x_ is None:
                     raise("x_ is None")
-                if r_ is:
+                if r_ is None:
                     raise("r_ is None")
-                if a_ is:
+                if a_ is None:
                     raise("a_ is None")
-                if x2_ is:
+                if x2_ is None:
                     raise("x2_ is None")
-                if done_ is:
+                if done_ is None:
                     raise("done_ is None")
                 yield x_, r_, a_, x2_, done_, reward_sum
 
