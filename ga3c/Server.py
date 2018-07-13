@@ -172,3 +172,10 @@ class Server:
             return Environment.get_num_actions()
         else:
             return Config.CONTINUOUS_INPUT_PARTITIONS
+
+    def replay_buffer_sample_batch(self, batchsize):
+        return self.dynamic_replay_filler.replay_buffer.sample_batch(batchsize)
+
+    def replay_buffer_size(self):
+        return self.dynamic_replay_filler.replay_buffer.size()
+

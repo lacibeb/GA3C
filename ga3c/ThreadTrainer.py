@@ -41,21 +41,13 @@ class ThreadTrainer(Thread):
         self.exit_flag = False
 
     def run(self):
-        print("thread started: " + str(self.id))
+        # print("thread started: " + str(self.id))
         while not self.exit_flag:
             if Config.USE_REPLAY_MEMORY:
-                # move experiences to replay memory
-                #while self.server.training_q.qsize() > Config.MIN_QUEUE_SIZE:
-                print(str(self.server.training_q.qsize()))
-                x_, r_, a_, x2_, done_ = self.server.training_q.get()
-                # replay memory uses experiences individually
-                for i in range(x_.shape[0]):
-                    self.server.replay_buffer.add(x_[i], a_[i], r_[i], done_[i], x2_[i])
-
                 # if enough experience in replay memory than get a random sample
-                if self.server.replay_buffer.size() > Config.TRAINING_MIN_BATCH_SIZE:
+                if self.server.replay_buffer_size() >= Config.TRAINING_MIN_BATCH_SIZE:
                     x__, a__, r__, done__, x2__ = \
-                        self.server.replay_buffer.sample_batch(Config.TRAINING_MIN_BATCH_SIZE)
+                        self.server.replay_buffer_sample_batch(Config.TRAINING_MIN_BATCH_SIZE)
                     if Config.TRAIN_MODELS:
                         self.server.train_model(x__, r__, a__, x2__, done__, self.id)
             else:
