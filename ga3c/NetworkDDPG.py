@@ -59,7 +59,7 @@ class Network(NetworkVP):
             if t_batch[k]:
                 pass
             else:
-                y_i[k][0] = (r_batch[k] + self.critic.gamma * target_q[k][0])
+                y_i[k,0] = (r_batch[k] + self.critic.gamma * target_q[k][0])
 
         # Update the critic given the targets
         print("batch size " + str(batch_size))
