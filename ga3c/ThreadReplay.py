@@ -50,8 +50,9 @@ class ThreadReplay(Thread):
         while not self.exit_flag:
             # if queue is near empty put a batch there
             if self.server.replay_q.qsize() < Config.REPLAY_MIN_QUEUE_SIZE:
-                x__, r__, a__, x2__, done__ = \
-                    self.replay_buffer.sample_batch(Config.TRAINING_MIN_BATCH_SIZE)
+                if self.replay_buffer.size() > Config.TRAINING_MIN_BATCH_SIZE:
+                    x__, r__, a__, x2__, done__ = \
+                        self.replay_buffer.sample_batch(Config.TRAINING_MIN_BATCH_SIZE)
                 self.server.replay_q.put((x__, r__, a__, x2__, done__))
                 print("put to replay")
             x_, r_, a_, x2_, done_ = self.server.training_q.get()
