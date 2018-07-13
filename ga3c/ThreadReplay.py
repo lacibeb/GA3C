@@ -32,7 +32,7 @@ from replay_buffer import ReplayBuffer
 
 class ThreadReplay(Thread):
     def __init__(self, server):
-        super(ThreadTrainer, self).__init__()
+        super(ThreadReplay, self).__init__()
         self.setDaemon(True)
 
         self.server = server
