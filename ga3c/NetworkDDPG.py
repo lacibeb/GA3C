@@ -26,6 +26,9 @@ class Network(NetworkVP):
         # state input
         self.x = tflearn.input_data(shape=[None, self.state_dim], name='critic_input')
 
+        # critic out reference
+        self.y_r = tf.placeholder(tf.float32, [None], name='Yr')
+
         self.action_bound = 1.0
         self.var_learning_rate = tf.placeholder(tf.float32, name='lr', shape=[])
 
@@ -71,7 +74,7 @@ class Network(NetworkVP):
             else:
                 y_i[k] = (r_batch[k] + self.critic.gamma * target_q[k][0])
 
-        y_i = np.reshape(y_i, (batch_size, 1))
+        #y_i = np.reshape(y_i, (batch_size, 1))
 
         # Update the critic given the targets
         predicted_q_value, _ = self.critic.train(self.sess, s_batch, a_batch, y_i)
@@ -247,7 +250,7 @@ class CriticNetwork(object):
     The action must be obtained from the output of the Actor network.
     """
 
-    def __init__(self, state_dim, action_dim, learning_rate, tau, gamma, num_actor_vars, inputs, action):
+    def __init__(self, state_dim, action_dim, learning_rate, tau, gamma, num_actor_vars, inputs, action, y_r):
         self.state_dim = state_dim
         self.action_dim = action_dim
         self.tau = tau
@@ -257,7 +260,7 @@ class CriticNetwork(object):
 
         self.inputs = inputs
         self.action = action
-        self.out = self.create_critic_network(scope='critic')
+        self.out, self.create_critic_network(scope='critic')
 
         self.network_params = tf.trainable_variables()[num_actor_vars:]
 
@@ -278,7 +281,7 @@ class CriticNetwork(object):
                 for i in range(len(self.target_network_params))]
 
         # Network target (y_i)
-        self.predicted_q_value = tf.placeholder(tf.float32, [None, 1], name='critc_predicted_q')
+        self.predicted_q_value = y_r
 
         self.learning_rate = learning_rate
         self.cr_learning_rate = tf.placeholder(tf.float32, name='cr_learning_rate')
