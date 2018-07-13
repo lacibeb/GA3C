@@ -302,7 +302,8 @@ class CriticNetwork(object):
                                                 for g,v in self.opt_grad if not g is None]
             else:
                 self.opt_grad_mod = self.opt_grad
-                self.train_op = self.opt_loss.apply_gradients(self.opt_grad_mod)
+
+            self.train_op = self.opt_loss.apply_gradients(self.opt_grad_mod)
         else:
             self.train_op = tf.train.AdamOptimizer(
             learning_rate=self.cr_learning_rate).minimize(self.loss)
