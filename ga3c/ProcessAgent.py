@@ -157,6 +157,7 @@ class ProcessAgent(Process):
             time_count += 1
 
     def run(self):
+        print("process started: " + str(self.id))
         # randomly sleep up to 1 second. helps agents boot smoothly.
         time.sleep(np.random.rand())
         np.random.seed(np.int32(time.time() % 1 * 1000 + self.id * 10))
