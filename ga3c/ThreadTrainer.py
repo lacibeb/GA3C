@@ -65,6 +65,5 @@ class ThreadTrainer(Thread):
                             done__ = np.concatenate((done__, done_))
                         batch_size += x_.shape[0]
 
-                if Config.TRAIN_MODELS:
-
-            self.server.train_model(x__, r__, a__, x2__, done__, self.id)
+            if Config.TRAIN_MODELS:
+                self.server.train_model(x__, r__, a__, x2__, done__, self.id)
