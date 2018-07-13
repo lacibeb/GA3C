@@ -48,7 +48,7 @@ class Network(NetworkVP):
 
         self.critic = CriticNetwork(self.state_dim, self.num_actions,
                                     self.critic_lr, self.tau, self.gamma,
-                                    self.actor.get_num_trainable_vars(), self.x, self.a)
+                                    self.actor.get_num_trainable_vars(), self.x, self.a, self.y_r)
 
         print("critic created")
 
