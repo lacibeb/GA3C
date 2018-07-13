@@ -40,11 +40,13 @@ class ThreadTrainer(Thread):
         self.exit_flag = False
 
     def run(self):
+        print("thread started: " + str(self.id))
         while not self.exit_flag:
             if Config.USE_REPLAY_MEMORY:
                 # move experiences to replay memory
+                print(str(self.server.training_q.qsize()))
                 while self.server.training_q.qsize() > Config.MIN_QUEUE_SIZE:
-                    print(self.server.training_q.qsize())
+                    print(str(self.server.training_q.qsize()))
                     x_, r_, a_, x2_, done_ = self.server.training_q.get()
                     # replay memory uses experiences individually
                     for i in range(x_.shape[0]):
