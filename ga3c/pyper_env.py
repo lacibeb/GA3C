@@ -470,10 +470,10 @@ class PaperRaceEnv:
         if player != self.player.name:
             self.player = self.getplayer(player)
 
-            self.log('\n  --' + self.player.name + ': ', "game")
-            self.log('    ' + str(action), "game")
+            self.log('\n  --' + self.player.name + ': ', "step")
+            self.log('    ' + str(action), "step")
         else:
-            self.log(str(action) + ', ', "game")
+            self.log(str(action) + ', ', "step")
         # print("\033[93m {}\033[00m".format("        -------ref action:"), a)
 
         #action = spd_chn
@@ -1232,6 +1232,8 @@ class PaperRaceEnv:
     def log(self, s, logging = "debug", now = False):
         tmp = ""
         if logging == "game" and Config.logging_game is True:
+            tmp = s
+        elif logging == "step" and Config.logging_step is True:
             tmp = s
         elif logging == "debug" and Config.logging_debug is True:
             tmp = s
