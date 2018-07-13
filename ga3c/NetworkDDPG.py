@@ -101,6 +101,8 @@ class Network(NetworkVP):
 
     def _create_tensor_board(self):
         summaries = tf.get_collection(tf.GraphKeys.SUMMARIES)
+        summaries = self.critic.create_tensor_board(summaries)
+        summaries = self.actor.create_tensor_board(summaries)
         # summaries.append(tf.summary.scalar("Pcost_advantage", self.cost_p_1_agg))
         # summaries.append(tf.summary.scalar("Pcost_entropy", self.cost_p_2_agg))
 
@@ -244,6 +246,10 @@ class ActorNetwork(object):
     def uncertanity(self):
         return np.random.randint(-3, 3, size=1)
 
+    def create_tensor_board(self, summaries):
+        summaries.append(tf.summary.scalar("actor_grads", self.actor_gradients))
+        return summaries
+
 class CriticNetwork(object):
     """
     Input to the network is the state and action, output is Q(s,a).
@@ -287,7 +293,7 @@ class CriticNetwork(object):
         self.cr_learning_rate = tf.placeholder(tf.float32, name='cr_learning_rate')
 
         # Define loss and optimization Op
-        self.loss = tflearn.mean_square(self.predicted_q_value, self.out)
+        self.loss = tflearn.mean_square(self.predicted_q_value, self.out, name="c_loss")
 
         # Get the gradient of the net w.r.t. the action.
         # For each action in the minibatch (i.e., for each x in xs),
@@ -405,6 +411,10 @@ class CriticNetwork(object):
 
     def get_variables(self):
         return self.out, self.loss
+
+    def create_tensor_board(self, summaries):
+        summaries.append(tf.summary.scalar("c_loss", self.loss))
+        return summaries
 
 
 # Taken from https://github.com/openai/baselines/blob/master/baselines/ddpg/noise.py, which is
