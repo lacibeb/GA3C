@@ -149,7 +149,7 @@ class Config:
     USE_LOG_SOFTMAX = False
 
     # with DDPG
-    actor_lr = 0.0000003
+    actor_lr = 0.00003
     critic_lr = 0.0005
     tau = 0.99999
     gamma = 0.99
