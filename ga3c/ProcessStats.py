@@ -104,5 +104,5 @@ class ProcessStats(Process):
                            rolling_frame_count / (datetime.now() - first_time).total_seconds(),
                            self.FPS(), self.TPS(),
                            self.trainer_count.value, self.predictor_count.value, self.agent_count.value,
-                           self.replay_memory_size))
+                           self.replay_memory_size.value))
                     sys.stdout.flush()
