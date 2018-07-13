@@ -164,7 +164,7 @@ class ActorNetwork(object):
         # TODOdone:  miért minus az action gradient?
         # http://pemami4911.github.io/blog/2016/08/21/ddpg-rl.html
         self.actor_gradients = tf.gradients(
-            self.out, self.network_params, self.action_gradient, name='actor_grads')
+            self.out, self.network_params, -self.action_gradient, name='actor_grads')
 
         # Optimization Op
         self.optimize = tf.train.AdamOptimizer(self.learning_rate). \

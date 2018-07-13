@@ -60,9 +60,9 @@ class Config:
     load_env_ref_buffer = './env_ref_buffer/env_ref_buffer_1'
     load_all_env_ref_buffer_dir = './env_ref_buffer'
 
-    reward_based_on_ref = True
+    reward_based_on_ref = False
 
-    logging_game = True
+    logging_game = False
     logging_debug = False
-    logging_step = True
+    logging_step = False
 
