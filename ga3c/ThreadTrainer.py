@@ -45,8 +45,9 @@ class ThreadTrainer(Thread):
                 # move experiences to replay memory
                 while self.server.training_q.qsize() > Config.MIN_QUEUE_SIZE:
                     x_, r_, a_, x2_, done_ = self.server.training_q.get()
-                    print("shape_x " + str(x_.shape[0]))
-                    self.server.replay_buffer.add(x_, a_, r_, done_, x2_)
+                    # replay memory uses experiences individually
+                    for i in range(x_.shape[0]):
+                        self.server.replay_buffer.add(x_[i], a_[i], r_[i], done_[i], x2_[i])
 
                 # if enough experience in replay memory than get a random sample
                 if self.server.replay_buffer.size() > Config.TRAINING_MIN_BATCH_SIZE:  # and not rand_episode:
