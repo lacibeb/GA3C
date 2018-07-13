@@ -47,7 +47,7 @@ from ThreadPredictor import ThreadPredictor
 from ThreadTrainer import ThreadTrainer
 
 if Config.USE_REPLAY_MEMORY:
-    from replay_buffer import ReplayBuffer
+    from ThreadReplay import ThreadReplay
 
 class Server:
     def __init__(self):
@@ -73,9 +73,7 @@ class Server:
 
         # Initialize replay memory
         if Config.USE_REPLAY_MEMORY:
-            self.replay_buffer = ReplayBuffer(buffer_size = Config.REPLAY_BUFFER_SIZE, \
-                                     random_seed = Config.REPLAY_BUFFER_RANDOM_SEED)
-
+            self.dynamic_replay_filler = ThreadReplay(self)
         print("Server initialized")
 
     def add_agent(self):
@@ -130,6 +128,7 @@ class Server:
     def main(self):
         self.stats.start()
         self.dynamic_adjustment.start()
+        self.dynamic_replay_filler.start()
 
         if Config.PLAY_MODE:
             for trainer in self.trainers:
@@ -161,10 +160,7 @@ class Server:
         while self.trainers:
             self.remove_trainer()
 
-        if Config.USE_REPLAY_MEMORY:
-            # cleaning
-            self.replay_buffer.clear()
-
+        self.dynamic_replay_filler.exit_flag = True
 
     @staticmethod
     def get_state_size():
