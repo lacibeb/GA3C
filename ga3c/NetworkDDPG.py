@@ -247,7 +247,7 @@ class ActorNetwork(object):
         return np.random.randint(-3, 3, size=1)
 
     def create_tensor_board(self, summaries):
-        summaries.append(tf.summary.scalar("actor_grads", self.actor_gradients))
+        #summaries.append(tf.summary.scalar("actor_grads", self.actor_gradients))
         return summaries
 
 class CriticNetwork(object):
