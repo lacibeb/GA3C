@@ -24,6 +24,11 @@ class Network(NetworkVP):
         self.action_bound = 1.0
         self.var_learning_rate = tf.placeholder(tf.float32, name='lr', shape=[])
 
+        self.var_beta = tf.placeholder(tf.float32, name='beta', shape=[])
+        self.var_learning_rate = tf.placeholder(tf.float32, name='lr', shape=[])
+
+        self.global_step = tf.Variable(0, trainable=False, name='step')
+
         self.actor_lr = Config.actor_lr
         self.critic_lr = Config.critic_lr
         self.tau = Config.tau
@@ -299,10 +304,10 @@ class CriticNetwork(object):
             else:
                 self.opt_grad_mod = self.opt_grad
 
-            self.train_op = self.opt_loss.apply_gradients(self.opt_grad_mod)
+            self.train_op = self.opt_loss.apply_gradients(self.opt_grad_mod, global_step=self.global_step)
         else:
             self.train_op = tf.train.AdamOptimizer(
-            learning_rate=self.cr_learning_rate).minimize(self.loss)
+            learning_rate=self.cr_learning_rate).minimize(self.loss, global_step=self.global_step)
 
 
         # initialise variables
