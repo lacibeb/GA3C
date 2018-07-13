@@ -76,6 +76,8 @@ class Server:
             self.replay_buffer = ReplayBuffer(buffer_size = Config.REPLAY_BUFFER_SIZE, \
                                      random_seed = Config.REPLAY_BUFFER_RANDOM_SEED)
 
+        print("Server initialized")
+        
     def add_agent(self):
         self.agents.append(
             ProcessAgent(self.agent_id, self.prediction_q, self.training_q, self.stats.episode_log_q))

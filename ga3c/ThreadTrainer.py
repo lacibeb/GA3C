@@ -51,7 +51,7 @@ class ThreadTrainer(Thread):
                         self.server.replay_buffer.add(x_[i], a_[i], r_[i], done_[i], x2_[i])
 
                 # if enough experience in replay memory than get a random sample
-                if self.server.replay_buffer.size() > Config.TRAINING_MIN_BATCH_SIZE:  # and not rand_episode:
+                if self.server.replay_buffer.size() > Config.TRAINING_MIN_BATCH_SIZE:
                     x__, a__, r__, done__, x2__ = \
                         self.server.replay_buffer.sample_batch(Config.TRAINING_MIN_BATCH_SIZE)
                     if Config.TRAIN_MODELS:
