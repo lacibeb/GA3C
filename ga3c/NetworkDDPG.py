@@ -270,8 +270,8 @@ class CriticNetwork(object):
 
         # Define loss and optimization Op
         self.loss = tflearn.mean_square(self.predicted_q_value, self.out)
-        #self.optimize = tf.train.AdamOptimizer(
-        #    learning_rate=self.tf_learning_rate).minimize(self.loss)
+        self.optimize = tf.train.AdamOptimizer(
+            learning_rate=self.tf_learning_rate).minimize(self.loss)
 
         # Get the gradient of the net w.r.t. the action.
         # For each action in the minibatch (i.e., for each x in xs),
@@ -346,7 +346,7 @@ class CriticNetwork(object):
 
     def train(self, sess, inputs, action, predicted_q_value):
         with tf.variable_scope('critic'):
-            return sess.run([self.out, self.train_op], feed_dict={
+            return sess.run([self.out, self.optimizer], feed_dict={
                 self.inputs: inputs,
                 self.action: action,
                 self.cr_learning_rate: self.learning_rate,
