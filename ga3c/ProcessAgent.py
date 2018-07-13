@@ -97,7 +97,7 @@ class ProcessAgent(Process):
         # put the state in the prediction q
         self.prediction_q.put((self.id, state))
         # wait for the prediction to come back
-        p, v = self.wait_q.get()
+        p, v = self.wait_q.get(timeout=10)
         return p, v
 
     def select_action(self, prediction):
@@ -167,7 +167,8 @@ class ProcessAgent(Process):
             for x_, r_, a_, x2_, done_, reward_sum in self.run_episode():
                 total_reward += reward_sum
                 total_length += len(r_) + 1  # +1 for last frame that we drop
-                self.training_q.put((x_, r_, a_, x2_, done_))
+                self.training_q.put((x_, r_, a_, x2_, done_), timeout = 10)
+                print("qsize: " + str(self.training_q.qsize()))
             self.episode_log_q.put((datetime.now(), total_reward, total_length))
 
     @staticmethod
