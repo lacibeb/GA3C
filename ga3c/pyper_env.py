@@ -473,7 +473,7 @@ class PaperRaceEnv:
             self.log('\n  --' + self.player.name + ': ', "step")
             self.log('    ' + str(action), "step")
         else:
-            self.log(str(action) + ', ', "step")
+            self.log(str(action) + ', ', "step", now=True)
         # print("\033[93m {}\033[00m".format("        -------ref action:"), a)
 
         #action = spd_chn
