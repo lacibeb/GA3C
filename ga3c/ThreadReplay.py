@@ -31,11 +31,10 @@ from Config import Config
 from replay_buffer import ReplayBuffer
 
 class ThreadReplay(Thread):
-    def __init__(self, server, id):
+    def __init__(self, server):
         super(ThreadTrainer, self).__init__()
         self.setDaemon(True)
 
-        self.id = id
         self.server = server
         self.exit_flag = False
 

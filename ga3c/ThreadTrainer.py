@@ -31,10 +31,12 @@ from Config import Config
 
 
 class ThreadTrainer(Thread):
-    def __init__(self, server):
+    def __init__(self, server, id):
         super(ThreadTrainer, self).__init__()
         self.setDaemon(True)
 
+
+        self.id = id
         self.server = server
         self.exit_flag = False
 
