@@ -293,7 +293,7 @@ class CriticNetwork(object):
         self.cr_learning_rate = tf.placeholder(tf.float32, name='cr_learning_rate')
 
         # Define loss and optimization Op
-        self.loss = tflearn.mean_square(self.predicted_q_value, self.out, name="c_loss")
+        self.loss = tflearn.mean_square(self.predicted_q_value, self.out)
 
         # Get the gradient of the net w.r.t. the action.
         # For each action in the minibatch (i.e., for each x in xs),
