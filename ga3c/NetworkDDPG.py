@@ -270,7 +270,7 @@ class CriticNetwork(object):
 
         # Define loss and optimization Op
         self.loss = tflearn.mean_square(self.predicted_q_value, self.out)
-        self.optimize = tf.train.AdamOptimizer(
+        self.optimizer = tf.train.AdamOptimizer(
             learning_rate=self.cr_learning_rate).minimize(self.loss)
 
         # Get the gradient of the net w.r.t. the action.
