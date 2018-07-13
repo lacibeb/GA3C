@@ -51,6 +51,6 @@ class ThreadReplay(Thread):
             # replay memory uses experiences individually
             for i in range(x_.shape[0]):
                 self.replay_buffer.add(x_[i], a_[i], r_[i], done_[i], x2_[i])
-
+            self.update_stats()
         # cleaning
         self.replay_buffer.clear()
