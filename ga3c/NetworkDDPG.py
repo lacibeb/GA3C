@@ -61,6 +61,7 @@ class Network(NetworkVP):
             else:
                 y_i[k] = (r_batch[k] + self.critic.gamma * target_q[k][0])
 
+        y_i = np.reshape(y_i, (batch_size, 1))
         # Update the critic given the targets
         print("batch size " + str(batch_size))
         print("sbatch " + str(s_batch))
