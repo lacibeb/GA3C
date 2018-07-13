@@ -274,8 +274,6 @@ class CriticNetwork(object):
 
         # Define loss and optimization Op
         self.loss = tflearn.mean_square(self.predicted_q_value, self.out)
-        self.optimizer = tf.train.AdamOptimizer(
-            learning_rate=self.cr_learning_rate).minimize(self.loss)
 
         # Get the gradient of the net w.r.t. the action.
         # For each action in the minibatch (i.e., for each x in xs),
@@ -283,29 +281,33 @@ class CriticNetwork(object):
         # w.r.t. that action. Each output is independent of all
         # actions except for one.
         # self.action_grads = tf.gradients(self.out, self.action, name='critic_action_grads')
-
-        # no dual optimization
-        # if Config.DUAL_RMSPROP:
-        self.opt_loss = tf.train.RMSPropOptimizer(
-            learning_rate=self.learning_rate,
-            decay=Config.RMSPROP_DECAY,
-            momentum=Config.RMSPROP_MOMENTUM,
-            epsilon=Config.RMSPROP_EPSILON)
-
-        # gradiens for critic
-        self.opt_grad = self.opt_loss.compute_gradients(self.loss)
-
-        if Config.USE_GRAD_CLIP:
-            # clipping gradient
-            self.opt_grad_mod = [(tf.clip_by_norm(g, Config.GRAD_CLIP_NORM),v)
-                                            for g,v in self.opt_grad if not g is None]
-        else:
-            self.opt_grad_mod = self.opt_grad
-
         # self.action_grads = self.opt_grad_mod
-        self.action_grads = tf.gradients(self.out, self.action)
-        
-        self.train_op = self.opt_loss.apply_gradients(self.opt_grad_mod)
+        self.action_grads = tf.gradients(self.out, self.action, name='critic_action_grads')
+
+        if Config.RMSPROP:
+            # no dual optimization
+            # if Config.DUAL_RMSPROP:
+            self.opt_loss = tf.train.RMSPropOptimizer(
+                learning_rate=self.learning_rate,
+                decay=Config.RMSPROP_DECAY,
+                momentum=Config.RMSPROP_MOMENTUM,
+                epsilon=Config.RMSPROP_EPSILON)
+
+            # gradiens for critic
+            self.opt_grad = self.opt_loss.compute_gradients(self.loss)
+
+            if Config.USE_GRAD_CLIP:
+                # clipping gradient
+                self.opt_grad_mod = [(tf.clip_by_norm(g, Config.GRAD_CLIP_NORM),v)
+                                                for g,v in self.opt_grad if not g is None]
+            else:
+                self.opt_grad_mod = self.opt_grad
+                self.train_op = self.opt_loss.apply_gradients(self.opt_grad_mod)
+        else:
+            self.train_op = tf.train.AdamOptimizer(
+            learning_rate=self.cr_learning_rate).minimize(self.loss)
+
+
         # initialise variables
         # init = tf.global_variables_initializer()
         # self.sess.run(init)
@@ -351,7 +353,7 @@ class CriticNetwork(object):
 
     def train(self, sess, inputs, action, predicted_q_value):
         with tf.variable_scope('critic'):
-            return sess.run([self.out, self.optimizer], feed_dict={
+            return sess.run([self.out, self.train_op], feed_dict={
                 self.inputs: inputs,
                 self.action: action,
                 self.cr_learning_rate: self.learning_rate,
