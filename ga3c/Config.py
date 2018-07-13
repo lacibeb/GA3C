@@ -164,3 +164,7 @@ class Config:
     add_uncertainity = False
     add_OUnoise = False
 
+    USE_REPLAY_MEMORY = True
+    REPLAY_BUFFER_SIZE = 1000000
+    REPLAY_BUFFER_RANDOM_SEED = 12345
+    MIN_QUEUE_SIZE = 150

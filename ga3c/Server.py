@@ -46,6 +46,8 @@ from ThreadDynamicAdjustment import ThreadDynamicAdjustment
 from ThreadPredictor import ThreadPredictor
 from ThreadTrainer import ThreadTrainer
 
+if Config.USE_REPLAY_MEMORY:
+    from replay_buffer import ReplayBuffer
 
 class Server:
     def __init__(self):
@@ -68,6 +70,11 @@ class Server:
         self.predictors = []
         self.trainers = []
         self.dynamic_adjustment = ThreadDynamicAdjustment(self)
+
+        # Initialize replay memory
+        if Config.USE_REPLAY_MEMORY:
+            self.replay_buffer = ReplayBuffer(buffer_size = Config.REPLAY_BUFFER_SIZE, \
+                                     random_seed = Config.REPLAY_BUFFER_RANDOM_SEED)
 
     def add_agent(self):
         self.agents.append(
@@ -151,6 +158,11 @@ class Server:
             self.remove_predictor()
         while self.trainers:
             self.remove_trainer()
+
+        if Config.USE_REPLAY_MEMORY:
+            # cleaning
+            self.replay_buffer.clear()
+
 
     @staticmethod
     def get_state_size():
