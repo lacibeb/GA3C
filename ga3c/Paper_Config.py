@@ -62,7 +62,7 @@ class Config:
 
     reward_based_on_ref = True
 
-    logging_game = False
+    logging_game = True
     logging_debug = False
     logging_step = False
 
