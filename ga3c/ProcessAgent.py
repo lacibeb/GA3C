@@ -145,7 +145,16 @@ class ProcessAgent(Process):
                 terminal_reward = reward
                 updated_exps = ProcessAgent._accumulate_rewards(experiences, self.discount_factor, terminal_reward)
                 x_, r_, a_, x2_, done_ = self.convert_data(updated_exps)
-
+                if x_ is:
+                    raise("x_ is None")
+                if r_ is:
+                    raise("r_ is None")
+                if a_ is:
+                    raise("a_ is None")
+                if x2_ is:
+                    raise("x2_ is None")
+                if done_ is:
+                    raise("done_ is None")
                 yield x_, r_, a_, x2_, done_, reward_sum
 
                 # reset the tmax count
