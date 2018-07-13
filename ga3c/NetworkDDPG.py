@@ -22,7 +22,7 @@ class Network(NetworkVP):
 
     def _create_graph(self):
         # action input for critic output for actor
-        self.a = tflearn.input_data(shape=[None, self.num_actions], name='critic_action_input')
+        self.action_index = tflearn.input_data(shape=[None, self.num_actions], name='critic_action_input')
         # state input
         self.x = tflearn.input_data(shape=[None, self.state_dim], name='critic_input')
 
@@ -48,7 +48,7 @@ class Network(NetworkVP):
 
         self.critic = CriticNetwork(self.state_dim, self.num_actions,
                                     self.critic_lr, self.tau, self.gamma,
-                                    self.actor.get_num_trainable_vars(), self.x, self.a, self.y_r)
+                                    self.actor.get_num_trainable_vars(), self.x, self.action_index, self.y_r)
 
         print("critic created")
 
