@@ -473,7 +473,7 @@ class PaperRaceEnv:
             self.log('\n  --' + self.player.name + ': ', "step")
             self.log('    ' + str(action), "step")
         else:
-            self.log(str(action) + ', ', "step", now=True)
+            self.log(str(action) + ', ', "step")
         # print("\033[93m {}\033[00m".format("        -------ref action:"), a)
 
         #action = spd_chn
@@ -568,6 +568,7 @@ class PaperRaceEnv:
 
         # jatek inditasa
     def start_game(self, player='last'):
+        self.log('', "step", now=True)
         self.log('\nNew game started!', "game")
         # change player if necessary
         if (player != self.player.name and player != 'last'):
