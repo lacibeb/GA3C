@@ -155,6 +155,8 @@ class ProcessAgent(Process):
                     raise("x2_ is None")
                 if done_ is None:
                     raise("done_ is None")
+                if done_ is None:
+                    raise("reward sum_ is None")
                 yield x_, r_, a_, x2_, done_, reward_sum
 
                 # reset the tmax count
