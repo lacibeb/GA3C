@@ -45,25 +45,28 @@ class ThreadTrainer(Thread):
                 # move experiences to replay memory
                 while self.server.training_q.qsize() > Config.MIN_QUEUE_SIZE:
                     x_, r_, a_, x2_, done_ = self.server.training_q.get()
+                    print("shape_x " + str(x_.shape[0]))
                     self.server.replay_buffer.add(x_, a_, r_, done_, x2_)
 
                 # if enough experience in replay memory than get a random sample
                 if self.server.replay_buffer.size() > Config.TRAINING_MIN_BATCH_SIZE:  # and not rand_episode:
                     x__, a__, r__, done__, x2__ = \
                         self.server.replay_buffer.sample_batch(Config.TRAINING_MIN_BATCH_SIZE)
+                    if Config.TRAIN_MODELS:
+                        self.server.train_model(x__, r__, a__, x2__, done__, self.id)
             else:
                 batch_size = 0
                 while batch_size <= Config.TRAINING_MIN_BATCH_SIZE:
-                        x_, r_, a_, x2_, done_ = self.server.training_q.get()
-                        if batch_size == 0:
-                            x__ = x_; r__ = r_; a__ = a_; x2__ = x2_; done__ = done_
-                        else:
-                            x__ = np.concatenate((x__, x_))
-                            r__ = np.concatenate((r__, r_))
-                            a__ = np.concatenate((a__, a_))
-                            x2__ = np.concatenate((x2__, x2_))
-                            done__ = np.concatenate((done__, done_))
-                        batch_size += x_.shape[0]
+                    x_, r_, a_, x2_, done_ = self.server.training_q.get()
+                    if batch_size == 0:
+                        x__ = x_; r__ = r_; a__ = a_; x2__ = x2_; done__ = done_
+                    else:
+                        x__ = np.concatenate((x__, x_))
+                        r__ = np.concatenate((r__, r_))
+                        a__ = np.concatenate((a__, a_))
+                        x2__ = np.concatenate((x2__, x2_))
+                        done__ = np.concatenate((done__, done_))
+                    batch_size += x_.shape[0]
 
-            if Config.TRAIN_MODELS:
-                self.server.train_model(x__, r__, a__, x2__, done__, self.id)
+                if Config.TRAIN_MODELS:
+                    self.server.train_model(x__, r__, a__, x2__, done__, self.id)
