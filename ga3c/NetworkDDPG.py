@@ -304,10 +304,10 @@ class CriticNetwork(object):
             else:
                 self.opt_grad_mod = self.opt_grad
 
-            self.train_op = self.opt_loss.apply_gradients(self.opt_grad_mod, global_step=self.global_step)
+            self.train_op = self.opt_loss.apply_gradients(self.opt_grad_mod)
         else:
             self.train_op = tf.train.AdamOptimizer(
-            learning_rate=self.cr_learning_rate).minimize(self.loss, global_step=self.global_step)
+            learning_rate=self.cr_learning_rate).minimize(self.loss)
 
 
         # initialise variables
