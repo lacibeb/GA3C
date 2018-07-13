@@ -27,8 +27,7 @@ import time
 import tracks
 import cars
 
-logging_game = True
-logging_debug = False
+from Paper_Config import Config
 
 class PaperRaceEnv:
     """ez az osztály biztosítja a tanuláshoz a környezetet"""
@@ -1232,9 +1231,9 @@ class PaperRaceEnv:
 
     def log(self, s, logging = "debug", now = False):
         tmp = ""
-        if logging == "game" and logging_game is True:
+        if logging == "game" and Config.logging_game is True:
             tmp = s
-        elif logging == "debug" and logging_debug is True:
+        elif logging == "debug" and Config.logging_debug is True:
             tmp = s
 
         if now:

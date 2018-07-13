@@ -21,6 +21,11 @@ class Network(NetworkVP):
         print("target critic initialised")
 
     def _create_graph(self):
+        # action input for critic output for actor
+        self.a = tflearn.input_data(shape=[None, self.action_dim], name='critic_action_input')
+        # state input
+        self.x = tflearn.input_data(shape=[None, self.state_dim], name='critic_input')
+
         self.action_bound = 1.0
         self.var_learning_rate = tf.placeholder(tf.float32, name='lr', shape=[])
 
@@ -34,13 +39,13 @@ class Network(NetworkVP):
         self.tau = Config.tau
         self.gamma = Config.gamma
         self.actor = ActorNetwork(self.state_dim, self.num_actions, self.action_bound,
-                                  self.actor_lr, self.tau)
+                                  self.actor_lr, self.tau, self.x)
 
         print("actor created")
 
         self.critic = CriticNetwork(self.state_dim, self.num_actions,
                                     self.critic_lr, self.tau, self.gamma,
-                                    self.actor.get_num_trainable_vars())
+                                    self.actor.get_num_trainable_vars(), self.x, self.a)
 
         print("critic created")
 
@@ -121,7 +126,7 @@ class ActorNetwork(object):
     between -action_bound and action_bound
     """
 
-    def __init__(self, state_dim, action_dim, action_bound, learning_rate, tau):
+    def __init__(self, state_dim, action_dim, action_bound, learning_rate, tau, inputs):
         self.state_dim = state_dim
         self.action_dim = action_dim
         self.action_bound = action_bound
@@ -129,7 +134,8 @@ class ActorNetwork(object):
         self.tau = tau
 
         # Actor Network
-        self.inputs, self.out, self.scaled_out = self.create_actor_network(scope='actor')
+        self.inputs = inputs
+        self.out, self.scaled_out = self.create_actor_network(scope='actor')
 
         self.network_params = tf.trainable_variables()
 
@@ -172,8 +178,7 @@ class ActorNetwork(object):
 
     def create_actor_network(self, scope='actor'):
         with tf.name_scope(scope):
-            inputs = tflearn.input_data(shape=[None, self.state_dim], name='actor_input')
-            net1 = tflearn.fully_connected(inputs, 400, name='actor_fc1')
+            net1 = tflearn.fully_connected(self.inputs, 400, name='actor_fc1')
             net2 = tflearn.layers.normalization.batch_normalization(net1, name='actor_norm1')
             net3 = tflearn.activations.relu(net2)
             net4 = tflearn.fully_connected(net3, 100, name='actor_fc2')
@@ -201,7 +206,7 @@ class ActorNetwork(object):
 
             scaled_out = tf.multiply(out, self.action_bound)
             # scaled_out = np.sign(out)
-            return inputs, out, scaled_out
+            return out, scaled_out
 
     def train(self, sess, inputs, a_gradient):
         sess.run(self.optimize, feed_dict={
@@ -241,7 +246,7 @@ class CriticNetwork(object):
     The action must be obtained from the output of the Actor network.
     """
 
-    def __init__(self, state_dim, action_dim, learning_rate, tau, gamma, num_actor_vars):
+    def __init__(self, state_dim, action_dim, learning_rate, tau, gamma, num_actor_vars, inputs, action):
         self.state_dim = state_dim
         self.action_dim = action_dim
         self.tau = tau
@@ -249,7 +254,9 @@ class CriticNetwork(object):
 
         # Create the critic network
 
-        self.inputs, self.action, self.out = self.create_critic_network(scope='critic')
+        self.inputs = inputs
+        self.action = action
+        self.out = self.create_critic_network(scope='critic')
 
         self.network_params = tf.trainable_variables()[num_actor_vars:]
 
@@ -319,17 +326,19 @@ class CriticNetwork(object):
 
     def create_critic_network(self, scope='critic'):
         with tf.name_scope(scope):
-            inputs = tflearn.input_data(shape=[None, self.state_dim], name='critic_input')
-            net = tflearn.fully_connected(inputs, 300, name='critic_fc1')
+            # inputs from higher level
+            # inputs = tflearn.input_data(shape=[None, self.state_dim], name='critic_input')
+            net = tflearn.fully_connected(self.inputs, 300, name='critic_fc1')
             net = tflearn.layers.normalization.batch_normalization(net, name='critic_norm1')
             net = tflearn.activations.relu(net)
             t1 = tflearn.fully_connected(net, 200, name='critic_fc2')
 
             # Add the action tensor in the 2nd hidden layer
             # Use two temp layers to get the corresponding weights and biases
-            action = tflearn.input_data(shape=[None, self.action_dim], name='critic_action_input')
-            t2 = tflearn.fully_connected(action, 200, name='critic_norm2')
-            add_t2 = tf.add(tf.matmul(action, t2.W), t2.b, name='critic_t2_add')
+            # inputs from higher level
+            # action = tflearn.input_data(shape=[None, self.action_dim], name='critic_action_input')
+            t2 = tflearn.fully_connected(self.action, 200, name='critic_norm2')
+            add_t2 = tf.add(tf.matmul(self.action, t2.W), t2.b, name='critic_t2_add')
 
             net = tflearn.activation(tf.add(tf.matmul(net, t1.W), add_t2), activation='relu', name='critic_relu')
 
