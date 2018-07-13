@@ -71,6 +71,7 @@ class Network(NetworkVP):
 
         # gradienseket ezzel kiolvassa a tensorflow graph-ból és visszamásolja
         grads = self.critic.action_gradients(self.sess, s_batch, a_outs)
+        print("grads: " + str(grads))
         self.actor.train(self.sess, s_batch, grads[0])
 
         # Update target networks
@@ -148,7 +149,7 @@ class ActorNetwork(object):
         # TODOdone:  miért minus az action gradient?
         # http://pemami4911.github.io/blog/2016/08/21/ddpg-rl.html
         self.actor_gradients = tf.gradients(
-            self.out, self.network_params, self.action_gradient, name='actor_grads')
+            self.out, self.network_params, -self.action_gradient, name='actor_grads')
 
         # Optimization Op
         self.optimize = tf.train.AdamOptimizer(self.learning_rate). \
