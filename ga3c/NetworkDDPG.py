@@ -260,7 +260,7 @@ class CriticNetwork(object):
 
         self.inputs = inputs
         self.action = action
-        self.out, self.create_critic_network(scope='critic')
+        self.out = self.create_critic_network(scope='critic')
 
         self.network_params = tf.trainable_variables()[num_actor_vars:]
 
