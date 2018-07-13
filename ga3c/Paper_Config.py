@@ -64,5 +64,5 @@ class Config:
 
     logging_game = False
     logging_debug = False
-    logging_step = True
+    logging_step = False
 
