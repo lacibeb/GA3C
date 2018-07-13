@@ -54,9 +54,7 @@ class ThreadReplay(Thread):
                     x__, r__, a__, x2__, done__ = \
                         self.replay_buffer.sample_batch(Config.TRAINING_MIN_BATCH_SIZE)
                     self.server.replay_q.put((x__, r__, a__, x2__, done__))
-                print("put to replay")
-            x_, r_, a_, x2_, done_ = self.server.training_q.get()
-            print("get from training")
+            x_, r_, a_, x2_, done_ = self.server.training_q.get(
             # replay memory uses experiences individually
             for i in range(x_.shape[0]):
                 self.replay_buffer.add(x_[i], a_[i], r_[i], done_[i], x2_[i])

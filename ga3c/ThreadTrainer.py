@@ -44,12 +44,10 @@ class ThreadTrainer(Thread):
         while not self.exit_flag:
             if Config.USE_REPLAY_MEMORY:
                 x__, a__, r__, done__, x2__ = self.server.replay_q.get()
-                print("get from replay")
             else:
                 batch_size = 0
                 while batch_size <= Config.TRAINING_MIN_BATCH_SIZE:
                     x_, r_, a_, x2_, done_ = self.server.training_q.get()
-                    print("get from training not replay")
                     if batch_size == 0:
                         x__ = x_; r__ = r_; a__ = a_; x2__ = x2_; done__ = done_
                     else:
