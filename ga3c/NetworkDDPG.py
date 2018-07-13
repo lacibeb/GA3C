@@ -51,21 +51,23 @@ class Network(NetworkVP):
         # Calculate targets
         target_q = self.critic.predict_target(self.sess, s2_batch, self.actor.predict_target(self.sess, s2_batch))
 
-        y_i = []
         batch_size = np.size(t_batch)
+        y_i = r_batch
+
         #terminal is a boolen 1d array
         for k in range(batch_size):
             if t_batch[k]:
-                y_i.append(r_batch[k])
+                pass
             else:
-                y_i.append(r_batch[k] + self.critic.gamma * target_q[k][0])
+                y_i[k, 1] = (r_batch[k] + self.critic.gamma * target_q[k][0])
 
         # Update the critic given the targets
         print("batch size " + str(batch_size))
         print("sbatch " + str(s_batch))
         print("abatch " + str(a_batch))
+        print("y_i " + str(y_i))
         print("batch " + str(np.reshape(y_i, (batch_size, 1))))
-        predicted_q_value, _ = self.critic.train(self.sess, s_batch, a_batch, np.reshape(y_i, (batch_size, 1)))
+        predicted_q_value, _ = self.critic.train(self.sess, s_batch, a_batch, y_i)
 
         # Update the actor policy using the sampled gradient
         a_outs = self.actor.predict(self.sess, s_batch)
