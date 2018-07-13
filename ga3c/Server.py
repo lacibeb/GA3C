@@ -55,6 +55,7 @@ class Server:
 
         self.training_q = Queue(maxsize=Config.MAX_QUEUE_SIZE)
         self.prediction_q = Queue(maxsize=Config.MAX_QUEUE_SIZE)
+        self.replay_q = Queue(maxsize=Config.MAX_QUEUE_SIZE)
 
         self.model = Network(Config.DEVICE, Config.NETWORK_NAME,
                                self.get_num_action(), Environment.get_state_dim())
@@ -173,9 +174,4 @@ class Server:
         else:
             return Config.CONTINUOUS_INPUT_PARTITIONS
 
-    def replay_buffer_sample_batch(self, batchsize):
-        return self.dynamic_replay_filler.replay_buffer.sample_batch(batchsize)
-
-    def replay_buffer_size(self):
-        return self.dynamic_replay_filler.replay_buffer.size()
 

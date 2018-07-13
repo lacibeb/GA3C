@@ -25,12 +25,14 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from threading import Thread
+from multiprocessing import Process, Queue, Value
+
 import numpy as np
 
 from Config import Config
 from replay_buffer import ReplayBuffer
 
-class ThreadReplay(Thread):
+class ThreadReplay(Process):
     def __init__(self, server):
         super(ThreadReplay, self).__init__()
         self.setDaemon(True)
@@ -47,6 +49,11 @@ class ThreadReplay(Thread):
     def run(self):
         #print("thread started: " + str(self.id))
         while not self.exit_flag:
+            # if queue is near empty put a batch there
+            if self.server.replay_q.qsize() < Config.REPLAY_MIN_QUEUE_SIZE:
+                x__, r__, a__, x2__, done__ = \
+                    self.replay_buffer.sample_batch(Config.TRAINING_MIN_BATCH_SIZE)
+                self.server.replay_q.put(x__, r__, a__, x2__, done__)
             x_, r_, a_, x2_, done_ = self.server.training_q.get()
             # replay memory uses experiences individually
             for i in range(x_.shape[0]):

@@ -35,7 +35,6 @@ class ThreadTrainer(Thread):
         super(ThreadTrainer, self).__init__()
         self.setDaemon(True)
 
-
         self.id = id
         self.server = server
         self.exit_flag = False
@@ -44,12 +43,7 @@ class ThreadTrainer(Thread):
         # print("thread started: " + str(self.id))
         while not self.exit_flag:
             if Config.USE_REPLAY_MEMORY:
-                # if enough experience in replay memory than get a random sample
-                if self.server.replay_buffer_size() >= Config.TRAINING_MIN_BATCH_SIZE:
-                    x__, a__, r__, done__, x2__ = \
-                        self.server.replay_buffer_sample_batch(Config.TRAINING_MIN_BATCH_SIZE)
-                    if Config.TRAIN_MODELS:
-                        self.server.train_model(x__, r__, a__, x2__, done__, self.id)
+                x__, a__, r__, done__, x2__ = self.server.replay_q.get()
             else:
                 batch_size = 0
                 while batch_size <= Config.TRAINING_MIN_BATCH_SIZE:
@@ -64,5 +58,5 @@ class ThreadTrainer(Thread):
                         done__ = np.concatenate((done__, done_))
                     batch_size += x_.shape[0]
 
-                if Config.TRAIN_MODELS:
-                    self.server.train_model(x__, r__, a__, x2__, done__, self.id)
+            if Config.TRAIN_MODELS:
+                self.server.train_model(x__, r__, a__, x2__, done__, self.id)
