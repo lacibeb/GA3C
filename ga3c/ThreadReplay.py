@@ -25,14 +25,13 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from threading import Thread
-from multiprocessing import Process, Queue, Value
 
 import numpy as np
 
 from Config import Config
 from replay_buffer import ReplayBuffer
 
-class ThreadReplay(Process):
+class ThreadReplay(Thread):
     def __init__(self, server):
         super(ThreadReplay, self).__init__()
         self.setDaemon(True)
