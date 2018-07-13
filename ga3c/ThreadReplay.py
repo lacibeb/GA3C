@@ -43,7 +43,7 @@ class ThreadReplay(Thread):
                                           random_seed=Config.REPLAY_BUFFER_RANDOM_SEED)
 
     def update_stats(self):
-        self.server.stats.replay_memory_size = self.replay_buffer.size()
+        self.server.stats.replay_memory_size.value = self.replay_buffer.size()
 
     def run(self):
         #print("thread started: " + str(self.id))

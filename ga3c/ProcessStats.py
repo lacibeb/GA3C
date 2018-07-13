@@ -50,7 +50,7 @@ class ProcessStats(Process):
         self.predictor_count = Value('i', 0)
         self.agent_count = Value('i', 0)
         self.total_frame_count = 0
-        self.replay_memory_size = 0
+        self.replay_memory_size = Value('i', 0)
 
     def FPS(self):
         # average FPS from the beginning of the training (not current FPS)
