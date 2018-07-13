@@ -140,7 +140,8 @@ class ActorNetwork(object):
         self.network_params = tf.trainable_variables()
 
         # Target Network
-        self.target_inputs, self.target_out, self.target_out = self.create_actor_network(
+        self.target_inputs = inputs
+        self.target_out, self.target_out = self.create_actor_network(
             scope='actor_target')
 
         self.target_network_params = tf.trainable_variables()[
@@ -261,7 +262,9 @@ class CriticNetwork(object):
         self.network_params = tf.trainable_variables()[num_actor_vars:]
 
         # Target Network
-        self.target_inputs, self.target_action, self.target_out = self.create_critic_network(scope='critic_target')
+        self.target_inputs = inputs
+        self.target_action = action
+        self.target_out = self.create_critic_network(scope='critic_target')
 
         self.target_network_params = tf.trainable_variables()[(len(self.network_params) + num_actor_vars):]
 
@@ -360,7 +363,7 @@ class CriticNetwork(object):
             out = tflearn.fully_connected(net, 1, weights_init=w_init, name='critic_output')
             # self.model = model = tflearn.DNN(out)
 
-            return inputs, action, out
+            return out
 
     def train(self, sess, inputs, action, predicted_q_value):
         with tf.variable_scope('critic'):
