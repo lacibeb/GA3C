@@ -44,7 +44,6 @@ class ThreadTrainer(Thread):
         while not self.exit_flag:
             if Config.USE_REPLAY_MEMORY:
                 # move experiences to replay memory
-                print(str(self.server.training_q.qsize()))
                 while self.server.training_q.qsize() > Config.MIN_QUEUE_SIZE:
                     print(str(self.server.training_q.qsize()))
                     x_, r_, a_, x2_, done_ = self.server.training_q.get()
