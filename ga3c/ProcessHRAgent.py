@@ -53,7 +53,7 @@ class ProcessHRAgent(ProcessAgent):
         # print("env_a: " + str(env_action))
         if Config.CONTINUOUS_INPUT:
             # action already ok
-            pass
+            prediction = [env_action]
         else:
             prediction = self.convert_action_angle_to_discrate(env_action)
 
