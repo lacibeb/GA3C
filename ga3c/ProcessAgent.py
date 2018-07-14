@@ -116,7 +116,7 @@ class ProcessAgent(Process):
         done = False
         experiences = []
 
-        time_count = 0
+        self.time_count = 0
         reward_sum = 0.0
 
         while not done:
@@ -142,7 +142,7 @@ class ProcessAgent(Process):
             exp = Experience(self.env.previous_state, action, prediction, reward, self.env.current_state, done)
             experiences.append(exp)
 
-            if done or time_count == Config.TIME_MAX:
+            if done or self.time_count == Config.TIME_MAX:
                 #terminal_reward = 0 if done else value
                 # with pyperrace the final reward is always in last step, it always plays until the end
                 terminal_reward = reward
@@ -165,12 +165,12 @@ class ProcessAgent(Process):
                 yield x_, r_, a_, x2_, done_, reward_sum
 
                 # reset the tmax count
-                time_count = 0
+                self.time_count = 0
                 # keep the last experience for the next batch
                 experiences = [experiences[-1]]
                 reward_sum = 0.0
 
-            time_count += 1
+            self.time_count += 1
 
     def run(self):
         # print("process started: " + str(self.id))

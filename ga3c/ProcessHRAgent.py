@@ -42,10 +42,10 @@ class ProcessHRAgent(ProcessAgent):
         # change player
         self.env.player = 'href'
 
-    def predict(self, time_count):
+    def predict(self, state):
 
         # human reference action
-        env_action, player = self.env.get_ref_step(time_count, Config.TIME_MAX)
+        env_action, player = self.env.get_ref_step(self.time_count, Config.TIME_MAX)
         # action in -1 .. 1
         # add randomness to it
         env_action = env_action + np.random.uniform(0.03, -0.03)
