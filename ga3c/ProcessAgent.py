@@ -61,6 +61,7 @@ class ProcessAgent(Process):
         # one frame at a time
         self.wait_q = Queue(maxsize=1)
         self.exit_flag = Value('i', 0)
+        self.time_count = 0
 
 
     @staticmethod
@@ -178,7 +179,7 @@ class ProcessAgent(Process):
         # randomly sleep up to 1 second. helps agents boot smoothly.
         time.sleep(np.random.rand())
         np.random.seed(np.int32(time.time() % 1 * 1000 + self.id * 10))
-
+        print("this works")
         while self.exit_flag.value == 0:
             total_reward = 0
             total_length = 0

@@ -60,5 +60,7 @@ class ProcessHRAgent(ProcessAgent):
         # human reference
         self.env.steps_with_reference()
 
-        super(ProcessHRAgent, self).run_episode()
+        # passing yielded objects
+        for x_, r_, a_, x2_, done_, reward_sum in super(ProcessHRAgent, self).run_episode():
+            yield x_, r_, a_, x2_, done_, reward_sum
 
