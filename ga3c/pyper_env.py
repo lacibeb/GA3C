@@ -1209,6 +1209,7 @@ class PaperRaceEnv:
             player = 'random'
             a = int(np.random.uniform(-180, 180, 1))
 
+        # return int and string
         return a, player
 
     def get_steps_with_reference(self, step_count_from_start = 0):
