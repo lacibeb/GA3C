@@ -127,7 +127,6 @@ class ProcessAgent(Process):
                 continue
 
             prediction, value = self.predict(self.env.current_state)
-            print(str(prediction)+ " " + str(value))
             if Config.CONTINUOUS_INPUT:
                 action = prediction[0]
                 env_action = action
@@ -148,21 +147,9 @@ class ProcessAgent(Process):
                 # with pyperrace the final reward is always in last step, it always plays until the end
                 terminal_reward = reward
                 updated_exps = ProcessAgent._accumulate_rewards(experiences, self.discount_factor, terminal_reward)
-                print("before convert data")
                 x_, r_, a_, x2_, done_ = self.convert_data(updated_exps)
-                if x_ is None:
-                    raise("x_ is None")
-                if r_ is None:
-                    raise("r_ is None")
-                if a_ is None:
-                    raise("a_ is None")
-                if x2_ is None:
-                    raise("x2_ is None")
-                if done_ is None:
-                    raise("done_ is None")
-                if done_ is None:
-                    raise("reward sum_ is None")
-                print(str(a_))
+
+                print(str(a_.transpose()))
                 print(str(r_))
                 yield x_, r_, a_, x2_, done_, reward_sum
 
@@ -179,7 +166,6 @@ class ProcessAgent(Process):
         # randomly sleep up to 1 second. helps agents boot smoothly.
         time.sleep(np.random.rand())
         np.random.seed(np.int32(time.time() % 1 * 1000 + self.id * 10))
-        print("this works")
         while self.exit_flag.value == 0:
             total_reward = 0
             total_length = 0
