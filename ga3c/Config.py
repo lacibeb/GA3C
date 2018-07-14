@@ -150,8 +150,8 @@ class Config:
     USE_LOG_SOFTMAX = False
 
     # with DDPG
-    actor_lr = 0.00003
-    critic_lr = 0.0005
+    actor_lr = 0.000003
+    critic_lr = 0.00005
     tau = 0.99999
     gamma = 0.99
 
@@ -160,11 +160,11 @@ class Config:
     CONTINUOUS_INPUT_PARTITIONS = 8
 
     # use ddpg model it works only with continuous input
-    USE_DDPG = False
+    USE_DDPG = True
     add_uncertainity = False
     add_OUnoise = False
 
-    USE_REPLAY_MEMORY = False
+    USE_REPLAY_MEMORY = True
     REPLAY_BUFFER_SIZE = 1000000
     REPLAY_BUFFER_RANDOM_SEED = 12345
     REPLAY_MIN_QUEUE_SIZE = 2
