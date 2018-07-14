@@ -66,7 +66,7 @@ class Config:
     # Algorithm parameters
 
     # Discount factor
-    DISCOUNTING = False
+    DISCOUNTING = True
     DISCOUNT = 0.99
     
     # Tmax
@@ -74,6 +74,7 @@ class Config:
     
     # Reward Clipping
     REWARD_CLIPPING = True
+    USE_INTERMEDIATE_REWARD = False
     REWARD_MIN = -1
     REWARD_MAX = 1
 
@@ -168,3 +169,4 @@ class Config:
     REPLAY_BUFFER_SIZE = 1000000
     REPLAY_BUFFER_RANDOM_SEED = 12345
     REPLAY_MIN_QUEUE_SIZE = 2
+    DDPG_FUTURE_REWARD_CALC = False

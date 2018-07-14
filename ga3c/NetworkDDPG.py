@@ -65,14 +65,16 @@ class Network(NetworkVP):
         target_q = self.critic.predict_target(self.sess, s2_batch, self.actor.predict_target(self.sess, s2_batch))
 
         batch_size = np.size(t_batch)
+
         y_i = r_batch
 
-        #terminal is a boolen 1d array
-        for k in range(batch_size):
-            if t_batch[k]:
-                pass
-            else:
-                y_i[k] = (r_batch[k] + self.critic.gamma * target_q[k][0])
+        if Config.DDPG_FUTURE_REWARD_CALC:
+            # terminal is a boolen 1d array
+            for k in range(batch_size):
+                if t_batch[k]:
+                    pass
+                else:
+                    y_i[k] = (r_batch[k] + self.critic.gamma * target_q[k][0])
 
         #y_i = np.reshape(y_i, (batch_size, 1))
 

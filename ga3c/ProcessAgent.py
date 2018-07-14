@@ -73,8 +73,10 @@ class ProcessAgent(Process):
             if Config.DISCOUNTING:
                 reward_sum = discount_factor * reward_sum
                 # with intermediate rewards
-                # reward_sum = discount_factor * reward_sum + r
-                experiences[t].reward = reward_sum
+                if Config.USE_INTERMEDIATE_REWARD:
+                    reward_sum = discount_factor * reward_sum + r
+                else:
+                    experiences[t].reward = reward_sum
         # return experiences[:-1]
         return experiences
 
