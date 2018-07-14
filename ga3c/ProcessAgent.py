@@ -126,7 +126,7 @@ class ProcessAgent(Process):
                 continue
 
             prediction, value = self.predict(self.env.current_state)
-
+            print(str(prediction)+ " " + str(value))
             if Config.CONTINUOUS_INPUT:
                 action = prediction[0]
                 env_action = action
