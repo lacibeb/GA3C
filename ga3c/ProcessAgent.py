@@ -147,6 +147,7 @@ class ProcessAgent(Process):
                 # with pyperrace the final reward is always in last step, it always plays until the end
                 terminal_reward = reward
                 updated_exps = ProcessAgent._accumulate_rewards(experiences, self.discount_factor, terminal_reward)
+                print("before convert data")
                 x_, r_, a_, x2_, done_ = self.convert_data(updated_exps)
                 if x_ is None:
                     raise("x_ is None")
