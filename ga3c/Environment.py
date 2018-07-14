@@ -96,6 +96,5 @@ class Environment:
     def get_ref_step(self, step, max_steps):
         action, player = self.game.get_ref_step(step, max_steps, self.actions, self.actions_size)
         action = action / 180.0
-        print(str(action))
         return action, player
 
