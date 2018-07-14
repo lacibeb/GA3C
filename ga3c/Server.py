@@ -129,7 +129,8 @@ class Server:
     def main(self):
         self.stats.start()
         self.dynamic_adjustment.start()
-        self.dynamic_replay_filler.start()
+        if Config.USE_REPLAY_MEMORY:
+            self.dynamic_replay_filler.start()
 
         if Config.PLAY_MODE:
             for trainer in self.trainers:
@@ -161,7 +162,8 @@ class Server:
         while self.trainers:
             self.remove_trainer()
 
-        self.dynamic_replay_filler.exit_flag = True
+        if Config.USE_REPLAY_MEMORY:
+            self.dynamic_replay_filler.exit_flag = True
 
     @staticmethod
     def get_state_size():
