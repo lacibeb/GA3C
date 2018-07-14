@@ -160,12 +160,11 @@ class Config:
     CONTINUOUS_INPUT_PARTITIONS = 8
 
     # use ddpg model it works only with continuous input
-    USE_DDPG = True
-
+    USE_DDPG = False
     add_uncertainity = False
     add_OUnoise = False
 
-    USE_REPLAY_MEMORY = True
+    USE_REPLAY_MEMORY = False
     REPLAY_BUFFER_SIZE = 1000000
     REPLAY_BUFFER_RANDOM_SEED = 12345
     REPLAY_MIN_QUEUE_SIZE = 2
