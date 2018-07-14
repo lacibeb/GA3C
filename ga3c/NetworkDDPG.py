@@ -120,6 +120,7 @@ class Network(NetworkVP):
         # summaries.append(tf.summary.histogram("activation_d2", self.d1))
         # summaries.append(tf.summary.histogram("activation_v", self.logits_v))
         # summaries.append(tf.summary.histogram("activation_p", self.softmax_p))
+        # summaries = self.misc_tensor_board(summaries)
 
         self.summary_op = tf.summary.merge(summaries)
         self.log_writer = tf.summary.FileWriter("logs/%s" % self.model_name, self.sess.graph)

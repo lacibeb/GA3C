@@ -171,6 +171,8 @@ class Network:
         summaries.append(tf.summary.histogram("activation_v", self.logits_v))
         summaries.append(tf.summary.histogram("activation_p", self.softmax_p))
 
+        # summaries = self.misc_tensor_board(summaries)
+
         self.summary_op = tf.summary.merge(summaries)
         self.log_writer = tf.summary.FileWriter("logs/%s" % self.model_name, self.sess.graph)
 
@@ -264,3 +266,4 @@ class Network:
 
     def get_variable_value(self, name):
         return self.sess.run(self.graph.get_tensor_by_name(name))
+
