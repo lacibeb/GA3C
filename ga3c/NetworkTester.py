@@ -32,7 +32,7 @@ class NetworkTester(ProcessAgent):
 
     def run(self):
         print("running")
-        while not self.exit_flag:
+        while self.exit_flag.value == 0:
             x_ = []
             y_ = []
             c_ = []
