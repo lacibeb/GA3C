@@ -61,8 +61,9 @@ class NetworkTester(ProcessAgent):
                     y_.append(j)
                     c_.append(color)
             if use_matplotlib:
+                # x_ = np.array(x_); y_ = np.array(y_); c_ = np.array(c_);
                 # plt.plot([x for x in x_], [y for y in y_], [c for c in c_])
-                plt.scatter(x_,y_, c=color, alpha=0.3,
+                plt.scatter(x_,y_, c=c_, alpha=0.3,
                             cmap='viridis')
                 plt.colorbar();
                 plt.pause(0.001)
