@@ -20,9 +20,9 @@ import time
 from Config import Config
 from Experience import Experience
 
-class NetworkTester(Process, ProcessAgent):
+class NetworkTester(ProcessAgent):
     def __init__(self, id, prediction_q):
-        super(Process, self).__init__()
+        super(ProcessAgent, self).__init__()
         self.exit_flag = Value('i', 0)
         self.id = id
 
