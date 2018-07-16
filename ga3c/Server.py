@@ -145,7 +145,7 @@ class Server:
         self.model.save(self.stats.episode_count.value)
 
     def main(self):
-        self.stats.start()
+        #self.stats.start()
         self.dynamic_adjustment.start()
         if Config.USE_REPLAY_MEMORY:
             self.dynamic_replay_filler.start()
@@ -172,7 +172,7 @@ class Server:
 
             time.sleep(0.01)
 
-        self.stats.exit_flag = True
+        #self.stats.exit_flag = True
         self.dynamic_adjustment.exit_flag = True
 
         while self.agents:

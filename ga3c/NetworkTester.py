@@ -31,6 +31,7 @@ class NetworkTester(ProcessAgent):
 
 
     def run(self):
+        print("running")
         while not self.exit_flag:
             x_ = []
             y_ = []
@@ -38,7 +39,9 @@ class NetworkTester(ProcessAgent):
 
             # forward velocity
             v = [50,0]
+            print("before sleep")
             time.sleep(10.0)
+            print("after sleep")
             for i in range(500, step=10):
                 for j in range(500, step=10):
                     current_state = [v[0], v[1], i, j]
