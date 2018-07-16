@@ -41,6 +41,7 @@ class NetworkTester(ProcessAgent):
                 for j in range(500, step=10):
                     current_state = [v[0], v[1], i, j]
                     prediction, value = self.predict(current_state)
+                    print('tester predictio: ' + str(prediction))
                     if Config.CONTINUOUS_INPUT:
                         action = prediction[0]
                         env_action = action
@@ -58,3 +59,4 @@ class NetworkTester(ProcessAgent):
                 plt.pause(0.001)
                 plt.draw()
                 plt.savefig('try1.png')
+                print('saved try')
