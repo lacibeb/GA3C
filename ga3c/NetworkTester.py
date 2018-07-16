@@ -25,7 +25,7 @@ class NetworkTester(ProcessAgent):
         super(ProcessAgent, self).__init__()
         self.exit_flag = Value('i', 0)
         self.id = id
-
+        self.prediction_q = prediction_q
         self.trk_pic = mpimg.imread('h1.bmp')  # beolvassa a pályát
 
     def run(self):
