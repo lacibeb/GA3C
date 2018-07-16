@@ -31,7 +31,13 @@ import numpy as np
 import time
 
 from Config import Config
-from Environment import Environment
+
+# pyperconfig do not need game manager
+if Config.GAME == "pyperrace":
+    from PyperEnvironment import Environment
+else:
+    from Environment import Environment
+
 from Experience import Experience
 
 

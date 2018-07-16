@@ -30,8 +30,8 @@ class Config:
     # Game configuration
 
     # Name of the game, with version (e.g. PongDeterministic-v0)
-    ATARI_GAME = 'PongDeterministic-v0'
-
+    # GAME = 'PongDeterministic-v0'
+    GAME = 'pyperrace'
     # Enable to see the trained agent in action
     PLAY_MODE = False
     # Enable to train
