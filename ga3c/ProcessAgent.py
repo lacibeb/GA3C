@@ -33,7 +33,7 @@ import time
 from Config import Config
 
 # pyperconfig do not need game manager
-if Config.GAME == "pyperrace":
+if Config.GAME == 'pyperrace':
     from PyperEnvironment import Environment
 else:
     from Environment import Environment
