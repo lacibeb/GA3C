@@ -42,8 +42,8 @@ class NetworkTester(ProcessAgent):
             print("before sleep")
             time.sleep(1.0)
             print("after sleep")
-            for i in range(0, 500, 10):
-                for j in range(0, 500, 10):
+            for i in range(0, 1800, 20):
+                for j in range(0, 1500, 20):
                     current_state = [v[0], v[1], i, j]
                     prediction, value = self.predict(current_state)
                     if Config.CONTINUOUS_INPUT:
@@ -57,12 +57,12 @@ class NetworkTester(ProcessAgent):
                     # color = np.array([int(round((env_action + 1) * 127)), 0, 0], dtype='uint8')
                     color = int(round((env_action + 1) * 127))
                     x_.append(i)
-                    y_.append(1500-j)
+                    y_.append(j)
                     c_.append(color)
             if use_matplotlib:
                 # x_ = np.array(x_); y_ = np.array(y_); c_ = np.array(c_);
                 # plt.plot([x for x in x_], [y for y in y_], [c for c in c_])
-                plt.scatter(x_,y_, c=c_)
+                plt.scatter(x_,y_, '.', c=c_)
                 plt.pause(0.001)
                 plt.draw()
                 plt.savefig('try1.png')
