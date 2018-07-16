@@ -65,5 +65,5 @@ class NetworkTester(ProcessAgent):
                 plt.scatter(x_,y_, '.', c=c_)
                 plt.pause(0.001)
                 plt.draw()
-                plt.savefig('try1.png')
+                plt.savefig('try1.bmp')
                 print('saved try')
