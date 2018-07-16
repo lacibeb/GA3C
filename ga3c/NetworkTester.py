@@ -40,7 +40,7 @@ class NetworkTester(ProcessAgent):
             # forward velocity
             v = [50,0]
             print("before sleep")
-            time.sleep(10.0)
+            time.sleep(1.0)
             print("after sleep")
             for i in range(0, 500, 10):
                 for j in range(0, 500, 10):
