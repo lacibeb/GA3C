@@ -43,7 +43,7 @@ class NetworkTester(ProcessAgent):
             time.sleep(10.0)
             print("after sleep")
             for i in range(500, step=10):
-                for j in range(500, step=10):
+                for j in range(0, 500, 10):
                     current_state = [v[0], v[1], i, j]
                     prediction, value = self.predict(current_state)
                     print('tester predictio: ' + str(prediction))
