@@ -55,6 +55,9 @@ from ThreadTrainer import ThreadTrainer
 if Config.USE_REPLAY_MEMORY:
     from ThreadReplay import ThreadReplay
 
+if Config.USE_NETWORK_TESTER:
+    from NetworkTester import NetworkTester
+
 class Server:
     def __init__(self):
         self.stats = ProcessStats()
@@ -86,6 +89,10 @@ class Server:
         # Initialize replay memory
         if Config.USE_REPLAY_MEMORY:
             self.dynamic_replay_filler = ThreadReplay(self)
+
+        if Config.USE_NETWORK_TESTER:
+            self.network_tester_process = NetworkTester(100, self.prediction_q)
+
         print("Server initialized")
 
     def add_agent(self):
@@ -142,6 +149,8 @@ class Server:
         self.dynamic_adjustment.start()
         if Config.USE_REPLAY_MEMORY:
             self.dynamic_replay_filler.start()
+        if Config.USE_NETWORK_TESTER:
+            self.network_tester_process.start()
 
         if Config.PLAY_MODE:
             for trainer in self.trainers:
@@ -175,6 +184,8 @@ class Server:
 
         if Config.USE_REPLAY_MEMORY:
             self.dynamic_replay_filler.exit_flag = True
+        if Config.USE_NETWORK_TESTER:
+            self.network_tester_process.exit_flag = True
 
     @staticmethod
     def get_state_dim():
