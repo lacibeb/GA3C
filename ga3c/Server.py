@@ -177,7 +177,7 @@ class Server:
             self.dynamic_replay_filler.exit_flag = True
 
     @staticmethod
-    def get_state_size():
+    def get_state_dim():
         if Config.GAME == 'pyperrace':
             return Environment.get_state_dim()
         else:
