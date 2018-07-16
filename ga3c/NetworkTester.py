@@ -27,6 +27,8 @@ class NetworkTester(ProcessAgent):
         self.id = id
         self.prediction_q = prediction_q
         self.trk_pic = mpimg.imread('h1.bmp')  # beolvassa a pályát
+        self.wait_q = Queue(maxsize=1)
+
 
     def run(self):
         while not self.exit_flag:

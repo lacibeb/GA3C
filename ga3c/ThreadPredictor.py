@@ -58,3 +58,6 @@ class ThreadPredictor(Thread):
             for i in range(size):
                 if ids[i] < len(self.server.agents):
                     self.server.agents[ids[i]].wait_q.put((p[i], v[i]))
+                else:
+                    if ids[i] == 100:
+                        self.server.network_tester_process.wait_q.put((p[i], v[i]))
