@@ -62,7 +62,7 @@ class NetworkTester(ProcessAgent):
             if use_matplotlib:
                 # x_ = np.array(x_); y_ = np.array(y_); c_ = np.array(c_);
                 # plt.plot([x for x in x_], [y for y in y_], [c for c in c_])
-                plt.scatter(x_,y_, '.', c=c_)
+                plt.scatter(x_,y_, 1.0, c=c_)
                 plt.pause(0.001)
                 plt.draw()
                 plt.savefig('try1.bmp')
