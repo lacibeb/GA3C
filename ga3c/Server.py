@@ -64,9 +64,12 @@ class Server:
         self.replay_q = Queue(maxsize=Config.MAX_QUEUE_SIZE)
 
         if Config.GAME == 'pyperrace':
+            self.model = Network(Config.DEVICE, Config.NETWORK_NAME,
+                                   self.get_num_action(), self.get_state_dim())
+        else:
+            self.model = Network(Config.DEVICE, Config.NETWORK_NAME,
+                                 self.get_num_action())
 
-        self.model = Network(Config.DEVICE, Config.NETWORK_NAME,
-                               self.get_num_action(), self.get_state_dim())
         if Config.LOAD_CHECKPOINT:
             self.stats.episode_count.value = self.model.load()
 

@@ -30,6 +30,8 @@ class Config:
     # Game configuration
 
     # Name of the game, with version (e.g. PongDeterministic-v0)
+    # TODO atary option is not working yet
+    # TODO atary games works with image input(missing) and dicrate output(this is implemented)
     # GAME = 'PongDeterministic-v0'
     GAME = 'pyperrace'
     # Enable to see the trained agent in action
