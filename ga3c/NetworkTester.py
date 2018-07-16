@@ -26,7 +26,7 @@ class NetworkTester(ProcessAgent):
         self.exit_flag = Value('i', 0)
         self.id = id
 
-        self.trk_pic = mpimg.imread('PALYA5.bmp')  # beolvassa a pályát
+        self.trk_pic = mpimg.imread('h1.bmp')  # beolvassa a pályát
 
     def run(self):
         while not self.exit_flag:
