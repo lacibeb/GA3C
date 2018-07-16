@@ -5,13 +5,11 @@ from multiprocessing import Process, Queue, Value
 # create and display image
 use_matplotlib = True
 
-if OnHPC:
-    # https://stackoverflow.com/questions/9622163/save-plot-to-image-file-instead-of-displaying-it-using-matplotlib
+
+if use_matplotlib:
     #cannot use interactive backend
     import matplotlib as mpl
     mpl.use('Agg')
-
-if use_matplotlib:
     import matplotlib.pyplot as plt
     import matplotlib.image as mpimg
 
