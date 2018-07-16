@@ -29,7 +29,13 @@ from multiprocessing import Queue
 import time
 
 from Config import Config
-from Environment import Environment
+
+# for pyperrace the statedim is comming from game
+if Config.GAME == 'pyperrace':
+    from PyperEnvironment import Environment
+else:
+    pass
+    # from Environment import Environment
 
 if Config.CONTINUOUS_INPUT:
     if Config.USE_DDPG:
@@ -57,8 +63,10 @@ class Server:
         self.prediction_q = Queue(maxsize=Config.MAX_QUEUE_SIZE)
         self.replay_q = Queue(maxsize=Config.MAX_QUEUE_SIZE)
 
+        if Config.GAME == 'pyperrace':
+
         self.model = Network(Config.DEVICE, Config.NETWORK_NAME,
-                               self.get_num_action(), Environment.get_state_dim())
+                               self.get_num_action(), self.get_state_dim())
         if Config.LOAD_CHECKPOINT:
             self.stats.episode_count.value = self.model.load()
 
@@ -167,13 +175,19 @@ class Server:
 
     @staticmethod
     def get_state_size():
-        return Environment.get_state_dim()
+        if Config.GAME == 'pyperrace':
+            return Environment.get_state_dim()
+        else:
+            raise("Only used wit pyperrace, something wrong")
 
     @staticmethod
     def get_num_action():
-        if Config.CONTINUOUS_INPUT:
-            return Environment.get_num_actions()
+        if Config.GAME == 'pyperrace':
+            if Config.CONTINUOUS_INPUT:
+                return Environment.get_num_actions()
+            else:
+                return Config.CONTINUOUS_INPUT_PARTITIONS
         else:
-            return Config.CONTINUOUS_INPUT_PARTITIONS
+            raise("Only used wit pyperrace, something wrong")
 
 

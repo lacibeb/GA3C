@@ -76,6 +76,11 @@ class Environment:
     def get_num_actions(self):
         return self.game.env.action_space.n
 
+    def get_state_dim(self):
+        # for atary games this function return value should not be used
+        # different network layout needed
+        return None
+
     def reset(self):
         self.total_reward = 0
         self.frame_q.queue.clear()
