@@ -42,8 +42,8 @@ class NetworkTester(ProcessAgent):
             print("before sleep")
             time.sleep(1.0)
             print("after sleep")
-            for i in range(0, 1800, 20):
-                for j in range(0, 1500, 20):
+            for i in range(0, 1400, 20):
+                for j in range(0, 1400, 20):
                     current_state = [v[0], v[1], i, j]
                     prediction, value = self.predict(current_state)
                     if Config.CONTINUOUS_INPUT:
