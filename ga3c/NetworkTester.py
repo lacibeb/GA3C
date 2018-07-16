@@ -55,12 +55,12 @@ class NetworkTester(ProcessAgent):
                         # converting discrate action to continuous
                         # converting -1 .. 1 to fixed angles
                         env_action = self.convert_action_discrate_to_angle(action)
-                    color = int(round((env_action + 1) * 127))
+                    color = np.array([int(round((env_action + 1) * 127)), 0, 0], dtype='uint8')
                     x_.append(i)
                     y_.append(j)
                     c_.append(color)
             if use_matplotlib:
-                plt.plot([x for x in x_], [y for y in y_], [[c for c in c_], 0, 0])
+                plt.plot([x for x in x_], [y for y in y_], [c for c in c_])
                 plt.pause(0.001)
                 plt.draw()
                 plt.savefig('try1.png')
