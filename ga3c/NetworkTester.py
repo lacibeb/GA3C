@@ -32,6 +32,7 @@ class NetworkTester(ProcessAgent):
 
     def run(self):
         print("running")
+        count = 0
         while self.exit_flag.value == 0:
             x_ = []
             y_ = []
@@ -39,11 +40,9 @@ class NetworkTester(ProcessAgent):
             plt.imshow(self.trk_pic)
             # forward velocity
             v = [50,0]
-            print("before sleep")
-            time.sleep(1.0)
-            print("after sleep")
-            for i in range(0, 1400, 20):
-                for j in range(0, 1400, 20):
+            time.sleep(60.0)
+            for i in range(0, 1800, 10):
+                for j in range(0, 1500, 10):
                     current_state = [v[0], v[1], i, j]
                     prediction, value = self.predict(current_state)
                     if Config.CONTINUOUS_INPUT:
@@ -62,8 +61,8 @@ class NetworkTester(ProcessAgent):
             if use_matplotlib:
                 # x_ = np.array(x_); y_ = np.array(y_); c_ = np.array(c_);
                 # plt.plot([x for x in x_], [y for y in y_], [c for c in c_])
-                plt.scatter(x_,y_, 1.0, c=c_)
+                plt.scatter(x_,y_, 0.3, c=c_)
                 plt.pause(0.001)
                 plt.draw()
-                plt.savefig('try1.tif')
-                print('saved try')
+                plt.savefig('./pics/try' + str(count) + '.tif')
+
