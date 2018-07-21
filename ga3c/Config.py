@@ -158,7 +158,7 @@ class Config:
     CONTINUOUS_INPUT_PARTITIONS = 8
 
     # use ddpg model it works only with continuous input
-    USE_DDPG = True
+    USE_DDPG = False
     if USE_DDPG:
         add_uncertainity = False
         add_OUnoise = False

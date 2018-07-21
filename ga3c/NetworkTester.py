@@ -54,7 +54,7 @@ class NetworkTester(ProcessAgent):
                         # converting -1 .. 1 to fixed angles
                         env_action = self.convert_action_discrate_to_angle(action)
                     # color = np.array([int(round((env_action + 1) * 127)), 0, 0], dtype='uint8')
-                    color = int(round((env_action + 1) * 127))
+                    color = env_action
                     x_.append(i)
                     y_.append(j)
                     c_.append(color)
@@ -65,4 +65,5 @@ class NetworkTester(ProcessAgent):
                 plt.pause(0.001)
                 plt.draw()
                 plt.savefig('./pics/try' + str(count) + '.tif')
+                count += 1
 
