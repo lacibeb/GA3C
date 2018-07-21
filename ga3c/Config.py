@@ -48,7 +48,7 @@ class Config:
     
     # If the dynamic configuration is on, these are the initial values.
     # Number of Agents
-    AGENTS = 1
+    AGENTS = 16
     # Number of human reference Agents from Agents AGENTS=humref+regular
     HUMAN_REF_AGENTS = 0
     # Number of Predictors
@@ -98,7 +98,7 @@ class Config:
     BETA_END = 0.001
 
     # Learning rate
-    LEARNING_RATE_START = 0.0003
+    LEARNING_RATE_START = 0.003
     LEARNING_RATE_END = 0.000003
 
     # RMSProp parameters
@@ -173,6 +173,7 @@ class Config:
         critic_lr = 0.00005
         tau = 0.99999
         gamma = 0.99
+        DISCOUNTING = False
     else:
         USE_REPLAY_MEMORY = False
 
