@@ -50,7 +50,7 @@ class Config:
     # Number of Agents
     AGENTS = 16
     # Number of human reference Agents from Agents AGENTS=humref+regular
-    HUMAN_REF_AGENTS = 0
+    HUMAN_REF_AGENTS = 2
     # Number of Predictors
     PREDICTORS = 5
     # Number of Trainers
@@ -98,7 +98,7 @@ class Config:
     BETA_END = 0.001
 
     # Learning rate
-    LEARNING_RATE_START = 0.003
+    LEARNING_RATE_START = 0.03
     LEARNING_RATE_END = 0.000003
 
     # RMSProp parameters

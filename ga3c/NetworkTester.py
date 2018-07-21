@@ -34,12 +34,13 @@ class NetworkTester(ProcessAgent):
         print("running")
         count = 0
         while self.exit_flag.value == 0:
+            count += 1
             x_ = []
             y_ = []
-            c_ = []
-            plt.imshow(self.trk_pic)
+            ca_ = []
+            cv_ = []
             # forward velocity
-            v = [50,0]
+            v = [50, 0]
             time.sleep(60.0)
             for i in range(0, 1800, 10):
                 for j in range(0, 1500, 10):
@@ -54,17 +55,23 @@ class NetworkTester(ProcessAgent):
                         # converting -1 .. 1 to fixed angles
                         env_action = self.convert_action_discrate_to_angle(action)
                     # color = np.array([int(round((env_action + 1) * 127)), 0, 0], dtype='uint8')
-                    color = env_action
                     x_.append(i)
                     y_.append(j)
-                    c_.append(color)
+                    ca_.append(env_action)
+                    cv_.append(value)
             if use_matplotlib:
                 # x_ = np.array(x_); y_ = np.array(y_); c_ = np.array(c_);
                 # plt.plot([x for x in x_], [y for y in y_], [c for c in c_])
-                plt.scatter(x_,y_, 0.3, c=c_)
+                plt.imshow(self.trk_pic)
+                plt.scatter(x_,y_, 0.3, c=ca_)
                 plt.pause(0.001)
                 plt.draw()
-                plt.savefig('./pics/try' + str(count) + '.tif')
+                plt.savefig('./pics/action' + str(count) + '.tif')
                 plt.clf()
-                count += 1
+                plt.imshow(self.trk_pic)
+                plt.scatter(x_,y_, 0.3, c=cv_)
+                plt.pause(0.001)
+                plt.draw()
+                plt.savefig('./pics/value' + str(count) + '.tif')
+                plt.clf()
 
