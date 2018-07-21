@@ -37,7 +37,7 @@ class Config:
     # Enable to see the trained agent in action
     PLAY_MODE = False
     # Enable to train
-    TRAIN_MODELS = True
+    TRAIN_MODELS = False
     # Load old models. Throws if the model doesn't exist
     LOAD_CHECKPOINT = True
     # If 0, the latest checkpoint is loaded
@@ -99,7 +99,7 @@ class Config:
 
     # Learning rate
     LEARNING_RATE_START = 0.03
-    LEARNING_RATE_END = 0.03
+    LEARNING_RATE_END = 0.00003
 
     # RMSProp parameters
     # if False than ADAM optimizer only for ddpg
