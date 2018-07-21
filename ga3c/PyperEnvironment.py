@@ -35,6 +35,8 @@ class Environment:
         self.game.reset(GameConfig.SHOW_WINDOW)
         pos, v = self.game.start_game()
         self.current_state = [v[0], v[1], pos[0], pos[1]]
+        # scaling state to be between -1 ... 1
+        self.current_state = (self.current_state/900.0)-1
 
     @staticmethod
     def check_bounds(value, posbound, negbound = 0, turnaround = True):
@@ -72,6 +74,8 @@ class Environment:
         self.previous_state = self.current_state
 
         self.current_state = np.array([v_new[0], v_new[1], pos_new[0], pos_new[1]])
+        # scaling state to be between -1 ... 1
+        self.current_state = (self.current_state/900.0)-1
 
         done = end
 
