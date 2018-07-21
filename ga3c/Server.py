@@ -91,7 +91,9 @@ class Server:
             self.dynamic_replay_filler = ThreadReplay(self)
 
         if Config.USE_NETWORK_TESTER:
-            self.network_tester_process = NetworkTester(100, self.prediction_q)
+            self.tester_predictor = ThreadPredictor(self, 0)
+            self.tester_prediction_q = Queue(maxsize=Config.MAX_QUEUE_SIZE)
+            self.network_tester_process = NetworkTester(0, self.tester_prediction_q)
 
         print("Server initialized")
 
@@ -150,6 +152,7 @@ class Server:
         if Config.USE_REPLAY_MEMORY:
             self.dynamic_replay_filler.start()
         if Config.USE_NETWORK_TESTER:
+            self.tester_predictor.start()
             self.network_tester_process.start()
 
         if Config.PLAY_MODE:
@@ -186,6 +189,7 @@ class Server:
             self.dynamic_replay_filler.exit_flag = True
         if Config.USE_NETWORK_TESTER:
             self.network_tester_process.exit_flag = True
+            self.tester_predictor.exit_flag = True
 
     @staticmethod
     def get_state_dim():
