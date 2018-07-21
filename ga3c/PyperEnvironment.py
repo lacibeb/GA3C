@@ -34,7 +34,7 @@ class Environment:
     def reset(self):
         self.game.reset(GameConfig.SHOW_WINDOW)
         pos, v = self.game.start_game()
-        self.current_state = [v[0], v[1], pos[0], pos[1]]
+        self.current_state = np.array([v[0], v[1], pos[0], pos[1]])
         # scaling state to be between -1 ... 1
         self.current_state = (self.current_state/900.0)-1
 
