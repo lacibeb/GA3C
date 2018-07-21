@@ -99,7 +99,7 @@ class Config:
 
     # Learning rate
     LEARNING_RATE_START = 0.03
-    LEARNING_RATE_END = 0.000003
+    LEARNING_RATE_END = 0.0003
 
     # RMSProp parameters
     # if False than ADAM optimizer only for ddpg
