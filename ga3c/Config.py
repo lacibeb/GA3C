@@ -39,7 +39,7 @@ class Config:
     # Enable to train
     TRAIN_MODELS = True
     # Load old models. Throws if the model doesn't exist
-    LOAD_CHECKPOINT = False
+    LOAD_CHECKPOINT = True
     # If 0, the latest checkpoint is loaded
     LOAD_EPISODE = 0 
 
@@ -48,11 +48,11 @@ class Config:
     
     # If the dynamic configuration is on, these are the initial values.
     # Number of Agents
-    AGENTS = 16
+    AGENTS = 1
     # Number of human reference Agents from Agents AGENTS=humref+regular
-    HUMAN_REF_AGENTS = 2
+    HUMAN_REF_AGENTS = 0
     # Number of Predictors
-    PREDICTORS = 5
+    PREDICTORS = 10
     # Number of Trainers
     TRAINERS = 2
 

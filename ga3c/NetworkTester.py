@@ -41,7 +41,7 @@ class NetworkTester(ProcessAgent):
             cv_ = []
             # forward velocity
             v = [50, 0]
-            time.sleep(60.0)
+            time.sleep(6.0)
             for i in range(0, 1800, 10):
                 for j in range(0, 1500, 10):
                     current_state = [v[0], v[1], i, j]
