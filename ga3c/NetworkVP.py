@@ -249,6 +249,9 @@ class Network:
         return self.sess.run([self.softmax_p, self.logits_v], feed_dict={self.x: x})
     
     def train(self, x, y_r, a, x2, done, trainer_id):
+        print(str(x))
+        print(str(y_r))
+        print(str(a))
         feed_dict = self.__get_base_feed_dict()
         feed_dict.update({self.x: x, self.y_r: y_r, self.action_index: a})
         self.sess.run(self.train_op, feed_dict=feed_dict)
