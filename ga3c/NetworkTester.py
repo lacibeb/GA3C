@@ -65,5 +65,6 @@ class NetworkTester(ProcessAgent):
                 plt.pause(0.001)
                 plt.draw()
                 plt.savefig('./pics/try' + str(count) + '.tif')
+                plt.clf()
                 count += 1
 
