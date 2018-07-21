@@ -74,8 +74,10 @@ class Server:
                                  self.get_num_action())
 
         if Config.LOAD_CHECKPOINT:
-            self.stats.episode_count.value = self.model.load()
-
+            try:
+                self.stats.episode_count.value = self.model.load()
+            except:
+                pass
         self.training_step = 0
         self.frame_counter = 0
 
