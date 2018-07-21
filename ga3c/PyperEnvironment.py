@@ -73,7 +73,7 @@ class Environment:
 
         self.previous_state = self.current_state
 
-        self.current_state = np.array([v[0]/400.0, v[1]/400.0, (pos[0]/900.0)-1, (pos[1]/900.0-1)])
+        self.current_state = np.array([v_new[0]/400.0, v_new[1]/400.0, (pos_new[0]/900.0)-1, (pos_new[1]/900.0-1)])
         # scaling state to be between -1 ... 1
 
 
