@@ -115,7 +115,7 @@ class Server:
         self.agent_id += 1
 
     def add_predictor(self):
-        self.predictors.append(ThreadPredictor(self, len(self.predictors)))
+        self.predictors.append(ThreadPredictor(self, len(self.predictors), self.get_state_dim(), self.prediction_q))
         self.predictors[-1].start()
 
     def remove_predictor(self):
