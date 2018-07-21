@@ -167,11 +167,11 @@ class Config:
         REPLAY_BUFFER_SIZE = 1000000
         REPLAY_BUFFER_RANDOM_SEED = 12345
         REPLAY_MIN_QUEUE_SIZE = 2
-        DDPG_FUTURE_REWARD_CALC = False
+        DDPG_FUTURE_REWARD_CALC = True
         # with DDPG
-        actor_lr = 0.000003
-        critic_lr = 0.00005
-        tau = 0.99999
+        actor_lr = 0.00003
+        critic_lr = 0.0005
+        tau = 0.99
         gamma = 0.99
         DISCOUNTING = False
     else:
