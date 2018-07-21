@@ -151,26 +151,30 @@ class Config:
     # not used with continuous
     USE_LOG_SOFTMAX = False
 
-    # with DDPG
-    actor_lr = 0.000003
-    critic_lr = 0.00005
-    tau = 0.99999
-    gamma = 0.99
-
+    #########################################################################
+    # Network selection
     # define input
     CONTINUOUS_INPUT = True
     CONTINUOUS_INPUT_PARTITIONS = 8
 
     # use ddpg model it works only with continuous input
     USE_DDPG = True
-    add_uncertainity = False
-    add_OUnoise = False
+    if USE_DDPG:
+        add_uncertainity = False
+        add_OUnoise = False
 
-    USE_REPLAY_MEMORY = True
-    REPLAY_BUFFER_SIZE = 1000000
-    REPLAY_BUFFER_RANDOM_SEED = 12345
-    REPLAY_MIN_QUEUE_SIZE = 2
-    DDPG_FUTURE_REWARD_CALC = False
+        USE_REPLAY_MEMORY = True
+        REPLAY_BUFFER_SIZE = 1000000
+        REPLAY_BUFFER_RANDOM_SEED = 12345
+        REPLAY_MIN_QUEUE_SIZE = 2
+        DDPG_FUTURE_REWARD_CALC = False
+        # with DDPG
+        actor_lr = 0.000003
+        critic_lr = 0.00005
+        tau = 0.99999
+        gamma = 0.99
+    else:
+        USE_REPLAY_MEMORY = False
 
     USE_NETWORK_TESTER = True
 

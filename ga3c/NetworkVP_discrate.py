@@ -30,37 +30,11 @@ import numpy as np
 import tensorflow as tf
 
 from Config import Config
+from NetworkVP import Network as NetworkVP
 
-
-class Network:
+class Network(NetworkVP):
     def __init__(self, device, model_name, num_actions, state_dim):
-        self.device = device
-        self.model_name = model_name
-        self.num_actions = num_actions
-
-        self.state_dim = state_dim
-
-        self.learning_rate = Config.LEARNING_RATE_START
-        self.beta = Config.BETA_START
-        self.log_epsilon = Config.LOG_EPSILON
-
-        self.graph = tf.Graph()
-        with self.graph.as_default() as g:
-            with tf.device(self.device):
-                self._create_graph()
-
-                self.sess = tf.Session(
-                    graph=self.graph,
-                    config=tf.ConfigProto(
-                        allow_soft_placement=True,
-                        log_device_placement=False,
-                        gpu_options=tf.GPUOptions(allow_growth=True)))
-                self.sess.run(tf.global_variables_initializer())
-
-                if Config.TENSORBOARD: self._create_tensor_board()
-                if Config.LOAD_CHECKPOINT or Config.SAVE_MODELS:
-                    vars = tf.global_variables()
-                    self.saver = tf.train.Saver({var.name: var for var in vars}, max_to_keep=0)
+        super(Network, self).__init__(device, model_name, num_actions, state_dim)
 
     def _create_graph(self):
         self.x = tf.placeholder(
@@ -175,95 +149,4 @@ class Network:
 
         self.summary_op = tf.summary.merge(summaries)
         self.log_writer = tf.summary.FileWriter("logs/%s" % self.model_name, self.sess.graph)
-
-    def dense_layer(self, input, out_dim, name, func=tf.nn.relu):
-        in_dim = input.get_shape().as_list()[-1]
-        # with lot of input it is OK
-        # d = 1.0 / np.sqrt(in_dim)
-        # with paperenv it better around 0
-        d = 0.003
-        with tf.variable_scope(name):
-            w_init = tf.random_uniform_initializer(-d, d)
-            b_init = tf.random_uniform_initializer(-d, d)
-            w = tf.get_variable('w', dtype=tf.float32, shape=[in_dim, out_dim], initializer=w_init)
-            b = tf.get_variable('b', shape=[out_dim], initializer=b_init)
-
-            output = tf.matmul(input, w) + b
-            if func is not None:
-                output = func(output)
-
-        return output
-
-    def conv2d_layer(self, input, filter_size, out_dim, name, strides, func=tf.nn.relu):
-        in_dim = input.get_shape().as_list()[-1]
-        d = 1.0 / np.sqrt(filter_size * filter_size * in_dim)
-        with tf.variable_scope(name):
-            w_init = tf.random_uniform_initializer(-d, d)
-            b_init = tf.random_uniform_initializer(-d, d)
-            w = tf.get_variable('w',
-                                shape=[filter_size, filter_size, in_dim, out_dim],
-                                dtype=tf.float32,
-                                initializer=w_init)
-            b = tf.get_variable('b', shape=[out_dim], initializer=b_init)
-
-            output = tf.nn.conv2d(input, w, strides=strides, padding='SAME') + b
-            if func is not None:
-                output = func(output)
-
-        return output
-
-    def __get_base_feed_dict(self):
-        return {self.var_beta: self.beta, self.var_learning_rate: self.learning_rate}
-
-    def get_global_step(self):
-        step = self.sess.run(self.global_step)
-        return step
-
-    def predict_single(self, x):
-        return self.predict_p(x[None, :])[0]
-
-    def predict_v(self, x):
-        prediction = self.sess.run(self.logits_v, feed_dict={self.x: x})
-        return prediction
-
-    def predict_p(self, x):
-        prediction = self.sess.run(self.softmax_p, feed_dict={self.x: x})
-        return prediction
-
-    def predict_p_and_v(self, x):
-        return self.sess.run([self.softmax_p, self.logits_v], feed_dict={self.x: x})
-
-    def train(self, x, y_r, a, x2, done, trainer_id):
-        feed_dict = self.__get_base_feed_dict()
-        feed_dict.update({self.x: x, self.y_r: y_r, self.action_index: a})
-        self.sess.run(self.train_op, feed_dict=feed_dict)
-
-    def log(self, x, y_r, a):
-        feed_dict = self.__get_base_feed_dict()
-        feed_dict.update({self.x: x, self.y_r: y_r, self.action_index: a})
-        step, summary = self.sess.run([self.global_step, self.summary_op], feed_dict=feed_dict)
-        self.log_writer.add_summary(summary, step)
-
-    def _checkpoint_filename(self, episode):
-        return 'checkpoints/%s_%08d' % (self.model_name, episode)
-
-    def _get_episode_from_filename(self, filename):
-        # TODO: hacky way of getting the episode. ideally episode should be stored as a TF variable
-        return int(re.split('/|_|\.', filename)[2])
-
-    def save(self, episode):
-        self.saver.save(self.sess, self._checkpoint_filename(episode))
-
-    def load(self):
-        filename = tf.train.latest_checkpoint(os.path.dirname(self._checkpoint_filename(episode=0)))
-        if Config.LOAD_EPISODE > 0:
-            filename = self._checkpoint_filename(Config.LOAD_EPISODE)
-        self.saver.restore(self.sess, filename)
-        return self._get_episode_from_filename(filename)
-
-    def get_variables_names(self):
-        return [var.name for var in self.graph.get_collection('trainable_variables')]
-
-    def get_variable_value(self, name):
-        return self.sess.run(self.graph.get_tensor_by_name(name))
 

@@ -89,7 +89,7 @@ class Network:
         self.cost_v = 0.5 * tf.reduce_sum(tf.square(self.y_r - self.logits_v), axis=0)
 
         # output, action
-        self.logits_p = self.dense_layer(self.d1, self.num_actions, 'logits_p', func=tf.nn.tanh)
+        self.logits_p = self._create_angle_output(self.d1, self.num_actions, 'logits_p', func=tf.nn.sigmoid)
 
         #output softmax
         self.softmax_p = self.logits_p
@@ -171,6 +171,25 @@ class Network:
 
         self.summary_op = tf.summary.merge(summaries)
         self.log_writer = tf.summary.FileWriter("logs/%s" % self.model_name, self.sess.graph)
+
+    def _create_angle_output(self, input, out_dim, name, func=tf.nn.sigmoid):
+        with tf.variable_scope(name):
+            # https: // stats.stackexchange.com / questions / 218407 / encoding - angle - data -
+            # for -neural - network
+
+            # adding two neuron to output
+            x = self.dense_layer(input, out_dim, 'out_x', func)
+            y = self.dense_layer(input, out_dim, 'out_y', func)
+
+            # only works for sigmoid
+            # TODO other activation
+            x = tf.add(x, -0.5)
+            y = tf.add(y, -0.5)
+
+            # converting to angle
+            output = tf.divide(tf.atan2(y, x), np.pi)
+
+        return output
 
     def dense_layer(self, input, out_dim, name, func=tf.nn.relu):
         in_dim = input.get_shape().as_list()[-1]
