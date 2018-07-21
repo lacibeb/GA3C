@@ -32,24 +32,26 @@ from Config import Config
 
 
 class ThreadPredictor(Thread):
-    def __init__(self, server, id):
+    def __init__(self, server, id, state_dim, prediction_q):
         super(ThreadPredictor, self).__init__()
         self.setDaemon(True)
 
+        self.prediction_q = prediction_q
+        self.state_dim = state_dim
         self.id = id
         self.server = server
         self.exit_flag = False
 
     def run(self):
         ids = np.zeros(Config.PREDICTION_BATCH_SIZE, dtype=np.uint16)
-        states = np.zeros((Config.PREDICTION_BATCH_SIZE, self.server.get_state_dim()), dtype=np.float32)
+        states = np.zeros((Config.PREDICTION_BATCH_SIZE, self.state_dim), dtype=np.float32)
 
         while not self.exit_flag:
-            ids[0], states[0] = self.server.prediction_q.get()
+            ids[0], states[0] = self.prediction_q.get()
 
             size = 1
-            while size < Config.PREDICTION_BATCH_SIZE and not self.server.prediction_q.empty():
-                ids[size], states[size] = self.server.prediction_q.get()
+            while size < Config.PREDICTION_BATCH_SIZE and not self.prediction_q.empty():
+                ids[size], states[size] = self.prediction_q.get()
                 size += 1
 
             batch = states[:size]
@@ -59,3 +61,7 @@ class ThreadPredictor(Thread):
             for i in range(size):
                 if ids[i] < len(self.server.agents):
                     self.server.agents[ids[i]].wait_q.put((p[i], v[i]))
+                if ids[i] == 100:
+                    # network tester id
+                    self.server.network_tester_process.wait_q.put((p[i], v[i]))
+

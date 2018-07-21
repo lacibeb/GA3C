@@ -91,9 +91,9 @@ class Server:
             self.dynamic_replay_filler = ThreadReplay(self)
 
         if Config.USE_NETWORK_TESTER:
-            self.tester_predictor = ThreadPredictor(self, 0)
             self.tester_prediction_q = Queue(maxsize=Config.MAX_QUEUE_SIZE)
-            self.network_tester_process = NetworkTester(0, self.tester_prediction_q)
+            self.tester_predictor = ThreadPredictor(self, 0, self.get_state_dim(), self.tester_prediction_q)
+            self.network_tester_process = NetworkTester(100, self.tester_prediction_q)
 
         print("Server initialized")
 
