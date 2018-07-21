@@ -50,7 +50,7 @@ class Config:
     # Number of Agents
     AGENTS = 10
     # Number of human reference Agents from Agents AGENTS=humref+regular
-    HUMAN_REF_AGENTS = 10
+    HUMAN_REF_AGENTS = 2
     # Number of Predictors
     PREDICTORS = 2
     # Number of Trainers
@@ -154,11 +154,11 @@ class Config:
     #########################################################################
     # Network selection
     # define input
-    CONTINUOUS_INPUT = True
+    CONTINUOUS_INPUT = False
     CONTINUOUS_INPUT_PARTITIONS = 8
 
     # use ddpg model it works only with continuous input
-    USE_DDPG = True
+    USE_DDPG = False
     if USE_DDPG:
         add_uncertainity = False
         add_OUnoise = False
