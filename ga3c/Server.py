@@ -135,7 +135,7 @@ class Server:
         self.trainers.pop()
 
     def train_model(self, x_, r_, a_, x2, done, trainer_id):
-        self.model.train(x_, r_, a_, x2, done, trainer_id)
+        self.model.train(x_, r_, a_, x2, done, trainer_id, self.training_step)
         self.training_step += 1
         self.frame_counter += x_.shape[0]
 

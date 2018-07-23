@@ -129,17 +129,17 @@ class Network:
                 self.opt_grad_v = self.opt_v.compute_gradients(self.cost_v)
                 self.opt_grad_v_clipped = [(tf.clip_by_norm(g, Config.GRAD_CLIP_NORM),v) 
                                             for g,v in self.opt_grad_v if not g is None]
-                self.train_op_v = self.opt_v.apply_gradients(self.opt_grad_v_clipped)
+                self.train_op_v = self.opt_v.apply_gradients(self.opt_grad_v_clipped, global_step=self.global_step)
             
                 self.opt_grad_p = self.opt_p.compute_gradients(self.cost_p)
                 self.opt_grad_p_clipped = [(tf.clip_by_norm(g, Config.GRAD_CLIP_NORM),v)
                                             for g,v in self.opt_grad_p if not g is None]
-                self.train_op_p = self.opt_p.apply_gradients(self.opt_grad_p_clipped)
+                self.train_op_p = self.opt_p.apply_gradients(self.opt_grad_p_clipped, global_step=self.global_step)
                 self.train_op = [self.train_op_p, self.train_op_v]
             else:
                 self.opt_grad = self.opt.compute_gradients(self.cost_all)
                 self.opt_grad_clipped = [(tf.clip_by_average_norm(g, Config.GRAD_CLIP_NORM),v) for g,v in self.opt_grad]
-                self.train_op = self.opt.apply_gradients(self.opt_grad_clipped)
+                self.train_op = self.opt.apply_gradients(self.opt_grad_clipped, global_step=self.global_step)
         else:
             if Config.DUAL_RMSPROP:
                 self.train_op_v = self.opt_p.minimize(self.cost_v, global_step=self.global_step)
@@ -251,9 +251,9 @@ class Network:
         # print("out: " + str(self.sess.run(self.p_d1, feed_dict={self.x: x})))
         return self.sess.run([self.softmax_p, self.logits_v], feed_dict={self.x: x})
     
-    def train(self, x, y_r, a, x2, done, trainer_id):
+    def train(self, x, y_r, a, x2, done, trainer_id, training_step):
         feed_dict = self.__get_base_feed_dict()
-        feed_dict.update({self.x: x, self.y_r: y_r, self.action_index: a})
+        feed_dict.update({self.x: x, self.y_r: y_r, self.action_index: a, self.global_step: training_step})
         self.sess.run(self.train_op, feed_dict=feed_dict)
 
     def log(self, x, y_r, a):
