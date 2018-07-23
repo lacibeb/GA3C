@@ -251,16 +251,17 @@ class Network:
         # print("out: " + str(self.sess.run(self.p_d1, feed_dict={self.x: x})))
         return self.sess.run([self.softmax_p, self.logits_v], feed_dict={self.x: x})
     
-    def train(self, x, y_r, a, x2, done, trainer_id, training_step):
+    def train(self, x, y_r, a, x2, done, trainer_id):
         feed_dict = self.__get_base_feed_dict()
-        feed_dict.update({self.x: x, self.y_r: y_r, self.action_index: a, self.global_step: training_step})
+        feed_dict.update({self.x: x, self.y_r: y_r, self.action_index: a})
         self.sess.run(self.train_op, feed_dict=feed_dict)
 
-    def log(self, x, y_r, a):
+    def log(self, x, y_r, a, training_step):
         feed_dict = self.__get_base_feed_dict()
         feed_dict.update({self.x: x, self.y_r: y_r, self.action_index: a})
         step, summary = self.sess.run([self.global_step, self.summary_op], feed_dict=feed_dict)
-        self.log_writer.add_summary(summary, step)
+        # step is not working
+        self.log_writer.add_summary(summary, training_step)
 
     def _checkpoint_filename(self, episode):
         return 'checkpoints/%s_%08d' % (self.model_name, episode)
