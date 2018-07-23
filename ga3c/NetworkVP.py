@@ -187,7 +187,7 @@ class Network:
             y = tf.add(y, -0.5)
 
             # converting to angle
-            output = tf.divide(tf.atan2(y, x), np.pi)
+            output = tf.atan2(y, x)
 
         return output
 
