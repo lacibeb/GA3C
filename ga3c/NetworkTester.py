@@ -40,38 +40,38 @@ class NetworkTester(ProcessAgent):
             ca_ = []
             cv_ = []
             # forward velocity
-            v = [50, 0]
-            time.sleep(6.0)
-            for i in range(-2000, 2000, 40):
-                for j in range(-2000, 2000, 40):
-                    current_state = [v[0]/400.0, v[1]/400.0, i/900.0-1, j/900.0-1]
-                    prediction, value = self.predict(current_state)
-                    if Config.CONTINUOUS_INPUT:
-                        action = prediction[0]
-                        env_action = action
-                    else:
-                        action = self.select_action(prediction)
-                        # converting discrate action to continuous
-                        # converting -1 .. 1 to fixed angles
-                        env_action = self.convert_action_discrate_to_angle(action)
-                    # color = np.array([int(round((env_action + 1) * 127)), 0, 0], dtype='uint8')
-                    x_.append(i)
-                    y_.append(j)
-                    ca_.append(env_action)
-                    cv_.append(value)
-            if use_matplotlib:
-                # x_ = np.array(x_); y_ = np.array(y_); c_ = np.array(c_);
-                # plt.plot([x for x in x_], [y for y in y_], [c for c in c_])
-                plt.imshow(self.trk_pic)
-                plt.scatter(x_,y_, 0.3, c=ca_)
-                plt.pause(0.001)
-                plt.draw()
-                plt.savefig('./pics/action' + str(count) + '.tif')
-                plt.clf()
-                plt.imshow(self.trk_pic)
-                plt.scatter(x_,y_, 0.3, c=cv_)
-                plt.pause(0.001)
-                plt.draw()
-                plt.savefig('./pics/value' + str(count) + '.tif')
+            for v in [[50, 0], [50, 50], [50, -50], [0, 50], [0,-50]]:
+
+                for i in range(-2000, 2000, 60):
+                    for j in range(-2000, 2000, 60):
+                        current_state = [v[0]/400.0, v[1]/400.0, i/900.0-1, j/900.0-1]
+                        prediction, value = self.predict(current_state)
+                        if Config.CONTINUOUS_INPUT:
+                            action = prediction[0]
+                            env_action = action
+                        else:
+                            action = self.select_action(prediction)
+                            # converting discrate action to continuous
+                            # converting -1 .. 1 to fixed angles
+                            env_action = self.convert_action_discrate_to_angle(action)
+                        # color = np.array([int(round((env_action + 1) * 127)), 0, 0], dtype='uint8')
+                        x_.append(i)
+                        y_.append(j)
+                        ca_.append(env_action)
+                        cv_.append(value)
+                if use_matplotlib:
+                    # x_ = np.array(x_); y_ = np.array(y_); c_ = np.array(c_);
+                    # plt.plot([x for x in x_], [y for y in y_], [c for c in c_])
+                    plt.imshow(self.trk_pic)
+                    plt.scatter(x_,y_, 0.3, c=ca_)
+                    plt.pause(0.001)
+                    plt.draw()
+                    plt.savefig('./pics/action_' + str(v[0]) + "_" + str(v[1]) + str(count) + '.tif')
+                    plt.clf()
+                    plt.imshow(self.trk_pic)
+                    plt.scatter(x_,y_, 0.3, c=cv_)
+                    plt.pause(0.001)
+                    plt.draw()
+                    plt.savefig('./pics/value' + str(v[0]) + "_" + str(v[1]) + str(count) + '.tif')
                 plt.clf()
 
