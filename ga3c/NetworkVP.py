@@ -246,9 +246,9 @@ class Network:
         return prediction
     
     def predict_p_and_v(self, x):
-        print("xin: " + str(x))
-        print("xout: " + str(self.sess.run(self.x, feed_dict={self.x: x})))
-        print("out: " + str(self.sess.run(self.p_d1, feed_dict={self.x: x})))
+        # print("xin: " + str(x))
+        # print("xout: " + str(self.sess.run(self.x, feed_dict={self.x: x})))
+        # print("out: " + str(self.sess.run(self.p_d1, feed_dict={self.x: x})))
         return self.sess.run([self.softmax_p, self.logits_v], feed_dict={self.x: x})
     
     def train(self, x, y_r, a, x2, done, trainer_id):
