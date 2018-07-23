@@ -247,7 +247,7 @@ class Network:
     
     def predict_p_and_v(self, x):
         print("a: ")
-        print(str(x))
+        print(str(self.sess.run(self.x, feed_dict={self.x: x})))
         print("out: ")
         print(str(self.sess.run(self.p_d1, feed_dict={self.x: x})))
         return self.sess.run([self.softmax_p, self.logits_v], feed_dict={self.x: x})
