@@ -76,10 +76,10 @@ class Network:
 
         # As implemented in A3C paper
 
-        self.p_d1 = self.dense_layer(self.x, 4, 'dense11_p')
-        self.p_d2 = self.dense_layer(self.p_d1, 256, 'dense12_p')
-        self.p_d3 = self.dense_layer(self.p_d2, 1024, 'dense13_p')
-        self.p_d4 = self.dense_layer(self.p_d3, 1024, 'dense14_p')
+        self.p_d1 = self.dense_layer(self.x, 4, 'dense11_p', None)
+        self.p_d2 = self.dense_layer(self.p_d1, 256, 'dense12_p', None)
+        self.p_d3 = self.dense_layer(self.p_d2, 256, 'dense13_p', None)
+        self.p_d4 = self.dense_layer(self.p_d3, 100, 'dense14_p', None)
         self.action_index = tf.placeholder(tf.float32, [None, self.num_actions])
 
         self.d1 = self.dense_layer(self.p_d4, 64, 'dense1')
