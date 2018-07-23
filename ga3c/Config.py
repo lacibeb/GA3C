@@ -177,5 +177,5 @@ class Config:
     else:
         USE_REPLAY_MEMORY = False
 
-    USE_NETWORK_TESTER = False
+    USE_NETWORK_TESTER = True
 

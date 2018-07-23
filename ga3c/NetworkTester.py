@@ -40,10 +40,10 @@ class NetworkTester(ProcessAgent):
             ca_ = []
             cv_ = []
             # forward velocity
-            for v in [[50, 0], [50, 50], [50, -50], [0, 50], [0,-50]]:
+            for v in [[50, 0], [50, 50], [0, 50], [-50, 50], [-50, 0], [-50, -50], [0, -50], [50, -50]]:
 
-                for i in range(-2000, 2000, 60):
-                    for j in range(-2000, 2000, 60):
+                for i in range(0, 1800, 60):
+                    for j in range(0, 1500, 60):
                         current_state = [v[0]/400.0, v[1]/400.0, i/900.0-1, j/900.0-1]
                         prediction, value = self.predict(current_state)
                         if Config.CONTINUOUS_INPUT:
@@ -66,12 +66,12 @@ class NetworkTester(ProcessAgent):
                     plt.scatter(x_,y_, 0.3, c=ca_)
                     plt.pause(0.001)
                     plt.draw()
-                    plt.savefig('./pics/action_' + str(v[0]) + "_" + str(v[1]) + str(count) + '.tif')
+                    plt.savefig('./pics/st_' + str(count) + '_action_' + str(v[0]) + "_" + str(v[1]) + '.tif')
                     plt.clf()
                     plt.imshow(self.trk_pic)
                     plt.scatter(x_,y_, 0.3, c=cv_)
                     plt.pause(0.001)
                     plt.draw()
-                    plt.savefig('./pics/value' + str(v[0]) + "_" + str(v[1]) + str(count) + '.tif')
+                    plt.savefig('./pics/st_' + str(count) + '_value_' + str(v[0]) + "_" + str(v[1]) + '.tif')
                 plt.clf()
 
