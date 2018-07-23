@@ -39,7 +39,7 @@ class Config:
     # Enable to train
     TRAIN_MODELS = True
     # Load old models. Throws if the model doesn't exist
-    LOAD_CHECKPOINT = True
+    LOAD_CHECKPOINT = False
     # If 0, the latest checkpoint is loaded
     LOAD_EPISODE = 0 
 
@@ -98,7 +98,7 @@ class Config:
     BETA_END = 0.001
 
     # Learning rate
-    LEARNING_RATE_START = 0.0003
+    LEARNING_RATE_START = 0.00003
     LEARNING_RATE_END = 0.000003
 
     # RMSProp parameters
