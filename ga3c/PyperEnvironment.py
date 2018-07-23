@@ -56,7 +56,7 @@ class Environment:
 
     def step(self, action):
         # action randomisation
-        action = action + np.random.uniform(0.03, -0.03)
+        # action = action + np.random.uniform(0.03, -0.03)
 
         self.check_bounds(action, 1.0, -1.0, True)
         # Game requires input -180..180 int

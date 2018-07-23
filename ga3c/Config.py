@@ -39,7 +39,7 @@ class Config:
     # Enable to train
     TRAIN_MODELS = True
     # Load old models. Throws if the model doesn't exist
-    LOAD_CHECKPOINT = False
+    LOAD_CHECKPOINT = True
     # If 0, the latest checkpoint is loaded
     LOAD_EPISODE = 0 
 
@@ -91,7 +91,7 @@ class Config:
 
     # Total number of episodes and annealing frequency
     EPISODES = 500000
-    ANNEALING_EPISODE_COUNT = 100000
+    ANNEALING_EPISODE_COUNT = 300000
 
     # Entropy regualrization hyper-parameter
     BETA_START = 0.001
@@ -99,7 +99,7 @@ class Config:
 
     # Learning rate
     LEARNING_RATE_START = 0.03
-    LEARNING_RATE_END = 0.00003
+    LEARNING_RATE_END = 0.000003
 
     # RMSProp parameters
     # if False than ADAM optimizer only for ddpg
