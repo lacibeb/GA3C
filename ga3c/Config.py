@@ -69,7 +69,7 @@ class Config:
 
     # Discount factor
     DISCOUNTING = True
-    DISCOUNT = 0.99
+    DISCOUNT = 0.98
     
     # Tmax
     TIME_MAX = 100
@@ -90,15 +90,15 @@ class Config:
     IMAGE_HEIGHT = 84
 
     # Total number of episodes and annealing frequency
-    EPISODES = 500000
-    ANNEALING_EPISODE_COUNT = 300000
+    EPISODES = 2000000
+    ANNEALING_EPISODE_COUNT = 100000
 
     # Entropy regualrization hyper-parameter
     BETA_START = 0.001
     BETA_END = 0.001
 
     # Learning rate
-    LEARNING_RATE_START = 0.03
+    LEARNING_RATE_START = 0.0003
     LEARNING_RATE_END = 0.000003
 
     # RMSProp parameters

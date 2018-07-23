@@ -38,14 +38,9 @@ class Config:
 
     # Enable to see the trained agent in action
     SHOW_WINDOW = False
-    # Enable to train
-    TRAIN_MODELS = True
 
     #########################################################################
     # Algorithm parameters
-    
-    # steps per game
-    MAX_STEPS = 5
     
     # Reward Clipping
     REWARD_MIN = -100
@@ -60,7 +55,7 @@ class Config:
     load_env_ref_buffer = './env_ref_buffer/env_ref_buffer_1'
     load_all_env_ref_buffer_dir = './env_ref_buffer'
 
-    reward_based_on_ref = True
+    reward_based_on_ref = False
 
     logging_game = False
     logging_debug = False
