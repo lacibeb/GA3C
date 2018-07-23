@@ -72,7 +72,7 @@ class Config:
     DISCOUNT = 0.98
     
     # Tmax
-    TIME_MAX = 100
+    TIME_MAX = 200
     
     # Reward Clipping
     REWARD_CLIPPING = True

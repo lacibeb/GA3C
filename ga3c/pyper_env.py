@@ -372,7 +372,7 @@ class PaperRaceEnv:
         self.calc_game_reward()
 
         # ha nagyon lassan vagy hatrafele halad szinten legyen vege (egy jo lepes 4-6% ot halad egyenesben
-        if self.step_pos_reward < 0.001:
+        if self.step_pos_reward < 0.0001:
             self.log("\033[92m {}\033[00m".format("\n    Vege: tul lassu, vagy hatrafele ment!"), "game")
             self.end = True
 
@@ -575,7 +575,7 @@ class PaperRaceEnv:
         self.log('\n      --' + self.player.name + ': ', "game")
         self.log('\n        ', "game")
         # kezdeti sebeesseg, ahogy a kornyezet adja
-        self.v = np.array(self.starting_spd)
+        self.v = np.array(self.starting_spd*0.1)
 
         # sebesség mellé a kezdeti poz. is kell. Ez a kezdőpozíció beállítása:
         self.pos = np.array(self.starting_pos)
