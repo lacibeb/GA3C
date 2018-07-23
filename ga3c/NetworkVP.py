@@ -249,7 +249,7 @@ class Network:
         print("a: ")
         print(str(x))
         print("out: ")
-        print(str(self.sess.run(self.p1_d1, feed_dict={self.x: x})))
+        print(str(self.sess.run(self.p_d1, feed_dict={self.x: x})))
         return self.sess.run([self.softmax_p, self.logits_v], feed_dict={self.x: x})
     
     def train(self, x, y_r, a, x2, done, trainer_id):
