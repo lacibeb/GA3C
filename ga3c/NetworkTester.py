@@ -42,8 +42,8 @@ class NetworkTester(ProcessAgent):
             # forward velocity
             v = [50, 0]
             time.sleep(6.0)
-            for i in range(0, 1800, 10):
-                for j in range(0, 1500, 10):
+            for i in range(0, 1800, 20):
+                for j in range(0, 1500, 20):
                     current_state = [v[0]/400.0, v[1]/400.0, i/900.0-1, j/900.0-1]
                     prediction, value = self.predict(current_state)
                     if Config.CONTINUOUS_INPUT:
