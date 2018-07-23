@@ -76,13 +76,13 @@ class Network:
 
         # As implemented in A3C paper
 
-        self.p_d1 = self.dense_layer(self.x, 2048, 'dense11_p')
-        self.p_d2 = self.dense_layer(self.p_d1, 4048, 'dense12_p')
-        self.p_d3 = self.dense_layer(self.p_d2, 4048, 'dense13_p')
-        self.p_d4 = self.dense_layer(self.p_d3, 4048, 'dense14_p')
+        self.p_d1 = self.dense_layer(self.x, 4, 'dense11_p')
+        self.p_d2 = self.dense_layer(self.p_d1, 256, 'dense12_p')
+        self.p_d3 = self.dense_layer(self.p_d2, 1024, 'dense13_p')
+        self.p_d4 = self.dense_layer(self.p_d3, 1024, 'dense14_p')
         self.action_index = tf.placeholder(tf.float32, [None, self.num_actions])
 
-        self.d1 = self.dense_layer(self.p_d4, 512, 'dense1')
+        self.d1 = self.dense_layer(self.p_d4, 64, 'dense1')
 
         self.logits_v = tf.squeeze(self.dense_layer(self.d1, 1, 'logits_v', func=None), axis=[1])
 
@@ -196,7 +196,7 @@ class Network:
         # with lot of input it is OK
         # d = 1.0 / np.sqrt(in_dim)
         # with paperenv it better around 0
-        d = 0.03
+        d = 0.3
         with tf.variable_scope(name):
             w_init = tf.random_uniform_initializer(-d, d)
             b_init = tf.random_uniform_initializer(-d, d)
