@@ -37,9 +37,9 @@ class Config:
     # Enable to see the trained agent in action
     PLAY_MODE = False
     # Enable to train
-    TRAIN_MODELS = True
+    TRAIN_MODELS = False
     # Load old models. Throws if the model doesn't exist
-    LOAD_CHECKPOINT = False
+    LOAD_CHECKPOINT = True
     # If 0, the latest checkpoint is loaded
     LOAD_EPISODE = 0 
 
@@ -48,9 +48,9 @@ class Config:
     
     # If the dynamic configuration is on, these are the initial values.
     # Number of Agents
-    AGENTS = 10
+    AGENTS = 1
     # Number of human reference Agents from Agents AGENTS=humref+regular
-    HUMAN_REF_AGENTS = 10
+    HUMAN_REF_AGENTS = 0
     # Number of Predictors
     PREDICTORS = 2
     # Number of Trainers
