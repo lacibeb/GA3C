@@ -79,7 +79,7 @@ class Network(NetworkVP):
         #y_i = np.reshape(y_i, (batch_size, 1))
 
         # Update the critic given the targets
-        predicted_q_value, _ = self.critic.train(self.sess, s_batch, a_batch, y_i)
+        predicted_q_value, _ = self.critic.train(self.sess, s_batch, a_batch, y_i, self.learning_rate)
 
         # Update the actor policy using the sampled gradient
         a_outs = self.actor.predict(self.sess, s_batch)
@@ -87,7 +87,7 @@ class Network(NetworkVP):
         # gradienseket ezzel kiolvassa a tensorflow graph-ból és visszamásolja
         grads = self.critic.action_gradients(self.sess, s_batch, a_outs)
         # print("grads: " + str(grads))
-        self.actor.train(self.sess, s_batch, grads[0])
+        self.actor.train(self.sess, s_batch, grads[0], self.learning_rate)
 
         # Update target networks
         self.actor.update_target_network(self.sess)
@@ -171,8 +171,10 @@ class ActorNetwork(object):
         self.actor_gradients = tf.gradients(
             self.out, self.network_params, -self.action_gradient, name='actor_grads')
 
+        self.a_learning_rate = tf.placeholder(tf.float32, name='cr_learning_rate')
+
         # Optimization Op
-        self.optimize = tf.train.AdamOptimizer(self.learning_rate). \
+        self.optimize = tf.train.AdamOptimizer(self.a_learning_rate). \
             apply_gradients(zip(self.actor_gradients, self.network_params), name='actor_optimize')
 
         self.num_trainable_vars = len(
@@ -217,10 +219,11 @@ class ActorNetwork(object):
             # scaled_out = np.sign(out)
             return out, scaled_out
 
-    def train(self, sess, inputs, a_gradient):
+    def train(self, sess, inputs, a_gradient, learning_rate):
         sess.run(self.optimize, feed_dict={
             self.inputs: inputs,
-            self.action_gradient: a_gradient
+            self.action_gradient: a_gradient,
+            self.a_learning_rate: self.learning_rate*learning_rate
         })
 
     def predict(self, sess, inputs):
@@ -230,7 +233,7 @@ class ActorNetwork(object):
         if Config.add_uncertainity:
             return prediction + self.uncertanity()
         if Config.add_OUnoise:
-            return prediction + self.actior_noise
+            return prediction + self.actor_noise
         return prediction
 
 
@@ -311,7 +314,7 @@ class CriticNetwork(object):
             # no dual optimization
             # if Config.DUAL_RMSPROP:
             self.opt_loss = tf.train.RMSPropOptimizer(
-                learning_rate=self.learning_rate,
+                learning_rate=self.cr_learning_rate,
                 decay=Config.RMSPROP_DECAY,
                 momentum=Config.RMSPROP_MOMENTUM,
                 epsilon=Config.RMSPROP_EPSILON)
@@ -377,12 +380,12 @@ class CriticNetwork(object):
 
             return out
 
-    def train(self, sess, inputs, action, predicted_q_value):
+    def train(self, sess, inputs, action, predicted_q_value, learning_rate):
         with tf.variable_scope('critic'):
             return sess.run([self.out, self.train_op], feed_dict={
                 self.inputs: inputs,
                 self.action: action,
-                self.cr_learning_rate: self.learning_rate,
+                self.cr_learning_rate: self.learning_rate*learning_rate,
                 self.predicted_q_value: predicted_q_value
             })
 
@@ -423,7 +426,7 @@ class CriticNetwork(object):
 # Taken from https://github.com/openai/baselines/blob/master/baselines/ddpg/noise.py, which is
 # based on http://math.stackexchange.com/questions/1287634/implementing-ornstein-uhlenbeck-in-matlab
 class OrnsteinUhlenbeckActionNoise:
-    def __init__(self, mu, sigma=0.3, theta=.15, dt=1e-2, x0=None):
+    def __init__(self, mu, sigma=0.3, theta=.15, dt=1, x0=None):
         self.theta = theta
         self.mu = mu
         self.sigma = sigma

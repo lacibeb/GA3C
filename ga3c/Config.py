@@ -90,16 +90,16 @@ class Config:
     IMAGE_HEIGHT = 84
 
     # Total number of episodes and annealing frequency
-    EPISODES = 2000000
-    ANNEALING_EPISODE_COUNT = 100000
+    EPISODES = 5000000
+    ANNEALING_EPISODE_COUNT = 500000
 
     # Entropy regualrization hyper-parameter
     BETA_START = 0.001
     BETA_END = 0.001
 
     # Learning rate
-    LEARNING_RATE_START = 0.00003
-    LEARNING_RATE_END = 0.000003
+    LEARNING_RATE_START = 0.001
+    LEARNING_RATE_END = 0.00000001
 
     # RMSProp parameters
     # if False than ADAM optimizer only for ddpg
@@ -158,10 +158,10 @@ class Config:
     CONTINUOUS_INPUT_PARTITIONS = 8
 
     # use ddpg model it works only with continuous input
-    USE_DDPG = False
+    USE_DDPG = True
     if USE_DDPG:
         add_uncertainity = False
-        add_OUnoise = False
+        add_OUnoise = True
 
         USE_REPLAY_MEMORY = True
         REPLAY_BUFFER_SIZE = 1000000
@@ -169,13 +169,13 @@ class Config:
         REPLAY_MIN_QUEUE_SIZE = 2
         DDPG_FUTURE_REWARD_CALC = True
         # with DDPG
-        actor_lr = 0.00003
-        critic_lr = 0.0005
+        # multiplayer to learning rate
+        actor_lr = 0.3
+        critic_lr = 2
         tau = 0.99
         gamma = 0.99
         DISCOUNTING = False
     else:
-        USE_REPLAY_MEMORY = False
+        USE_REPLAY_MEMORY = True
 
-    USE_NETWORK_TESTER = True
-
+    USE_NETWORK_TESTER = False
