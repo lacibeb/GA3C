@@ -50,11 +50,6 @@ class Network(NetworkVP):
                                     self.critic_lr, self.tau, self.gamma,
                                     self.actor.get_num_trainable_vars(), self.x, self.action_index, self.y_r)
 
-        print("critic created")
-
-        self.actor_noise = OrnsteinUhlenbeckActionNoise(mu=np.zeros(self.num_actions))
-
-        print("actor noise created")
 
 
     def train(self, x, y_r, a, x2, done, trainer_id):
@@ -186,6 +181,8 @@ class ActorNetwork(object):
 
         # writer = tf.summary.FileWriter(args['summary_dir'], self.sess.graph)
         # writer.close()
+        if Config.add_OUnoise:
+            self.actor_noise = OrnsteinUhlenbeckActionNoise(mu=np.zeros(self.self.action_dim))
 
     def create_actor_network(self, scope='actor'):
         with tf.name_scope(scope):
