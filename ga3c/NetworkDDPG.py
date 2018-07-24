@@ -231,6 +231,11 @@ class ActorNetwork(object):
             return prediction + self.uncertanity()
         if Config.add_OUnoise:
             return prediction + self.actor_noise()
+        # it is angle, have to be rotated around
+        if prediction > self.action_bound:
+            prediction -= 2
+        elif prediction < -self.action_bound:
+            prediction += 2
         return prediction
 
 
