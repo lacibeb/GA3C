@@ -33,7 +33,8 @@ class Config:
     # TODO atary option is not working yet
     # TODO atary games works with image input(missing) and dicrate output(this is implemented)
     # GAME = 'PongDeterministic-v0'
-    GAME = 'pyperrace'
+    GAME = 'Pendulum-v0'
+    # GAME = 'pyperrace'
     # Enable to see the trained agent in action
     PLAY_MODE = False
     # Enable to train
@@ -178,4 +179,5 @@ class Config:
     else:
         USE_REPLAY_MEMORY = True
 
+    RANDOM_SEED = 12345
     USE_NETWORK_TESTER = False

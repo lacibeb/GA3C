@@ -33,6 +33,8 @@ from Config import Config
 # for pyperrace the statedim is comming from game
 if Config.GAME == 'pyperrace':
     from PyperEnvironment import Environment
+elif Config.GAME == 'Pendulum-v0':
+    from EnvironmentPend import Environment
 else:
     pass
     # from Environment import Environment
