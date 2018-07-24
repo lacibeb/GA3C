@@ -232,12 +232,23 @@ class ActorNetwork(object):
         if Config.add_OUnoise:
             return prediction + self.actor_noise()
         # it is angle, have to be rotated around
-        if prediction > self.action_bound:
-            prediction -= 2
-        elif prediction < -self.action_bound:
-            prediction += 2
-        return prediction
+        return self.check_bounds(prediction,self.action_bound, -self.action_bound, True)
 
+    @staticmethod
+    def check_bounds(value, posbound, negbound = 0, turnaround = True):
+        # if out of bounds then check angle
+        if turnaround is False:
+            if value < negbound:
+                value = negbound
+            if value > posbound:
+                value = posbound
+        else:
+            size = posbound - negbound
+            if value < negbound:
+                value = posbound - ((negbound - value) % size)
+            if value > posbound:
+                value = ((value - posbound) % size) + negbound
+        return value
 
     def predict_target(self, sess, inputs):
         return sess.run(self.target_out, feed_dict={
@@ -450,3 +461,4 @@ class OrnsteinUhlenbeckActionNoise:
 
     def __repr__(self):
         return 'OrnsteinUhlenbeckActionNoise(mu={}, sigma={})'.format(self.mu, self.sigma)
+
