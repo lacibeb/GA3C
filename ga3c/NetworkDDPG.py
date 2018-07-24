@@ -182,7 +182,7 @@ class ActorNetwork(object):
         # writer = tf.summary.FileWriter(args['summary_dir'], self.sess.graph)
         # writer.close()
         if Config.add_OUnoise:
-            self.actor_noise = OrnsteinUhlenbeckActionNoise(mu=np.zeros(self.self.action_dim))
+            self.actor_noise = OrnsteinUhlenbeckActionNoise(mu=np.zeros(self.action_dim))
 
     def create_actor_network(self, scope='actor'):
         with tf.name_scope(scope):
