@@ -230,7 +230,7 @@ class ActorNetwork(object):
         if Config.add_uncertainity:
             return prediction + self.uncertanity()
         if Config.add_OUnoise:
-            return prediction + self.actor_noise
+            return prediction + self.actor_noise()
         return prediction
 
 
