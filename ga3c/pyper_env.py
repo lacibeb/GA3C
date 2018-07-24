@@ -575,7 +575,7 @@ class PaperRaceEnv:
         self.log('\n      --' + self.player.name + ': ', "game")
         self.log('\n        ', "game")
         # kezdeti sebeesseg, ahogy a kornyezet adja
-        self.v = np.array(self.starting_spd*0.1)
+        self.v = np.array(self.starting_spd)
 
         # sebesség mellé a kezdeti poz. is kell. Ez a kezdőpozíció beállítása:
         self.pos = np.array(self.starting_pos)
