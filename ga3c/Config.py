@@ -173,7 +173,7 @@ class Config:
         # multiplayer to learning rate
         actor_lr = 0.3
         critic_lr = 2
-        tau = 0.99
+        tau = 0.001
         gamma = 0.99
         DISCOUNTING = False
     else:
@@ -181,3 +181,10 @@ class Config:
 
     RANDOM_SEED = 12345
     USE_NETWORK_TESTER = False
+
+# ------------------------------------
+# recommended game specific settings
+    if GAME == 'Pendulum-v0':
+        TIME_MAX = 1000
+
+
