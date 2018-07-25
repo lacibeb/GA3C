@@ -36,7 +36,7 @@ from Config import Config
 if Config.GAME == 'pyperrace':
     from PyperEnvironment import Environment
 else:
-    from Environment import Environment
+    from EnvironmentPend import Environment
 
 from Experience import Experience
 

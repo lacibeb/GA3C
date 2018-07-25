@@ -51,7 +51,7 @@ class Environment(Env):
 
         self.reset()
 
-        # action_bound = self.game.action_space.high
+        self.action_bound = self.game.action_space.high
 
     def get_num_actions(self):
         return self.game.action_space.shape[0]
@@ -61,16 +61,20 @@ class Environment(Env):
 
     def reset(self):
         self.game.reset()
+        self.current_state, r, done, info = self.game.step(np.float32([0.0]))
+        self.current_state = np.reshape(self.current_state, -1)
 
     def step(self, action):
         # action randomisation
         # action = action + np.random.uniform(0.03, -0.03)
 
         self.check_bounds(action, 1.0, -1.0, True)
-        # Game requiresdone input -180..180 int
-
+        # Game requires input -180..180 int
+        action = action*self.action_bound
         self.previous_state = self.current_state
-        self.current_state, reward, done, info = self.game.step(action)
+        self.current_state, reward, done, info = self.game.step([action])
+        self.current_state = np.reshape(self.current_state, -1)
+        reward = reward[0]/16.5
 
         return reward, done
 

@@ -68,12 +68,8 @@ class Server:
         self.prediction_q = Queue(maxsize=Config.MAX_QUEUE_SIZE)
         self.replay_q = Queue(maxsize=Config.MAX_QUEUE_SIZE)
 
-        if Config.GAME == 'pyperrace':
-            self.model = Network(Config.DEVICE, Config.NETWORK_NAME,
+        self.model = Network(Config.DEVICE, Config.NETWORK_NAME,
                                    self.get_num_action(), self.get_state_dim())
-        else:
-            self.model = Network(Config.DEVICE, Config.NETWORK_NAME,
-                                 self.get_num_action())
 
         if Config.LOAD_CHECKPOINT:
             try:
@@ -197,19 +193,14 @@ class Server:
 
     @staticmethod
     def get_state_dim():
-        if Config.GAME == 'pyperrace':
-            return Environment.get_state_dim()
-        else:
-            raise("Only used wit pyperrace, something wrong")
+        return Environment().get_state_dim()
 
     @staticmethod
     def get_num_action():
-        if Config.GAME == 'pyperrace':
-            if Config.CONTINUOUS_INPUT:
-                return Environment.get_num_actions()
-            else:
-                return Config.CONTINUOUS_INPUT_PARTITIONS
+        if Config.CONTINUOUS_INPUT:
+            return Environment().get_num_actions()
         else:
-            raise("Only used wit pyperrace, something wrong")
+            return Config.CONTINUOUS_INPUT_PARTITIONS
+
 
 
