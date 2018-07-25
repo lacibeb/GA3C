@@ -20,6 +20,8 @@ class Network(NetworkVP):
         self.critic.update_target_network(self.sess)
         print("target critic initialised")
 
+        self.logging = 0.0, 0.0
+
     def _create_graph(self):
         # action input for critic output for actor
         self.action_index = tflearn.input_data(shape=[None, self.num_actions], name='critic_action_input')
@@ -96,7 +98,7 @@ class Network(NetworkVP):
     def log(self, x, y_r, a, training_step):
         feed_dict = self.__get_base_feed_dict()
         Q_max, Q_avg = self.logging
-        feed_dict.update({Q_max: Q_max, Q_avg: Q_avg})
+        feed_dict.update({self.q_max: Q_max, self.q_avg: Q_avg})
         super(Network, self).log(x, y_r, a, training_step, feed_dict)
 
     def predict_p_and_v(self, x):
