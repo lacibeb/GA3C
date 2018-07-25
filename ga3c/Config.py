@@ -104,7 +104,7 @@ class Config:
 
     # RMSProp parameters
     # if False than ADAM optimizer only for ddpg
-    RMSPROP = True
+    #RMSPROP = True
     RMSPROP_DECAY = 0.99
     RMSPROP_MOMENTUM = 0.0
     RMSPROP_EPSILON = 0.1
@@ -192,5 +192,5 @@ class Config:
     ANNEALING_EPISODE_COUNT = 5000
     actor_lr = 1
     critic_lr = 10
-
+    RMSPROP = False
 
