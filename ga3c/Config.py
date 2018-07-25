@@ -99,7 +99,7 @@ class Config:
     BETA_END = 0.001
 
     # Learning rate
-    LEARNING_RATE_START = 0.001
+    LEARNING_RATE_START = 0.0001
     LEARNING_RATE_END = 0.00000001
 
     # RMSProp parameters
@@ -186,5 +186,11 @@ class Config:
 # recommended game specific settings
     if GAME == 'Pendulum-v0':
         TIME_MAX = 1000
+        LEARNING_RATE_START = 0.001
+        LEARNING_RATE_END = 0.0001
+        EPISODES = 10000
+        ANNEALING_EPISODE_COUNT = 5000
+        actor_lr = 1
+        critic_lr = 10
 
 
