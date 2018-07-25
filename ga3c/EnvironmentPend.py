@@ -74,7 +74,7 @@ class Environment(Env):
         self.previous_state = self.current_state
         self.current_state, reward, done, info = self.game.step([action])
         self.current_state = np.reshape(self.current_state, -1)
-        reward = reward[0]/16.5
+        reward = reward[0]
 
         return reward, done
 
