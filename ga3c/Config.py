@@ -91,16 +91,16 @@ class Config:
     IMAGE_HEIGHT = 84
 
     # Total number of episodes and annealing frequency
-    EPISODES = 5000000
-    ANNEALING_EPISODE_COUNT = 500000
+    #EPISODES = 5000000
+    #ANNEALING_EPISODE_COUNT = 500000
 
     # Entropy regualrization hyper-parameter
     BETA_START = 0.001
     BETA_END = 0.001
 
     # Learning rate
-    LEARNING_RATE_START = 0.0001
-    LEARNING_RATE_END = 0.00000001
+    #LEARNING_RATE_START = 0.0001
+    #LEARNING_RATE_END = 0.00000001
 
     # RMSProp parameters
     # if False than ADAM optimizer only for ddpg
