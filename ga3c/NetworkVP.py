@@ -256,8 +256,9 @@ class Network:
         feed_dict.update({self.x: x, self.y_r: y_r, self.action_index: a})
         self.sess.run(self.train_op, feed_dict=feed_dict)
 
-    def log(self, x, y_r, a, training_step):
-        feed_dict = self.__get_base_feed_dict()
+    def log(self, x, y_r, a, training_step, feed_dict=None):
+        if feed_dict is None:
+            feed_dict = self.__get_base_feed_dict()
         feed_dict.update({self.x: x, self.y_r: y_r, self.action_index: a})
         step, summary = self.sess.run([self.global_step, self.summary_op], feed_dict=feed_dict)
         # step is not working

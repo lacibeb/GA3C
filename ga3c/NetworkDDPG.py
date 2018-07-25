@@ -34,6 +34,8 @@ class Network(NetworkVP):
 
         self.var_beta = tf.placeholder(tf.float32, name='beta', shape=[])
         self.var_learning_rate = tf.placeholder(tf.float32, name='lr', shape=[])
+        self.q_max = tf.placeholder(tf.float32, name='Q_max', shape=[])
+        self.q_avg = tf.placeholder(tf.float32, name='Q_avg', shape=[])
 
         self.global_step = tf.Variable(0, trainable=False, name='step')
 
@@ -53,7 +55,7 @@ class Network(NetworkVP):
 
 
     def train(self, x, y_r, a, x2, done, trainer_id):
-        self.train_DDPG(x, a, y_r, done, x2)
+         return self.train_DDPG(x, a, y_r, done, x2)
 
     def train_DDPG(self, s_batch, a_batch, r_batch, t_batch, s2_batch):
         # Calculate targets
@@ -87,7 +89,15 @@ class Network(NetworkVP):
         # Update target networks
         self.actor.update_target_network(self.sess)
         self.critic.update_target_network(self.sess)
-        return np.amax(predicted_q_value*100)
+
+        # not calling log because server calls it
+        self.logging = np.amax(predicted_q_value), np.average(predicted_q_value)
+
+    def log(self, x, y_r, a, training_step):
+        feed_dict = self.__get_base_feed_dict()
+        Q_max, Q_avg = self.logging
+        feed_dict.update({Q_max: Q_max, Q_avg: Q_avg})
+        super(self).log(x, y_r, a, training_step, feed_dict)
 
     def predict_p_and_v(self, x):
         # feed_dict={self.x: x}
@@ -116,6 +126,8 @@ class Network(NetworkVP):
         # summaries.append(tf.summary.histogram("activation_v", self.logits_v))
         # summaries.append(tf.summary.histogram("activation_p", self.softmax_p))
         # summaries = self.misc_tensor_board(summaries)
+        summaries.append(tf.summary.scalar("Q_max", self.q_max))
+        summaries.append(tf.summary.scalar("Q_avg", self.q_avg))
 
         self.summary_op = tf.summary.merge(summaries)
         self.log_writer = tf.summary.FileWriter("logs/%s" % self.model_name, self.sess.graph)
@@ -432,9 +444,14 @@ class CriticNetwork(object):
         return self.out, self.loss
 
     def create_tensor_board(self, summaries):
-        summaries.append(tf.summary.scalar("c_loss", self.loss))
-        return summaries
+        summaries = tf.get_collection(tf.GraphKeys.SUMMARIES)
+        summaries.append(tf.summary.scalar("Q_loss", self.loss))
+        for var in tf.trainable_variables():
+            summaries.append(tf.summary.histogram("weights_%s" % var.name, var))
 
+        self.summary_op = tf.summary.merge(summaries)
+        self.log_writer = tf.summary.FileWriter("logs/%s" % self.model_name, self.sess.graph)
+        return summaries
 
 # Taken from https://github.com/openai/baselines/blob/master/baselines/ddpg/noise.py, which is
 # based on http://math.stackexchange.com/questions/1287634/implementing-ornstein-uhlenbeck-in-matlab
