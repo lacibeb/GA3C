@@ -97,7 +97,7 @@ class Network(NetworkVP):
         feed_dict = self.__get_base_feed_dict()
         Q_max, Q_avg = self.logging
         feed_dict.update({Q_max: Q_max, Q_avg: Q_avg})
-        super(self).log(x, y_r, a, training_step, feed_dict)
+        super(Network, self).log(x, y_r, a, training_step, feed_dict)
 
     def predict_p_and_v(self, x):
         # feed_dict={self.x: x}
