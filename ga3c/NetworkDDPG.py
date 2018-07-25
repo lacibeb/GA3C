@@ -444,13 +444,12 @@ class CriticNetwork(object):
         return self.out, self.loss
 
     def create_tensor_board(self, summaries):
-        summaries = tf.get_collection(tf.GraphKeys.SUMMARIES)
-        summaries.append(tf.summary.scalar("Q_loss", self.loss))
-        for var in tf.trainable_variables():
-            summaries.append(tf.summary.histogram("weights_%s" % var.name, var))
+        # summaries.append(tf.summary.scalar("Q_loss", self.loss))
+        #for var in tf.trainable_variables():
+        #    summaries.append(tf.summary.histogram("weights_%s" % var.name, var))
 
-        self.summary_op = tf.summary.merge(summaries)
-        self.log_writer = tf.summary.FileWriter("logs/%s" % self.model_name, self.sess.graph)
+        #self.summary_op = tf.summary.merge(summaries)
+        #self.log_writer = tf.summary.FileWriter("logs/%s" % self.model_name, self.sess.graph)
         return summaries
 
 # Taken from https://github.com/openai/baselines/blob/master/baselines/ddpg/noise.py, which is
