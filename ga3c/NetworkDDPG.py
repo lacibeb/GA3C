@@ -45,6 +45,8 @@ class Network(NetworkVP):
         self.critic_lr = Config.critic_lr
         self.tau = Config.tau
         self.gamma = Config.gamma
+        print('tau: ' + str(self.tau))
+        print('ac_lr' + str(self.actor_lr))
         self.actor = ActorNetwork(self.state_dim, self.num_actions, self.action_bound,
                                   self.actor_lr, self.tau, self.x)
 
