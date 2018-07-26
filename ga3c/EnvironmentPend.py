@@ -56,9 +56,9 @@ class Environment(Env):
 
     def get_num_actions(self):
         if Config.CONTINUOUS_INPUT:
-            action_dim = self.game.action_space.n
+            action_dim = self.game.action_space.shape[0]
         else:
-            action_dim  = self.game.action_space.shape[0]
+            action_dim = self.game.action_space.n
         return action_dim
 
     def get_state_dim(self):
