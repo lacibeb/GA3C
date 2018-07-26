@@ -51,7 +51,8 @@ class Environment(Env):
 
         self.reset()
 
-        self.action_bound = self.game.action_space.high
+        if Config.CONTINUOUS_INPUT:
+            self.action_bound = self.game.action_space.high
 
     def get_num_actions(self):
         return self.game.action_space.shape[0]
