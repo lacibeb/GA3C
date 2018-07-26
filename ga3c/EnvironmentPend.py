@@ -55,6 +55,7 @@ class Environment(Env):
             self.action_bound = self.game.action_space.high
 
     def get_num_actions(self):
+        print(self.game.action_space.shape)
         return self.game.action_space.shape[0]
 
     def get_state_dim(self):
