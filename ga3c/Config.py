@@ -33,7 +33,8 @@ class Config:
     # TODO atary option is not working yet
     # TODO atary games works with image input(missing) and dicrate output(this is implemented)
     # GAME = 'PongDeterministic-v0'
-    GAME = 'Pendulum-v0'
+    # GAME = 'Pendulum-v0'
+    GAME = 'CartPole-v0'
     # GAME = 'pyperrace'
     # Enable to see the trained agent in action
     PLAY_MODE = False
@@ -159,7 +160,7 @@ class Config:
     CONTINUOUS_INPUT_PARTITIONS = 8
 
     # use ddpg model it works only with continuous input
-    USE_DDPG = True
+    USE_DDPG = False
     if USE_DDPG:
         add_uncertainity = False
         add_OUnoise = True
@@ -177,7 +178,7 @@ class Config:
         gamma = 0.99
         DISCOUNTING = False
     else:
-        USE_REPLAY_MEMORY = True
+        USE_REPLAY_MEMORY = False
 
     RANDOM_SEED = 12345
     USE_NETWORK_TESTER = False
@@ -192,5 +193,7 @@ class Config:
     ANNEALING_EPISODE_COUNT = 5000
     actor_lr = 1
     critic_lr = 10
-    RMSPROP = False
+    RMSPROP = True
+
+    ACTION_TO_DISCRATE_CONVERSION = True
 

@@ -35,6 +35,9 @@ if Config.GAME == 'pyperrace':
     from PyperEnvironment import Environment
 elif Config.GAME == 'Pendulum-v0':
     from EnvironmentPend import Environment
+elif Config.GAME == 'CartPole-v0':
+    Config.CONTINUOUS_INPUT = False
+    from Environment import Environment
 else:
     pass
     # from Environment import Environment

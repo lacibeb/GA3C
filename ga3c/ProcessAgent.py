@@ -140,7 +140,11 @@ class ProcessAgent(Process):
                 action = self.select_action(prediction)
                 # converting discrate action to continuous
                 # converting -1 .. 1 to fixed angles
-                env_action = self.convert_action_discrate_to_angle(action)
+                if Config.ACTION_TO_DISCRATE_CONVERSION:
+                    env_action = self.convert_action_discrate_to_angle(action)
+                else:
+                    env_action = action
+
 
             reward, done = self.env.step(env_action)
 
