@@ -68,11 +68,14 @@ class Environment(Env):
         # action randomisation
         # action = action + np.random.uniform(0.03, -0.03)
 
-        self.check_bounds(action, 1.0, -1.0, True)
-        # Game requires input -180..180 int
-        action = action*self.action_bound
+        if Config.CONTINUOUS_INPUT:
+            self.check_bounds(action, 1.0, -1.0, True)
+            # Game requires input -180..180 int
+            action = action*self.action_bound
+            action = [action]
+
         self.previous_state = self.current_state
-        self.current_state, reward, done, info = self.game.step([action])
+        self.current_state, reward, done, info = self.game.step(action)
         self.current_state = np.reshape(self.current_state, -1)
         reward = reward[0]
 
