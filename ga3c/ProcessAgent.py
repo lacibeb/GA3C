@@ -156,7 +156,7 @@ class ProcessAgent(Process):
                 x_, r_, a_, x2_, done_ = self.convert_data(updated_exps)
 
                 print(str(a_.transpose()))
-                print(str(r_.transpose()))
+                #print(str(r_.transpose()))
                 yield x_, r_, a_, x2_, done_, reward_sum
 
                 # reset the tmax count
