@@ -52,18 +52,21 @@ class Environment(Env):
         self.reset()
 
         if Config.CONTINUOUS_INPUT:
+            self.action_dim = self.game.action_space.n
+        else:
+            self.action_dim = self.game.action_space.n
+            print('action_dim: ' + str(action_dim))
+
+        if Config.CONTINUOUS_INPUT:
             self.action_bound = self.game.action_space.high
 
+        self.state_dim = self.game.observation_space.shape[0]
+
     def get_num_actions(self):
-        if Config.CONTINUOUS_INPUT:
-            action_dim = self.game.action_space.n
-        else:
-            action_dim = self.game.action_space.n
-            print('action_dim: ' + str(action_dim))
-        return action_dim
+        return self.action_dim
 
     def get_state_dim(self):
-        return self.game.observation_space.shape[0]
+        return self.state_dim
 
     def reset(self):
         self.game.reset()
@@ -80,6 +83,11 @@ class Environment(Env):
             print('action bef: ' + str(self.action_bound))
             action = action * self.action_bound
             print('action aft: ' + str(action))
+
+        if Config.DISCRATE_INPUT:
+            env_action = np.zeros(self.action_dim)
+            env_action[action] = 1
+
 
         self.previous_state = self.current_state
         self.current_state, reward, done, info = self.game.step(action)

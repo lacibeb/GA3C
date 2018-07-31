@@ -103,3 +103,28 @@ class Environment:
         action = action / 180.0
         return action, player
 
+    @staticmethod
+    def convert_action_angle_to_discrate(action):
+        # convert action continous angle to prediction
+        # two nearest action probability will be bigger, others will be 0
+        # from the two nearest, probabilities are linear
+        prediction = [0.0]*Config.CONTINUOUS_INPUT_PARTITIONS
+        for i in range(Config.CONTINUOUS_INPUT_PARTITIONS):
+            error = i - (action + 1) / (2 / Config.CONTINUOUS_INPUT_PARTITIONS)
+            if abs(error) > 1.0:
+                prediction[i] = 0
+            else:
+                if error < 0.0:
+                    if i == Config.CONTINUOUS_INPUT_PARTITIONS - 1:
+                        prediction[i] = 1.0 + error
+                        prediction[0] = -1.0 * error
+                    else:
+                        prediction[i] = 1.0 + error
+                        prediction[i + 1] = -1.0*error
+        # print(str(action) + " " + str(discrate_action) + " " + str(prediction))
+        return prediction
+
+    @staticmethod
+    def convert_action_discrate_to_angle(action):
+        action = (2 / Config.CONTINUOUS_INPUT_PARTITIONS) * action - 1
+        return action

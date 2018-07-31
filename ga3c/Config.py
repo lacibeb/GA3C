@@ -156,7 +156,9 @@ class Config:
     #########################################################################
     # Network selection
     # define input
+    DISCRATE_INPUT = True
     CONTINUOUS_INPUT = False
+
     CONTINUOUS_INPUT_PARTITIONS = 8
 
     # use ddpg model it works only with continuous input
@@ -195,5 +197,5 @@ class Config:
     critic_lr = 10
     RMSPROP = True
 
-    ACTION_TO_DISCRATE_CONVERSION = True
+    DISCRATE_TO_CONTINUOUS_CONVERSION = False
 

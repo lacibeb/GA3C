@@ -55,11 +55,7 @@ class ProcessAgent(Process):
         # change player
         self.env.player = 'agent'
 
-        # countinous or discrate input selection
-        if Config.CONTINUOUS_INPUT:
-            self.num_actions = self.env.get_num_actions()
-        else:
-            self.num_actions = Config.CONTINUOUS_INPUT_PARTITIONS
+        self.num_actions = self.env.get_num_actions()
 
         self.actions = np.arange(self.num_actions)
 
@@ -110,16 +106,12 @@ class ProcessAgent(Process):
         p, v = self.wait_q.get()
         return p, v
 
-    def select_action(self, prediction):
+    @staticmethod
+    def select_action(actions, prediction):
         if Config.PLAY_MODE:
             action = np.argmax(prediction)
         else:
-            # print( "self.actions " + str(prediction) + " " + str(np.sum(prediction)))
-            print(self.actions)
-            action = np.random.choice(self.actions, p=prediction)
-            print(action)
-            action = np.argmax(prediction)
-            print(action)
+            action = np.random.choice(actions, p=prediction)
         return action
 
     def run_episode(self):
@@ -133,27 +125,12 @@ class ProcessAgent(Process):
         while not done:
             # very first few frames
             if self.env.current_state is None:
-                if Config.CONTINUOUS_INPUT:
-                    self.env.step(np.zeros(self.env.get_num_actions()))  # 0 == NOOP
-                else:
-                    self.env.step(0)
-                continue
+                self.env.step(None)  # 0 == NOOP
 
             prediction, value = self.predict(self.env.current_state)
-            if Config.CONTINUOUS_INPUT:
-                action = prediction[0]
-                env_action = action
-            else:
-                action = self.select_action(prediction)
-                # converting discrate action to continuous
-                # converting -1 .. 1 to fixed angles
-                if Config.ACTION_TO_DISCRATE_CONVERSION:
-                    env_action = self.convert_action_discrate_to_angle(action)
-                else:
-                    env_action = action
+            action = self.select_action(self.actions, prediction)
 
-
-            reward, done = self.env.step(env_action)
+            reward, done = self.env.step(action)
 
             reward_sum += reward
             exp = Experience(self.env.previous_state, action, prediction, reward, self.env.current_state, done)
@@ -193,30 +170,4 @@ class ProcessAgent(Process):
                 # print("shape_x " + str(x_.shape[0]))
                 # print("qsize: " + str(self.training_q.qsize()))
             self.episode_log_q.put((datetime.now(), total_reward, total_length))
-
-    @staticmethod
-    def convert_action_angle_to_discrate(action):
-        # convert action continous angle to prediction
-        # two nearest action probability will be bigger, others will be 0
-        # from the two nearest, probabilities are linear
-        prediction = [0.0]*Config.CONTINUOUS_INPUT_PARTITIONS
-        for i in range(Config.CONTINUOUS_INPUT_PARTITIONS):
-            error = i - (action + 1) / (2 / Config.CONTINUOUS_INPUT_PARTITIONS)
-            if abs(error) > 1.0:
-                prediction[i] = 0
-            else:
-                if error < 0.0:
-                    if i == Config.CONTINUOUS_INPUT_PARTITIONS - 1:
-                        prediction[i] = 1.0 + error
-                        prediction[0] = -1.0 * error
-                    else:
-                        prediction[i] = 1.0 + error
-                        prediction[i + 1] = -1.0*error
-        # print(str(action) + " " + str(discrate_action) + " " + str(prediction))
-        return prediction
-
-    @staticmethod
-    def convert_action_discrate_to_angle(action):
-        action = (2 / Config.CONTINUOUS_INPUT_PARTITIONS) * action - 1
-        return action
 
