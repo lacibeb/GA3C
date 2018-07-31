@@ -55,7 +55,6 @@ class Environment(Env):
             self.action_dim = self.game.action_space.n
         else:
             self.action_dim = self.game.action_space.n
-            print('action_dim: ' + str(action_dim))
 
         if Config.CONTINUOUS_INPUT:
             self.action_bound = self.game.action_space.high
