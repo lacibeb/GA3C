@@ -132,7 +132,7 @@ class ProcessAgent(Process):
                 if Config.CONTINUOUS_INPUT:
                     self.env.step(np.zeros(self.env.get_num_actions()))  # 0 == NOOP
                 else:
-                    self.env.step(np.zeros(self.env.get_num_actions(), int))
+                    self.env.step(0)
                 continue
 
             prediction, value = self.predict(self.env.current_state)
