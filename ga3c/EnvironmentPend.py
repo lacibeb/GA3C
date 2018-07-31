@@ -77,6 +77,8 @@ class Environment(Env):
         # action = action + np.random.uniform(0.03, -0.03)
 
         if Config.CONTINUOUS_INPUT:
+            if action is None:
+                action = np.zeros(self.action_dim)
             self.check_bounds(action, 1.0, -1.0, True)
             # Game requires input -180..180 int
             print('action bef: ' + str(self.action_bound))
@@ -84,6 +86,8 @@ class Environment(Env):
             print('action aft: ' + str(action))
 
         if Config.DISCRATE_INPUT:
+            if action is None:
+                action = np.zeros(self.action_dim, int())
             env_action = np.zeros(self.action_dim)
             env_action[action] = 1
 
