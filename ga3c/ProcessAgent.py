@@ -149,7 +149,7 @@ class ProcessAgent(Process):
                     env_action = action
 
 
-            reward, done = self.env.step(env_action)
+            reward, done = self.env.step(env_action[0])
 
             reward_sum += reward
             exp = Experience(self.env.previous_state, action, prediction, reward, self.env.current_state, done)
