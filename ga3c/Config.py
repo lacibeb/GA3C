@@ -50,13 +50,13 @@ class Config:
     
     # If the dynamic configuration is on, these are the initial values.
     # Number of Agents
-    AGENTS = 1
+    AGENTS = 20
     # Number of human reference Agents from Agents AGENTS=humref+regular
     HUMAN_REF_AGENTS = 0
     # Number of Predictors
-    PREDICTORS = 1
+    PREDICTORS = 2
     # Number of Trainers
-    TRAINERS = 1
+    TRAINERS = 2
 
     # Device
     DEVICE = 'gpu:0'
@@ -190,7 +190,7 @@ class Config:
     #if GAME == 'Pendulum-v0':
     TIME_MAX = 1000
     LEARNING_RATE_START = 0.0001
-    LEARNING_RATE_END = 0.0001
+    LEARNING_RATE_END = 0.000001
     EPISODES = 10000000
     ANNEALING_EPISODE_COUNT = 5000
     actor_lr = 1
