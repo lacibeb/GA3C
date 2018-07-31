@@ -201,10 +201,8 @@ class Server:
 
     @staticmethod
     def get_num_action():
-        if Config.CONTINUOUS_INPUT:
-            return Environment().get_num_actions()
-        else:
-            return Config.CONTINUOUS_INPUT_PARTITIONS
+        return Environment().get_num_actions()
+
 
 
 
