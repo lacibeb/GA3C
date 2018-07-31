@@ -156,7 +156,7 @@ class Config:
     #########################################################################
     # Network selection
     # define input
-    CONTINUOUS_INPUT = True
+    CONTINUOUS_INPUT = False
     CONTINUOUS_INPUT_PARTITIONS = 8
 
     # use ddpg model it works only with continuous input

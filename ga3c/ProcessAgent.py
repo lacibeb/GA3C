@@ -129,7 +129,10 @@ class ProcessAgent(Process):
         while not done:
             # very first few frames
             if self.env.current_state is None:
-                self.env.step(np.zeros(self.env.get_num_actions()))  # 0 == NOOP
+                if Config.CONTINUOUS_INPUT:
+                    self.env.step(np.zeros(self.env.get_num_actions()))  # 0 == NOOP
+                else:
+                    self.env.step(np.zeros(self.env.get_num_actions(), 0))
                 continue
 
             prediction, value = self.predict(self.env.current_state)
