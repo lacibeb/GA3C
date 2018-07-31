@@ -86,8 +86,9 @@ class Environment(Env):
             print('action aft: ' + str(action))
 
         if Config.DISCRATE_INPUT:
+            env_action = np.zeros(self.action_dim, np.dtype(int))
             if action is None:
-                env_action = np.zeros(self.action_dim, np.dtype(int))
+                action = 0
             env_action = np.zeros(self.action_dim)
             env_action[action] = 1
 
