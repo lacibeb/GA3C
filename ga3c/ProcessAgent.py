@@ -126,8 +126,10 @@ class ProcessAgent(Process):
             # very first few frames
             if self.env.current_state is None:
                 self.env.step(None)  # 0 == NOOP
+                continue
 
             prediction, value = self.predict(self.env.current_state)
+            print('pred: ' + str(prediction))
             action = self.select_action(self.actions, prediction)
 
             reward, done = self.env.step(action)
