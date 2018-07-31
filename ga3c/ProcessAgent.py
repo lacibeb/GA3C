@@ -115,6 +115,7 @@ class ProcessAgent(Process):
             action = np.argmax(prediction)
         else:
             # print( "self.actions " + str(prediction) + " " + str(np.sum(prediction)))
+            print(self.actions)
             action = np.random.choice(self.actions, p=prediction)
             print(action)
             action = np.argmax(prediction)
