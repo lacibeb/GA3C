@@ -91,7 +91,7 @@ class Environment(Env):
                 action = 0
             env_action[action] = 1
 
-
+        env_action = action
         self.previous_state = self.current_state
         print('action' + str(env_action))
         self.current_state, reward, done, info = self.game.step(env_action)
