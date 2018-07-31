@@ -75,26 +75,26 @@ class Environment(Env):
     def step(self, action):
         # action randomisation
         # action = action + np.random.uniform(0.03, -0.03)
-
+        env_action = None
         if Config.CONTINUOUS_INPUT:
             if action is None:
-                action = np.zeros(self.action_dim)
+                env_action = np.zeros(self.action_dim)
             self.check_bounds(action, 1.0, -1.0, True)
             # Game requires input -180..180 int
             print('action bef: ' + str(self.action_bound))
-            action = action * self.action_bound
+            env_action = action * self.action_bound
             print('action aft: ' + str(action))
 
         if Config.DISCRATE_INPUT:
             if action is None:
-                action = np.zeros(self.action_dim, np.dtype(int))
+                env_action = np.zeros(self.action_dim, np.dtype(int))
             env_action = np.zeros(self.action_dim)
             env_action[action] = 1
 
 
         self.previous_state = self.current_state
-        print('action' + str(action))
-        self.current_state, reward, done, info = self.game.step(action)
+        print('action' + str(env_action))
+        self.current_state, reward, done, info = self.game.step(env_action)
         self.current_state = np.reshape(self.current_state, -1)
         reward = reward
 
