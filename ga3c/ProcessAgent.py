@@ -116,6 +116,9 @@ class ProcessAgent(Process):
         else:
             # print( "self.actions " + str(prediction) + " " + str(np.sum(prediction)))
             action = np.random.choice(self.actions, p=prediction)
+            print(action)
+            action = np.argmax(prediction)
+            print(action)
         return action
 
     def run_episode(self):
@@ -149,7 +152,7 @@ class ProcessAgent(Process):
                     env_action = action
 
 
-            reward, done = self.env.step(env_action[0])
+            reward, done = self.env.step(env_action)
 
             reward_sum += reward
             exp = Experience(self.env.previous_state, action, prediction, reward, self.env.current_state, done)
