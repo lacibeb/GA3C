@@ -56,9 +56,10 @@ class Environment(Env):
 
     def get_num_actions(self):
         if Config.CONTINUOUS_INPUT:
-            action_dim = self.game.action_space.shape[0]
+            action_dim = self.game.action_space.n
         else:
             action_dim = self.game.action_space.n
+            print('action_dim: ' + str(action_dim))
         return action_dim
 
     def get_state_dim(self):
@@ -79,7 +80,6 @@ class Environment(Env):
             print('action bef: ' + str(self.action_bound))
             action = action * self.action_bound
             print('action aft: ' + str(action))
-            action = [action]
 
         self.previous_state = self.current_state
         self.current_state, reward, done, info = self.game.step(action)
