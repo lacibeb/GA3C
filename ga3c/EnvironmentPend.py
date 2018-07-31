@@ -89,7 +89,6 @@ class Environment(Env):
             env_action = np.zeros(self.action_dim, np.dtype(int))
             if action is None:
                 action = 0
-            env_action = np.zeros(self.action_dim)
             env_action[action] = 1
 
 
