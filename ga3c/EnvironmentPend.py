@@ -83,7 +83,7 @@ class Environment(Env):
             # Game requires input -180..180 int
             print('action bef: ' + str(self.action_bound))
             action = action * self.action_bound
-            print('action aft: ' + str(action))K
+            print('action aft: ' + str(action))
 
         if Config.DISCRATE_INPUT:
             if action is None:
