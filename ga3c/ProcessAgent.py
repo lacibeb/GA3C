@@ -111,7 +111,6 @@ class ProcessAgent(Process):
         if Config.PLAY_MODE:
             action = np.argmax(prediction)
         else:
-            print(str(actions) + '  '  + str(prediction))
             action = np.random.choice(actions, p=prediction)
         return action
 

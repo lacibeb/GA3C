@@ -191,7 +191,7 @@ class Config:
     TIME_MAX = 1000
     LEARNING_RATE_START = 0.0001
     LEARNING_RATE_END = 0.0001
-    EPISODES = 10000
+    EPISODES = 10000000
     ANNEALING_EPISODE_COUNT = 5000
     actor_lr = 1
     critic_lr = 10
