@@ -78,12 +78,12 @@ class Environment(Env):
         env_action = None
         if Config.CONTINUOUS_INPUT:
             if action is None:
-                env_action = np.zeros(self.action_dim)
-            self.check_bounds(action, 1.0, -1.0, True)
+                action = np.zeros(self.action_dim)
+            action = self.check_bounds(action, 1.0, -1.0, True)
             # Game requires input -180..180 int
-            print('action bef: ' + str(self.action_bound))
+            # print('action bef: ' + str(self.action_bound))
             env_action = action * self.action_bound
-            print('action aft: ' + str(action))
+            # print('action aft: ' + str(action))
 
         if Config.DISCRATE_INPUT:
             env_action = np.zeros(self.action_dim, np.dtype(int))
@@ -91,7 +91,6 @@ class Environment(Env):
                 action = 0
             env_action[action] = 1
 
-        env_action = action
         self.previous_state = self.current_state
         self.current_state, reward, done, info = self.game.step(env_action)
         self.current_state = np.reshape(self.current_state, -1)
