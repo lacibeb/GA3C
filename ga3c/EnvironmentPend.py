@@ -52,7 +52,7 @@ class Environment(Env):
         self.reset()
 
         if Config.CONTINUOUS_INPUT:
-            self.action_dim = self.game.action_space.n
+            self.action_dim = self.game.action_space.shape[0]
         else:
             self.action_dim = self.game.action_space.n
 
