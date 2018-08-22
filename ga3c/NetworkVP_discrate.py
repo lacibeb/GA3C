@@ -140,7 +140,7 @@ class Network(NetworkVP):
         for var in tf.trainable_variables():
             summaries.append(tf.summary.histogram("weights_%s" % var.name, var))
 
-        summaries.append(tf.summary.histogram("activation_lastdense" + str(layercount), self.denselayer))
+        summaries.append(tf.summary.histogram("activation_lastdense", self.denselayer))
 
         summaries.append(tf.summary.histogram("activation_v", self.logits_v))
         summaries.append(tf.summary.histogram("activation_p", self.softmax_p))
