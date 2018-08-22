@@ -48,18 +48,19 @@ class Network(NetworkVP):
 
         # As implemented in A3C paper
 
-        self.p_d1 = self.dense_layer(self.x, 2048, 'dense11_p')
-        self.p_d2 = self.dense_layer(self.p_d1, 4048, 'dense12_p')
-        self.p_d3 = self.dense_layer(self.p_d2, 4048, 'dense13_p')
-        self.p_d4 = self.dense_layer(self.p_d3, 4048, 'dense14_p')
+        # creating dense layers as in config
+        layercount = 0
+        for layer in Config.DENSE_LAYERS:
+            print(str(layercount) + '. layer: ' + str(layer) + ' dense neurons')
+            layercount += 1
+            self.denselayer = self.dense_layer(self.x, layer, 'dense1_' + str(layercount) + '_p')
+
         self.action_index = tf.placeholder(tf.float32, [None, self.num_actions])
 
-        self.d1 = self.dense_layer(self.p_d4, 512, 'dense1')
-
-        self.logits_v = tf.squeeze(self.dense_layer(self.d1, 1, 'logits_v', func=None), axis=[1])
+        self.logits_v = tf.squeeze(self.dense_layer(self.denselayer, 1, 'logits_v', func=None), axis=[1])
         self.cost_v = 0.5 * tf.reduce_sum(tf.square(self.y_r - self.logits_v), axis=0)
 
-        self.logits_p = self.dense_layer(self.d1, self.num_actions, 'logits_p', func=None)
+        self.logits_p = self.dense_layer(self.denselayer, self.num_actions, 'logits_p', func=None)
         if Config.USE_LOG_SOFTMAX:
             self.softmax_p = tf.nn.softmax(self.logits_p)
             self.log_softmax_p = tf.nn.log_softmax(self.logits_p)

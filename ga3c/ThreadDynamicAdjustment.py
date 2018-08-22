@@ -120,7 +120,7 @@ class ThreadDynamicAdjustment(Thread):
 
             # TODO: is it necesary???
             # random reset of trainers, agents, predictors
-            # self.random_walk()
+            self.random_walk()
 
             # If no change, do nothing
             if self.trainer_count == old_trainer_count \

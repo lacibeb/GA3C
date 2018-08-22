@@ -50,7 +50,7 @@ class Config:
     
     # If the dynamic configuration is on, these are the initial values.
     # Number of Agents
-    AGENTS = 20
+    AGENTS = 32
     # Number of human reference Agents from Agents AGENTS=humref+regular
     HUMAN_REF_AGENTS = 0
     # Number of Predictors
@@ -62,7 +62,7 @@ class Config:
     DEVICE = 'gpu:0'
 
     # Enable the dynamic adjustment (+ waiting time to start it)
-    DYNAMIC_SETTINGS = False
+    DYNAMIC_SETTINGS = True
     DYNAMIC_SETTINGS_STEP_WAIT = 20
     DYNAMIC_SETTINGS_INITIAL_WAIT = 10
 
@@ -71,10 +71,10 @@ class Config:
 
     # Discount factor
     DISCOUNTING = True
-    DISCOUNT = 0.98
+    DISCOUNT = 0.99
     
     # Tmax
-    # TIME_MAX = 200
+    # TIME_MAX = 5
     
     # Reward Clipping
     REWARD_CLIPPING = True
@@ -96,13 +96,15 @@ class Config:
     #ANNEALING_EPISODE_COUNT = 500000
 
     # Entropy regualrization hyper-parameter
-    BETA_START = 0.001
-    BETA_END = 0.001
+    BETA_START = 0.01
+    BETA_END = 0.01
 
     # Learning rate
     #LEARNING_RATE_START = 0.0001
     #LEARNING_RATE_END = 0.00000001
 
+    #Network structure
+    DENSE_LAYERS = (10, 10, 10, 10)
     # RMSProp parameters
     # if False than ADAM optimizer only for ddpg
     #RMSPROP = True
@@ -114,12 +116,12 @@ class Config:
     DUAL_RMSPROP = False
     
     # Gradient clipping
-    USE_GRAD_CLIP = True
+    USE_GRAD_CLIP = False
     GRAD_CLIP_NORM = 40.0 
     # Epsilon (regularize policy lag in GA3C)
     LOG_EPSILON = 1e-6
     # Training min batch size - increasing the batch size increases the stability of the algorithm, but make learning slower
-    TRAINING_MIN_BATCH_SIZE = 128
+    TRAINING_MIN_BATCH_SIZE = 0
     
     #########################################################################
     # Log and save
@@ -127,7 +129,7 @@ class Config:
     # Enable TensorBoard
     TENSORBOARD = True
     # Update TensorBoard every X training steps
-    TENSORBOARD_UPDATE_FREQUENCY = 100
+    TENSORBOARD_UPDATE_FREQUENCY = 1000
 
     # Enable to save models every SAVE_FREQUENCY episodes
     SAVE_MODELS = True
@@ -189,10 +191,10 @@ class Config:
     # recommended game specific settings
     #if GAME == 'Pendulum-v0':
     TIME_MAX = 1000
-    LEARNING_RATE_START = 0.1
-    LEARNING_RATE_END = 0.000001
-    EPISODES = 10000000
-    ANNEALING_EPISODE_COUNT = 50000
+    LEARNING_RATE_START = 0.0003
+    LEARNING_RATE_END = 0.0003
+    EPISODES = 40000
+    ANNEALING_EPISODE_COUNT = 40000
     actor_lr = 1
     critic_lr = 10
     RMSPROP = True
