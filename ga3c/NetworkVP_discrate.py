@@ -51,9 +51,9 @@ class Network(NetworkVP):
         # creating dense layers as in config
         layercount = 0
         for layer in Config.DENSE_LAYERS:
-            print(str(layercount) + '. layer: ' + str(layer) + ' dense neurons')
             layercount += 1
             self.denselayer = self.dense_layer(self.x, layer, 'dense1_' + str(layercount) + '_p')
+            print(str(layercount) + '. layer: ' + str(layer) + ' dense neurons')
 
         self.action_index = tf.placeholder(tf.float32, [None, self.num_actions])
 
@@ -140,9 +140,8 @@ class Network(NetworkVP):
         for var in tf.trainable_variables():
             summaries.append(tf.summary.histogram("weights_%s" % var.name, var))
 
-        summaries.append(tf.summary.histogram("activation_n1", self.p_d1))
-        summaries.append(tf.summary.histogram("activation_n2", self.p_d2))
-        summaries.append(tf.summary.histogram("activation_d2", self.d1))
+        summaries.append(tf.summary.histogram("activation_lastdense" + str(layercount), self.denselayer))
+
         summaries.append(tf.summary.histogram("activation_v", self.logits_v))
         summaries.append(tf.summary.histogram("activation_p", self.softmax_p))
 
