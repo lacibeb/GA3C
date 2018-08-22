@@ -130,7 +130,7 @@ class ProcessAgent(Process):
 
             print('state: ' + str(self.env.current_state))
             prediction, value = self.predict(self.env.current_state)
-            # print('pred: ' + str(prediction))
+            print('pred: ' + str(prediction))
             action = self.select_action(self.actions, prediction)
 
             reward, done = self.env.step(action)
