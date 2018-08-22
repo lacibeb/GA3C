@@ -81,15 +81,16 @@ class ThreadDynamicAdjustment(Thread):
                 self.server.remove_agent()
                 self.agent_actual -= 1
 
-        if cur_len < self.hr_agent_count:
-            for _ in np.arange(cur_len, self.hr_agent_count):
-                self.server.add_hr_agent()
-                self.hr_agent_actual += 1
-        # TODO this is problematic, now we dont want to delete hr agent -> agent array is messy
-        elif cur_len > self.agent_count:
-            for _ in np.arange(self.hr_agent_count, cur_len):
-                self.server.remove_hr_agent()
-                self.hr_agent_actual -= 1
+        if Config.HUMAN_REF_AGENTS > 0:
+            if cur_len < self.hr_agent_count:
+                for _ in np.arange(cur_len, self.hr_agent_count):
+                    self.server.add_hr_agent()
+                    self.hr_agent_actual += 1
+            # TODO this is problematic, now we dont want to delete hr agent -> agent array is messy
+            elif cur_len > self.agent_count:
+                for _ in np.arange(self.hr_agent_count, cur_len):
+                    self.server.remove_hr_agent()
+                    self.hr_agent_actual -= 1
 
     def random_walk(self):
         # 3 directions, 1 for Trainers, 1 for Predictors and 1 for Agents
