@@ -32,7 +32,7 @@ from Config import Config
 
 
 class ThreadPredictor(Thread):
-0    def __init__(self, server, id, state_dim, prediction_q):
+    def __init__(self, server, id, state_dim, prediction_q):
         super(ThreadPredictor, self).__init__()
         self.setDaemon(True)
 
