@@ -128,6 +128,7 @@ class ProcessAgent(Process):
                 self.env.step(None)  # 0 == NOOP
                 continue
 
+            print('state: ' + str(self.env.current_state))
             prediction, value = self.predict(self.env.current_state)
             # print('pred: ' + str(prediction))
             action = self.select_action(self.actions, prediction)
