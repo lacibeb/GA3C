@@ -128,9 +128,9 @@ class ProcessAgent(Process):
                 self.env.step(None)  # 0 == NOOP
                 continue
 
-            print('state: ' + str(self.env.current_state))
+            # print('state: ' + str(self.env.current_state))
             prediction, value = self.predict(self.env.current_state)
-            print('pred: ' + str(prediction))
+            # print('pred: ' + str(prediction))
             if Config.DISCRATE_INPUT:
                 action = self.select_action(self.actions, prediction)
             else:
