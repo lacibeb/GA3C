@@ -33,8 +33,8 @@ class Config:
     # TODO atary option is not working yet
     # TODO atary games works with image input(missing) and dicrate output(this is implemented)
     # GAME = 'PongDeterministic-v0'
-    GAME = 'Pendulum-v0'
-    # GAME = 'CartPole-v0'
+    # GAME = 'Pendulum-v0'
+    GAME = 'CartPole-v0'
     # GAME = 'pyperrace'
     # Enable to see the trained agent in action
     PLAY_MODE = False
