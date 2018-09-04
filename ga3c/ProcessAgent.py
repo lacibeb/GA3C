@@ -133,7 +133,8 @@ class ProcessAgent(Process):
             print('pred: ' + str(prediction))
             if Config.DISCRATE_INPUT:
                 action = self.select_action(self.actions, prediction)
-
+            else:
+                action = prediction
 
             reward, done = self.env.step(action)
 
