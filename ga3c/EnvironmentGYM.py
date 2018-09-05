@@ -45,7 +45,8 @@ class Environment(Env):
         self.game = gym.make(Config.GAME)
         # TODO: only try
         # https://github.com/openai/gym/issues/494
-        self.game = gym.wrappers.Monitor(self.game, 'pics/', video_callable=lambda episode_id: True)
+        # force true clears directory
+        self.game = gym.wrappers.Monitor(self.game, 'pics/', force=Treu, video_callable=lambda episode_id: True)
         self.game.seed(Config.RANDOM_SEED)
 
         self.previous_state = None
