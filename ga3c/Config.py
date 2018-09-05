@@ -61,11 +61,11 @@ class Config:
     
     # If the dynamic configuration is on, these are the initial values.
     # Number of Agents
-    AGENTS = 32
+    AGENTS = 64
     # Number of human reference Agents from Agents AGENTS=humref+regular
     HUMAN_REF_AGENTS = 0
     # Number of Predictors
-    PREDICTORS = 3
+    PREDICTORS = 6
     # Number of Trainers
     TRAINERS = 1
 
@@ -88,7 +88,7 @@ class Config:
     TIME_MAX = 200
     
     # Reward Clipping
-    REWARD_CLIPPING = False
+    REWARD_CLIPPING = True
     USE_INTERMEDIATE_REWARD = False
     REWARD_MIN = -1
     REWARD_MAX = 1
@@ -132,7 +132,7 @@ class Config:
     # Epsilon (regularize policy lag in GA3C)
     LOG_EPSILON = 1e-6
     # Training min batch size - increasing the batch size increases the stability of the algorithm, but make learning slower
-    TRAINING_MIN_BATCH_SIZE = 128
+    TRAINING_MIN_BATCH_SIZE = 1024
     
     #########################################################################
     # Log and save
