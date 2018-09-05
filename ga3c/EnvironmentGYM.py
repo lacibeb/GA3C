@@ -90,6 +90,7 @@ class Environment(Env):
                 action = 0
             env_action[action] = 1
             # debug try
+            # TODO not nice
             env_action = action
 
         self.previous_state = self.current_state
