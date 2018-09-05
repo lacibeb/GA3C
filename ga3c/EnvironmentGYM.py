@@ -38,7 +38,7 @@ from Config import Config
 from Environment import Environment as Env
 import gym
 from gym import wrappers
-
+from xvfbwrapper import Xvfb
 
 class Environment(Env):
     def __init__(self):
@@ -48,6 +48,8 @@ class Environment(Env):
         # conda install - c anaconda pyopengl
         # conda install -c conda-forge xvfbwrapper
         # force true clears directory
+        self.vdisplay = Xvfb(width=1280, height=740)
+        self.vdisplay.start()
         self.game = gym.wrappers.Monitor(self.game, 'pics/', force=True, video_callable=lambda episode_id: True)
         self.game.seed(Config.RANDOM_SEED)
 
@@ -104,4 +106,7 @@ class Environment(Env):
         self.current_state = np.reshape(self.current_state, -1)
 
         return reward, done
+
+    def __delete__(self, instance):
+        self.vdisplay.stop()
 
