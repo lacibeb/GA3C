@@ -104,7 +104,7 @@ class Config:
 
     # Total number of episodes and annealing frequency
     EPISODES = 50000
-    ANNEALING_EPISODE_COUNT = 5000
+    ANNEALING_EPISODE_COUNT = 50000
 
     # Entropy regualrization hyper-parameter
     BETA_START = 0.01
