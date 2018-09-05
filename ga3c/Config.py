@@ -45,6 +45,8 @@ class Config:
     DISCRATE_TO_CONTINUOUS_CONVERSION = False
     CONTINUOUS_INPUT_PARTITIONS = 8
     # GAME = 'pyperrace'
+    # network tester for pyperrace creates action map pictures with state scanning
+    USE_NETWORK_TESTER = False
     # Enable to see the trained agent in action
     PLAY_MODE = False
     # Enable to train
