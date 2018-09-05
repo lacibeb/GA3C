@@ -110,3 +110,6 @@ class Environment(Env):
     def __delete__(self, instance):
         self.vdisplay.stop()
 
+package = xvfbwrapper
+for importer, modname, ispkg in pkgutil.iter_modules(package.__path__):
+    print("Found submodule %s (is a package: %s)" % (modname, ispkg))
