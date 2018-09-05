@@ -50,7 +50,8 @@ class Environment(Env):
         # force true clears directory
         # export DISPLAY=:0.0 in etc/environment
 
-        self.game = gym.wrappers.Monitor(self.game, 'pics/', force=True, mode='rgb_array', video_callable=lambda episode_id: True)
+        #self.game = gym.wrappers.Monitor(self.game, 'pics/', force=True, mode='rgb_array', video_callable=lambda episode_id: True)
+        self.game_rnd = self.game.render(mode='rgb_array')
         self.game.seed(Config.RANDOM_SEED)
 
         self.previous_state = None
