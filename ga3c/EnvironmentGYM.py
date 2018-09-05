@@ -38,7 +38,7 @@ from Config import Config
 from Environment import Environment as Env
 import gym
 from gym import wrappers
-from pyvirtualdisplay import Display
+# from pyvirtualdisplay import Display
 
 class Environment(Env):
     def __init__(self):
@@ -49,9 +49,8 @@ class Environment(Env):
         # conda install -c conda-forge xvfbwrapper
         # force true clears directory
         # export DISPLAY=:0.0 in etc/environment
-        self.vdisplay = Display(visible=0, size=(800, 600))
-        self.vdisplay.start()
-        self.game = gym.wrappers.Monitor(self.game, 'pics/', force=True, video_callable=lambda episode_id: True)
+
+        self.game = gym.wrappers.Monitor(self.game, 'pics/', force=True, mode='rgb_array', video_callable=lambda episode_id: True)
         self.game.seed(Config.RANDOM_SEED)
 
         self.previous_state = None
@@ -108,5 +107,5 @@ class Environment(Env):
 
         return reward, done
 
-    def __delete__(self, instance):
-        self.vdisplay.stop()
+#    def __delete__(self, instance):
+#        self.vdisplay.stop()
