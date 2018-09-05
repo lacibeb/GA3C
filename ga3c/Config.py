@@ -35,6 +35,15 @@ class Config:
     # GAME = 'PongDeterministic-v0'
     # GAME = 'Pendulum-v0'
     GAME = 'CartPole-v0'
+    #########################################################################
+    # Network selection
+    # define input
+    NETWORK = 'GA3C_notimageinput'
+    DISCRATE_INPUT = True
+    CONTINUOUS_INPUT = False
+    # if discrate input but continuos environment
+    DISCRATE_TO_CONTINUOUS_CONVERSION = False
+    CONTINUOUS_INPUT_PARTITIONS = 8
     # GAME = 'pyperrace'
     # Enable to see the trained agent in action
     PLAY_MODE = False
@@ -92,22 +101,22 @@ class Config:
     IMAGE_HEIGHT = 84
 
     # Total number of episodes and annealing frequency
-    #EPISODES = 5000000
-    #ANNEALING_EPISODE_COUNT = 500000
+    EPISODES = 5000000
+    ANNEALING_EPISODE_COUNT = 500000
 
     # Entropy regualrization hyper-parameter
     BETA_START = 0.01
     BETA_END = 0.01
 
     # Learning rate
-    #LEARNING_RATE_START = 0.0001
-    #LEARNING_RATE_END = 0.00000001
+    LEARNING_RATE_START = 0.0003
+    LEARNING_RATE_END = 0.0003
 
     #Network structure
     DENSE_LAYERS = (10, 10, 10, 10)
     # RMSProp parameters
     # if False than ADAM optimizer only for ddpg
-    #RMSPROP = True
+    RMSPROP = True
     RMSPROP_DECAY = 0.99
     RMSPROP_MOMENTUM = 0.0
     RMSPROP_EPSILON = 0.1
@@ -155,17 +164,8 @@ class Config:
     # not used with continuous
     USE_LOG_SOFTMAX = False
 
-    #########################################################################
-    # Network selection
-    # define input
-    DISCRATE_INPUT = True
-    CONTINUOUS_INPUT = False
-
-    CONTINUOUS_INPUT_PARTITIONS = 8
-
     # use ddpg model it works only with continuous input
-    USE_DDPG = False
-    if USE_DDPG:
+    if NETWORK == 'DDPG':
         add_uncertainity = False
         add_OUnoise = True
 
@@ -185,19 +185,8 @@ class Config:
         USE_REPLAY_MEMORY = False
 
     RANDOM_SEED = 12345
-    USE_NETWORK_TESTER = False
 
     # ------------------------------------
     # recommended game specific settings
-    #if GAME == 'Pendulum-v0':
-    TIME_MAX = 1000
-    LEARNING_RATE_START = 0.0003
-    LEARNING_RATE_END = 0.0003
-    EPISODES = 40000
-    ANNEALING_EPISODE_COUNT = 40000
-    actor_lr = 1
-    critic_lr = 10
-    RMSPROP = True
 
-    DISCRATE_TO_CONTINUOUS_CONVERSION = False
 

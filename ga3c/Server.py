@@ -30,27 +30,19 @@ import time
 
 from Config import Config
 
-# for pyperrace the statedim is comming from game
+# Import environment
 if Config.GAME == 'pyperrace':
     from PyperEnvironment import Environment
 elif Config.GAME == 'Pendulum-v0':
-    Config.CONTINUOUS_INPUT = True
-    Config.DISCRATE_INPUT = False
     from EnvironmentPend import Environment
 elif Config.GAME == 'CartPole-v0':
-    Config.CONTINUOUS_INPUT = False
-    Config.DISCRATE_INPUT = True
     from EnvironmentPend import Environment
-else:
-    pass
-    # from Environment import Environment
 
-if Config.CONTINUOUS_INPUT:
-    if Config.USE_DDPG:
-        from NetworkDDPG import Network
-    else:
-        from NetworkVP import Network
-else:
+if Config.NETWORK == 'DDPG':
+    from NetworkDDPG import Network
+elif Config.NETWORK == 'GA3C_notimageinput_continuos':
+    from NetworkVP import Network
+elif Config.NETWORK == 'GA3C_notimageinput':
     from NetworkVP_discrate import Network
 
 from ProcessAgent import ProcessAgent

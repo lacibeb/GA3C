@@ -53,6 +53,17 @@ if Config.PLAY_MODE:
     Config.TRAIN_MODELS = False
     Config.SAVE_MODELS = False
 
+# for pyperrace the statedim is comming from game
+if Config.GAME == 'pyperrace':
+    Config.CONTINUOUS_INPUT = True
+    Config.DISCRATE_INPUT = False
+elif Config.GAME == 'Pendulum-v0':
+    Config.CONTINUOUS_INPUT = True
+    Config.DISCRATE_INPUT = False
+elif Config.GAME == 'CartPole-v0':
+    Config.CONTINUOUS_INPUT = False
+    Config.DISCRATE_INPUT = True
+
 
 gym.undo_logger_setup()
 

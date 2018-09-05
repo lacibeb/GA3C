@@ -3,8 +3,9 @@ import pyper_env
 from Paper_Config import Config as GameConfig
 
 import numpy as np
+from Environment import Environment as Env
 
-class Environment:
+class Environment(Env):
     def __init__(self, player='default'):
         self.game = pyper_env.PaperRaceEnv(track_name = GameConfig.track_name, car_name = GameConfig.car_name,\
                                              random_init = GameConfig.random_init, ref_calc = GameConfig.ref_calc, \

@@ -33,9 +33,12 @@ import time
 from Config import Config
 
 # pyperconfig do not need game manager
+# Import environment
 if Config.GAME == 'pyperrace':
     from PyperEnvironment import Environment
-else:
+elif Config.GAME == 'Pendulum-v0':
+    from EnvironmentPend import Environment
+elif Config.GAME == 'CartPole-v0':
     from EnvironmentPend import Environment
 
 from Experience import Experience

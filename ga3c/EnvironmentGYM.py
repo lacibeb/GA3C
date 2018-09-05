@@ -35,7 +35,7 @@ import numpy as np
 import scipy.misc as misc
 
 from Config import Config
-from PyperEnvironment import Environment as Env
+from Environment import Environment as Env
 import gym
 from gym import wrappers
 
@@ -53,11 +53,9 @@ class Environment(Env):
 
         if Config.CONTINUOUS_INPUT:
             self.action_dim = self.game.action_space.shape[0]
+            self.action_bound = self.game.action_space.high
         else:
             self.action_dim = self.game.action_space.n
-
-        if Config.CONTINUOUS_INPUT:
-            self.action_bound = self.game.action_space.high
 
         self.state_dim = self.game.observation_space.shape[0]
 
