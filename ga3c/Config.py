@@ -88,7 +88,7 @@ class Config:
     TIME_MAX = 200
     
     # Reward Clipping
-    REWARD_CLIPPING = True
+    REWARD_CLIPPING = False
     USE_INTERMEDIATE_REWARD = False
     REWARD_MIN = -1
     REWARD_MAX = 1
@@ -103,8 +103,8 @@ class Config:
     IMAGE_HEIGHT = 84
 
     # Total number of episodes and annealing frequency
-    EPISODES = 5000000
-    ANNEALING_EPISODE_COUNT = 50000
+    EPISODES = 10000
+    ANNEALING_EPISODE_COUNT = 5000
 
     # Entropy regualrization hyper-parameter
     BETA_START = 0.01
@@ -112,7 +112,7 @@ class Config:
 
     # Learning rate
     LEARNING_RATE_START = 0.0003
-    LEARNING_RATE_END = 0.0000003
+    LEARNING_RATE_END = 0.0003
 
     #Network structure
     DENSE_LAYERS = (1024, 64)
@@ -120,7 +120,7 @@ class Config:
     # if False than ADAM optimizer only for ddpg
     RMSPROP = True
     RMSPROP_DECAY = 0.99
-    RMSPROP_MOMENTUM = 0.0
+    RMSPROP_MOMENTUM = 0.01
     RMSPROP_EPSILON = 0.1
 
     # Dual RMSProp - we found that using a single RMSProp for the two cost function works better and faster
@@ -132,7 +132,7 @@ class Config:
     # Epsilon (regularize policy lag in GA3C)
     LOG_EPSILON = 1e-6
     # Training min batch size - increasing the batch size increases the stability of the algorithm, but make learning slower
-    TRAINING_MIN_BATCH_SIZE = 1024
+    TRAINING_MIN_BATCH_SIZE = 128
     
     #########################################################################
     # Log and save
