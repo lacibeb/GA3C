@@ -74,6 +74,7 @@ class Environment(Env):
         # action randomisation
         # action = action + np.random.uniform(0.03, -0.03)
         env_action = None
+
         if Config.CONTINUOUS_INPUT:
             if action is None:
                 action = np.zeros(self.action_dim)
@@ -88,11 +89,12 @@ class Environment(Env):
             if action is None:
                 action = 0
             env_action[action] = 1
+            # debug try
+            env_action = action
 
         self.previous_state = self.current_state
         self.current_state, reward, done, info = self.game.step(env_action)
         self.current_state = np.reshape(self.current_state, -1)
-        reward = reward*0.005 - 1.0
 
         return reward, done
 
