@@ -83,8 +83,8 @@ class ProcessAgent(Process):
                     reward_sum = discount_factor * reward_sum + r
                 else:
                     experiences[t].reward = reward_sum
-        # return experiences[:-1]
-        return experiences
+        return experiences[:-1]
+        # return experiences
 
     def convert_data(self, experiences):
         x_ = np.array([exp.state for exp in experiences])
