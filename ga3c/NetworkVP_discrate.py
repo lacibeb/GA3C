@@ -52,7 +52,10 @@ class Network(NetworkVP):
         layercount = 0
         for layer in Config.DENSE_LAYERS:
             layercount += 1
-            self.denselayer = self.dense_layer(self.x, layer, 'dense1_' + str(layercount) + '_p')
+            if layercount == 1:
+                self.denselayer = self.dense_layer(self.x, layer, 'dense1_' + str(layercount) + '_p')
+            else:
+                self.denselayer = self.dense_layer(self.denselayer, layer, 'dense1_' + str(layercount) + '_p')
             print(str(layercount) + '. layer: ' + str(layer) + ' dense neurons')
 
         self.action_index = tf.placeholder(tf.float32, [None, self.num_actions])
