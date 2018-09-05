@@ -115,7 +115,7 @@ class Config:
     LEARNING_RATE_END = 0.0000003
 
     #Network structure
-    DENSE_LAYERS = (2048, 2048)
+    DENSE_LAYERS = (4, 128, 1024, 64, 4)
     # RMSProp parameters
     # if False than ADAM optimizer only for ddpg
     RMSPROP = True
