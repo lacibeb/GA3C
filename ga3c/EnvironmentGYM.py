@@ -45,6 +45,8 @@ class Environment(Env):
         self.game = gym.make(Config.GAME)
         # TODO: only try
         # https://github.com/openai/gym/issues/494
+        # conda install - c anaconda pyopengl
+        # conda install -c conda-forge xvfbwrapper
         # force true clears directory
         self.game = gym.wrappers.Monitor(self.game, 'pics/', force=True, video_callable=lambda episode_id: True)
         self.game.seed(Config.RANDOM_SEED)
