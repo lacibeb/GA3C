@@ -51,6 +51,7 @@ class ProcessStats(Process):
         self.agent_count = Value('i', 0)
         self.total_frame_count = 0
         self.replay_memory_size = Value('i', 0)
+        self.exit_flag = Value('i', 0)
 
     def FPS(self):
         # average FPS from the beginning of the training (not current FPS)
@@ -68,8 +69,12 @@ class ProcessStats(Process):
             
             self.start_time = time.time()
             first_time = datetime.now()
-            while True:
-                episode_time, reward, length = self.episode_log_q.get()
+            while self.exit_flag.value == 0:
+                try:
+                    episode_time, reward, length = self.episode_log_q.get(timeout=2)
+                except:
+                    continue
+
                 results_logger.write('%s, %d, %d\n' % (episode_time.strftime("%Y-%m-%d %H:%M:%S"), reward, length))
                 results_logger.flush()
 

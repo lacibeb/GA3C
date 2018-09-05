@@ -47,8 +47,10 @@ class ThreadPredictor(Thread):
         states = np.zeros((Config.PREDICTION_BATCH_SIZE, self.state_dim), dtype=np.float32)
 
         while not self.exit_flag:
-            ids[0], states[0] = self.prediction_q.get()
-
+            try:
+                ids[0], states[0] = self.server.prediction_q.get(timeout=2)
+            except:
+                continue
             size = 1
             while size < Config.PREDICTION_BATCH_SIZE and not self.prediction_q.empty():
                 ids[size], states[size] = self.prediction_q.get()

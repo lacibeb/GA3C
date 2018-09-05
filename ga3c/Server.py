@@ -175,6 +175,7 @@ class Server:
 
         self.stats.exit_flag = True
         self.dynamic_adjustment.exit_flag = True
+        self.dynamic_adjustment.join()
 
         while self.agents:
             self.remove_agent()
@@ -182,6 +183,9 @@ class Server:
             self.remove_predictor()
         while self.trainers:
             self.remove_trainer()
+
+        self.stats.exit_flag.value = True
+        self.stats.join()
 
         if Config.USE_REPLAY_MEMORY:
             self.dynamic_replay_filler.exit_flag = True
