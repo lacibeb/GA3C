@@ -37,9 +37,9 @@ from Config import Config
 if Config.GAME == 'pyperrace':
     from PyperEnvironment import Environment
 elif Config.GAME == 'Pendulum-v0':
-    from EnvironmentPend import Environment
+    from EnvironmentGYM import Environment
 elif Config.GAME == 'CartPole-v0':
-    from EnvironmentPend import Environment
+    from EnvironmentGYM import Environment
 
 from Experience import Experience
 
