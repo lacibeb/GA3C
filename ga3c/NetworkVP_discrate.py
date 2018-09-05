@@ -119,7 +119,7 @@ class Network(NetworkVP):
             else:
                 self.opt_grad = self.opt.compute_gradients(self.cost_all)
                 self.opt_grad_clipped = [(tf.clip_by_average_norm(g, Config.GRAD_CLIP_NORM), v) for g, v in
-                                         self.opt_grad]
+                                         self.opt_grad if not g is None]
                 self.train_op = self.opt.apply_gradients(self.opt_grad_clipped)
         else:
             if Config.DUAL_RMSPROP:
