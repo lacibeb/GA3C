@@ -191,7 +191,7 @@ class Network:
 
         return output
 
-    def dense_layer(self, input, out_dim, name, func=tf.nn.sigmoid):
+    def dense_layer(self, input, out_dim, name, func=tf.nn.tanh):
         in_dim = input.get_shape().as_list()[-1]
         # with lot of input it is OK
         # d = 1.0 / np.sqrt(in_dim)
