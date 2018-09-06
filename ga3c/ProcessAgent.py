@@ -74,7 +74,7 @@ class ProcessAgent(Process):
         reward_sum = terminal_reward
         for t in reversed(range(0, len(experiences)-1)):
             if Config.REWARD_RESIZE:
-                experiences[t].reward *= Config.REWARD.FACTOR
+                experiences[t].reward *= Config.REWARD_FACTOR
 
             if Config.REWARD_CLIPPING:
                 r = np.clip(experiences[t].reward, Config.REWARD_MIN, Config.REWARD_MAX)
