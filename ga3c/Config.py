@@ -61,9 +61,9 @@ class Config:
     
     # If the dynamic configuration is on, these are the initial values.
     # Number of Agents
-    AGENTS = 64
+    AGENTS = 32
     # Number of human reference Agents from Agents AGENTS=humref+regular
-    HUMAN_REF_AGENTS = 32
+    HUMAN_REF_AGENTS = 0
     # Number of Predictors
     PREDICTORS = 2
     # Number of Trainers

@@ -113,7 +113,7 @@ class ProcessAgent(Process):
         # put the state in the prediction q
         self.prediction_q.put((self.id, state))
         # wait for the prediction to come back
-        p, v = self.wait_q.get(timeout=10)
+        p, v = self.wait_q.get(timeout=2)
 
         return p, v
 
