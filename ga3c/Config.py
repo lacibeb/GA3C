@@ -103,7 +103,7 @@ class Config:
     IMAGE_HEIGHT = 84
 
     # Total number of episodes and annealing frequency
-    EPISODES = 10000
+    EPISODES = 75000
     ANNEALING_EPISODE_COUNT = 5000
 
     # Entropy regualrization hyper-parameter
@@ -111,11 +111,11 @@ class Config:
     BETA_END = 0.01
 
     # Learning rate
-    LEARNING_RATE_START = 0.0003
-    LEARNING_RATE_END = 0.0003
+    LEARNING_RATE_START = 0.00003
+    LEARNING_RATE_END = 0.00003
 
     #Network structure
-    DENSE_LAYERS = (1024, 64)
+    DENSE_LAYERS = (16,)
     # RMSProp parameters
     # if False than ADAM optimizer only for ddpg
     RMSPROP = True
@@ -132,7 +132,7 @@ class Config:
     # Epsilon (regularize policy lag in GA3C)
     LOG_EPSILON = 1e-6
     # Training min batch size - increasing the batch size increases the stability of the algorithm, but make learning slower
-    TRAINING_MIN_BATCH_SIZE = 128
+    TRAINING_MIN_BATCH_SIZE = 32
     
     #########################################################################
     # Log and save
