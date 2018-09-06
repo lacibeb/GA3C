@@ -196,7 +196,7 @@ class Network:
         # with lot of input it is OK
         # d = 1.0 / np.sqrt(in_dim)
         # with paperenv it better around 0
-        d = 0.3
+        d = 0.003
         with tf.variable_scope(name):
             w_init = tf.random_uniform_initializer(-d, d)
             b_init = tf.random_uniform_initializer(-d, d)
