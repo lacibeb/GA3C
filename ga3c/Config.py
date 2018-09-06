@@ -116,7 +116,7 @@ class Config:
 
     # Learning rate
     LEARNING_RATE_START = 0.0003
-    LEARNING_RATE_END = 0.00003
+    LEARNING_RATE_END = 0.0000003
 
     #Network structure
     DENSE_LAYERS = (16,)
@@ -134,8 +134,7 @@ class Config:
     USE_GRAD_CLIP = False
     GRAD_CLIP_NORM = 40.0 
     # Epsilon (regularize policy lag in GA3C)
-    # LOG_EPSILON = 1e-6
-    LOG_EPSILON = 1e-3
+    LOG_EPSILON = 1e-6
     # Training min batch size - increasing the batch size increases the stability of the algorithm, but make learning slower
     TRAINING_MIN_BATCH_SIZE = 1024
     
