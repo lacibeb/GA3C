@@ -29,6 +29,7 @@ from multiprocessing import Queue
 import time
 
 from Config import Config
+import numpy as np
 
 # Import environment
 if Config.GAME == 'pyperrace':
@@ -159,12 +160,18 @@ class Server:
 
         learning_rate_multiplier = (
                                        Config.LEARNING_RATE_END - Config.LEARNING_RATE_START) / Config.ANNEALING_EPISODE_COUNT
-        beta_multiplier = (Config.BETA_END - Config.BETA_START) / Config.ANNEALING_EPISODE_COUNT
 
+        beta_multiplier = (Config.BETA_END - Config.BETA_START) / Config.ANNEALING_EPISODE_COUNT
         while self.stats.episode_count.value < Config.EPISODES:
             step = min(self.stats.episode_count.value, Config.ANNEALING_EPISODE_COUNT - 1)
             self.model.learning_rate = Config.LEARNING_RATE_START + learning_rate_multiplier * step
             self.model.beta = Config.BETA_START + beta_multiplier * step
+
+            # random steps
+            explore_p = Config.explore_stop + (Config.explore_start - Config.explore_stop) * np.exp(
+                -Config.decay_rate * step)
+            for agent in self.agents:
+                agent.explore_p.Value = explore_p
 
             # Saving is async - even if we start saving at a given episode, we may save the model at a later episode
             if Config.SAVE_MODELS and self.stats.should_save_model.value > 0:

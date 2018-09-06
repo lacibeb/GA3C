@@ -67,6 +67,7 @@ class ProcessAgent(Process):
         self.wait_q = Queue(maxsize=1)
         self.exit_flag = Value('i', 0)
         self.time_count = 0
+        self.explore_p = Value('i', 0)
 
 
     @staticmethod
@@ -117,12 +118,14 @@ class ProcessAgent(Process):
 
         return p, v
 
-    @staticmethod
-    def select_action(actions, prediction):
+    def select_action(self, actions, prediction):
         if Config.PLAY_MODE:
             action = np.argmax(prediction)
         else:
-            action = np.random.choice(actions, p=prediction)
+            if Config.EXPLORATION:
+                action = self.env.game.action_space.sample()
+            else:
+                action = np.random.choice(actions, p=prediction)
         return action
 
     def run_episode(self):
