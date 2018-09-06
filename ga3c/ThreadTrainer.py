@@ -46,8 +46,8 @@ class ThreadTrainer(Thread):
                 try:
                     x__, a__, r__, done__, x2__ = self.server.replay_q.get(timeout=2)
                 except:
-                    if self.exit_flag: break
-                    continue
+                    if self.exit_flag:
+                        continue
             else:
                 batch_size = 0
                 while batch_size <= Config.TRAINING_MIN_BATCH_SIZE:
