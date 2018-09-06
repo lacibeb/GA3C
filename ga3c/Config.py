@@ -124,7 +124,7 @@ class Config:
     # if False than ADAM optimizer only for ddpg
     RMSPROP = True
     RMSPROP_DECAY = 0.99
-    RMSPROP_MOMENTUM = 0.01
+    RMSPROP_MOMENTUM = 0.0
     RMSPROP_EPSILON = 0.1
 
     # Dual RMSProp - we found that using a single RMSProp for the two cost function works better and faster
@@ -168,7 +168,7 @@ class Config:
     MIN_POLICY = 0.0
     # Use log_softmax() instead of log(softmax())
     # not used with continuous
-    USE_LOG_SOFTMAX = False
+    USE_LOG_SOFTMAX = True
 
     # use ddpg model it works only with continuous input
     if NETWORK == 'DDPG':
