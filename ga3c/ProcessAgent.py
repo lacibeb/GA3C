@@ -122,7 +122,7 @@ class ProcessAgent(Process):
         if Config.PLAY_MODE:
             action = np.argmax(prediction)
         else:
-            if Config.EXPLORATION and self.explore_p.Value > np.random.rand():
+            if Config.EXPLORATION and self.explore_p.value > np.random.rand():
                 action = self.env.game.action_space.sample()
             else:
                 action = np.random.choice(actions, p=prediction)
