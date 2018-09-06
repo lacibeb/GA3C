@@ -88,7 +88,7 @@ class ProcessAgent(Process):
             else:
                 experiences[t].reward = reward_sum + r
 
-            if Config.DISCOUNT:
+            if Config.DISCOUNTING:
                 reward_sum = discount_factor * reward_sum
 
         # return experiences[:-1]
