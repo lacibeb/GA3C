@@ -131,7 +131,7 @@ class Config:
     DUAL_RMSPROP = False
     
     # Gradient clipping
-    USE_GRAD_CLIP = True
+    USE_GRAD_CLIP = False
     GRAD_CLIP_NORM = 40.0 
     # Epsilon (regularize policy lag in GA3C)
     LOG_EPSILON = 1e-6
