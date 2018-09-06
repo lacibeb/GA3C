@@ -82,7 +82,7 @@ class Config:
 
     # Discount factor
     DISCOUNTING = True
-    DISCOUNT = 0.97
+    DISCOUNT = 0.99
     
     # Tmax
     TIME_MAX = 200
@@ -107,19 +107,19 @@ class Config:
 
     # Total number of episodes and annealing frequency
     EPISODES = 75000
-    ANNEALING_EPISODE_COUNT = 10000
+    ANNEALING_EPISODE_COUNT = 5000
 
     # Entropy regualrization hyper-parameter
     # BETA_START = 0.01
-    BETA_START = 0.1
+    BETA_START = 0.01
     BETA_END = 0.01
 
     # Learning rate
     LEARNING_RATE_START = 0.0003
-    LEARNING_RATE_END = 0.00003
+    LEARNING_RATE_END = 0.000003
 
     #Network structure
-    DENSE_LAYERS = (16,16)
+    DENSE_LAYERS = (10240)
     # RMSProp parameters
     # if False than ADAM optimizer only for ddpg
     RMSPROP = True
@@ -131,12 +131,12 @@ class Config:
     DUAL_RMSPROP = False
     
     # Gradient clipping
-    USE_GRAD_CLIP = False
+    USE_GRAD_CLIP = True
     GRAD_CLIP_NORM = 40.0 
     # Epsilon (regularize policy lag in GA3C)
     LOG_EPSILON = 1e-6
     # Training min batch size - increasing the batch size increases the stability of the algorithm, but make learning slower
-    TRAINING_MIN_BATCH_SIZE = 32
+    TRAINING_MIN_BATCH_SIZE = 128
     
     #########################################################################
     # Log and save
@@ -166,10 +166,10 @@ class Config:
     
     # Minimum policy
     # MIN_POLICY = 0.0
-    MIN_POLICY = 0.1
+    MIN_POLICY = 0.0
     # Use log_softmax() instead of log(softmax())
     # not used with continuous
-    USE_LOG_SOFTMAX = True
+    USE_LOG_SOFTMAX = False
 
     # use ddpg model it works only with continuous input
     if NETWORK == 'DDPG':
