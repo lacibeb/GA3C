@@ -115,7 +115,7 @@ class Config:
     BETA_END = 0.5
 
     # Learning rate
-    LEARNING_RATE_START = 0.0003
+    LEARNING_RATE_START = 0.003
     LEARNING_RATE_END = 0.000003
 
     #Network structure
