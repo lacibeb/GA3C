@@ -111,7 +111,7 @@ class Config:
 
     # Entropy regualrization hyper-parameter
     # BETA_START = 0.01
-    BETA_START = 0.0
+    BETA_START = 0.001
     BETA_END = 0.0
 
     # Learning rate
