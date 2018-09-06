@@ -73,18 +73,25 @@ class ProcessAgent(Process):
     def _accumulate_rewards(experiences, discount_factor, terminal_reward):
         reward_sum = terminal_reward
         for t in reversed(range(0, len(experiences)-1)):
+            if Config.REWARD_RESIZE:
+                experiences[t].reward *= Config.REWARD.FACTOR
+
             if Config.REWARD_CLIPPING:
                 r = np.clip(experiences[t].reward, Config.REWARD_MIN, Config.REWARD_MAX)
-            # without intermediate rewards
-            if Config.DISCOUNTING:
+            else:
+                r = experiences[t].reward
+
+            # with intermediate rewards
+            if Config.USE_INTERMEDIATE_REWARD:
+                experiences[t].reward = r
+            else:
+                experiences[t].reward = reward_sum + r
+
+            if Config.DISCOUNT:
                 reward_sum = discount_factor * reward_sum
-                # with intermediate rewards
-                if Config.USE_INTERMEDIATE_REWARD:
-                    reward_sum = discount_factor * reward_sum + r
-                else:
-                    experiences[t].reward = reward_sum
-        return experiences[:-1]
-        # return experiences
+
+        # return experiences[:-1]
+        return experiences
 
     def convert_data(self, experiences):
         x_ = np.array([exp.state for exp in experiences])
@@ -106,7 +113,8 @@ class ProcessAgent(Process):
         # put the state in the prediction q
         self.prediction_q.put((self.id, state))
         # wait for the prediction to come back
-        p, v = self.wait_q.get()
+        p, v = self.wait_q.get(timeout=2)
+
         return p, v
 
     @staticmethod
@@ -134,6 +142,7 @@ class ProcessAgent(Process):
             #print('state: ' + str(self.env.current_state))
             prediction, value = self.predict(self.env.current_state)
             #print('pred: ' + str(prediction))
+
             if Config.DISCRATE_INPUT:
                 action = self.select_action(self.actions, prediction)
             else:
@@ -170,11 +179,15 @@ class ProcessAgent(Process):
         while self.exit_flag.value == 0:
             total_reward = 0
             total_length = 0
-            for x_, r_, a_, x2_, done_, reward_sum in self.run_episode():
-                total_reward += reward_sum
-                total_length += len(r_) + 1  # +1 for last frame that we drop
-                self.training_q.put((x_, r_, a_, x2_, done_))
-                # print("shape_x " + str(x_.shape[0]))
-                # print("qsize: " + str(self.training_q.qsize()))
+            try:
+                for x_, r_, a_, x2_, done_, reward_sum in self.run_episode():
+                    total_reward += reward_sum
+                    total_length += len(r_) + 1  # +1 for last frame that we drop
+                    self.training_q.put((x_, r_, a_, x2_, done_))
+                    # print("shape_x " + str(x_.shape[0]))
+                    # print("qsize: " + str(self.training_q.qsize()))
+            except:
+                # if timout occurs it is possible due to end of training
+                continue
             self.episode_log_q.put((datetime.now(), total_reward, total_length))
 

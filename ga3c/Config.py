@@ -63,11 +63,11 @@ class Config:
     # Number of Agents
     AGENTS = 64
     # Number of human reference Agents from Agents AGENTS=humref+regular
-    HUMAN_REF_AGENTS = 0
+    HUMAN_REF_AGENTS = 32
     # Number of Predictors
-    PREDICTORS = 6
+    PREDICTORS = 2
     # Number of Trainers
-    TRAINERS = 1
+    TRAINERS = 2
 
     # Device
     DEVICE = 'gpu:0'
@@ -88,8 +88,11 @@ class Config:
     TIME_MAX = 200
     
     # Reward Clipping
-    REWARD_CLIPPING = False
-    USE_INTERMEDIATE_REWARD = False
+    REWARD_RESIZE = True
+    REWARD_FACTOR = 0.005
+    USE_INTERMEDIATE_REWARD = True
+
+    REWARD_CLIPPING = True
     REWARD_MIN = -1
     REWARD_MAX = 1
 
