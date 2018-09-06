@@ -112,11 +112,11 @@ class Config:
     # Entropy regualrization hyper-parameter
     # BETA_START = 0.01
     BETA_START = 0.1
-    BETA_END = 0.0
+    BETA_END = 0.01
 
     # Learning rate
-    LEARNING_RATE_START = 0.003
-    LEARNING_RATE_END = 0.0003
+    LEARNING_RATE_START = 0.0003
+    LEARNING_RATE_END = 0.00003
 
     #Network structure
     DENSE_LAYERS = (256,)
