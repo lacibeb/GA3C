@@ -194,9 +194,9 @@ class Network:
     def dense_layer(self, input, out_dim, name, func=tf.nn.tanh):
         in_dim = input.get_shape().as_list()[-1]
         # with lot of input it is OK
-        # d = 1.0 / np.sqrt(in_dim)
+        d = 1.0 / np.sqrt(in_dim)
         # with paperenv it better around 0
-        d = 0.03
+        # d = 0.03
         with tf.variable_scope(name):
             w_init = tf.random_uniform_initializer(-d, d)
             b_init = tf.random_uniform_initializer(-d, d)
