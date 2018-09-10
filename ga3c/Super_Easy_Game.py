@@ -44,14 +44,14 @@ class Super_Easy_Game():
                     self.step_reward = -100
                 else:
                     self.step_reward = 1 - np.abs(self.inner_state[0])
-                print('reward: ' + str(self.step_reward))
+                # print('reward: ' + str(self.step_reward))
                 # self.inner_state[0] = np.clip(self.inner_state[0], -self.action_bound, self.action_bound)
 
                 # absolute function, to converge into zero
                 self.steps += 1
                 if self.steps > 200:
                     self.done = True
-                    print('start: ' + str(self.start) + ' end: ' + str(self.inner_state))
+                    # print('start: ' + str(self.start) + ' end: ' + str(self.inner_state))
 
                 self.reward += self.step_reward
 
