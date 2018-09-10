@@ -17,7 +17,7 @@ class Super_Easy_Game():
         self.reward = 0
         self.done = False
         self.info = 'resetted'
-        self.inner_state = np.random.rand(-self.action_bound, self.action_bound)
+        self.inner_state = np.random.rand(0, self.action_bound*2) - self.action_bound
         self.steps = 0
 
     def step(self, action):
