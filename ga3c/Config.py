@@ -33,8 +33,8 @@ class Config:
     # TODO atary option is not working yet
     # TODO atary games works with image input(missing) and dicrate output(this is implemented)
     # GAME = 'PongDeterministic-v0'
-    # GAME = 'Pendulum-v0'
-    GAME = 'Super_Easy_linear'
+    GAME = 'Pendulum-v0'
+    # GAME = 'Super_Easy_linear'
     # GAME = 'CartPole-v0'
     #########################################################################
     # Network selection
@@ -121,7 +121,7 @@ class Config:
     LEARNING_RATE_END = 0.001
 
     #Network structure
-    DENSE_LAYERS = (2, 10)
+    DENSE_LAYERS = (8, 40)
     # RMSProp parameters
     # if False than ADAM optimizer only for ddpg
     RMSPROP = True
