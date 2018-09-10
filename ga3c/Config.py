@@ -33,8 +33,8 @@ class Config:
     # TODO atary option is not working yet
     # TODO atary games works with image input(missing) and dicrate output(this is implemented)
     # GAME = 'PongDeterministic-v0'
-    # GAME = 'Pendulum-v0'
-    GAME = 'Super_Easy_linear'
+    GAME = 'Pendulum-v0'
+    # GAME = 'Super_Easy_linear'
     # GAME = 'CartPole-v0'
     #########################################################################
     # Network selection
@@ -84,7 +84,7 @@ class Config:
 
     # Discount factor
     DISCOUNTING = True
-    DISCOUNT = 0.00
+    DISCOUNT = 0.10
     
     # Tmax
     TIME_MAX = 200
