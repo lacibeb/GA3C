@@ -108,7 +108,7 @@ class Config:
     IMAGE_HEIGHT = 84
 
     # Total number of episodes and annealing frequency
-    EPISODES = 1000
+    EPISODES = 5000
     ANNEALING_EPISODE_COUNT = 1000
 
     # Entropy regualrization hyper-parameter
@@ -146,7 +146,7 @@ class Config:
     # Enable TensorBoard
     TENSORBOARD = True
     # Update TensorBoard every X training steps
-    TENSORBOARD_UPDATE_FREQUENCY = 1000
+    TENSORBOARD_UPDATE_FREQUENCY = 100
 
     # Enable to save models every SAVE_FREQUENCY episodes
     SAVE_MODELS = True
