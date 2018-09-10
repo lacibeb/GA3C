@@ -33,14 +33,15 @@ class Config:
     # TODO atary option is not working yet
     # TODO atary games works with image input(missing) and dicrate output(this is implemented)
     # GAME = 'PongDeterministic-v0'
-    # GAME = 'Pendulum-v0'
-    GAME = 'CartPole-v0'
+    GAME = 'Pendulum-v0'
+    # GAME = 'CartPole-v0'
     #########################################################################
     # Network selection
     # define input
-    NETWORK = 'GA3C_notimageinput'
-    DISCRATE_INPUT = True
-    CONTINUOUS_INPUT = False
+    # NETWORK = 'GA3C_notimageinput'
+    NETWORK = 'GA3C_notimageinput_continuos'
+    DISCRATE_INPUT = False
+    CONTINUOUS_INPUT = True
     # if discrate input but continuos environment
     DISCRATE_TO_CONTINUOUS_CONVERSION = False
     CONTINUOUS_INPUT_PARTITIONS = 8
