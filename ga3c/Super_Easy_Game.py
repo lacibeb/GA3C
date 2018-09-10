@@ -12,14 +12,14 @@ class Super_Easy_Game():
         self.info = ''
         self.current_state = None
         self.steps = 0
-        self.inner_state = (0,)
+        self.inner_state = np.array([0.0])
         self.step_reward = 0
-        self.reward = 0
+        self.reward = 0.0
         self.done = False
 
     def reset(self):
-        self.step_reward = 0
-        self.reward = 0
+        self.step_reward = 0.0
+        self.reward = 0.0
         self.done = False
         self.info = 'resetted'
         self.inner_state = np.random.rand(0, self.action_bound*2) - self.action_bound
@@ -28,6 +28,9 @@ class Super_Easy_Game():
     def step(self, action):
         if self.steps > 200:
             self.done = True
+
+        if action is None:
+            action = 0.0
 
         if not self.done:
             if self.game == 'Super_Easy_linear':
