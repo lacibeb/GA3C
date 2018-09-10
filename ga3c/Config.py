@@ -63,13 +63,13 @@ class Config:
     
     # If the dynamic configuration is on, these are the initial values.
     # Number of Agents
-    AGENTS = 1
+    AGENTS = 32
     # Number of human reference Agents from Agents AGENTS=humref+regular
     HUMAN_REF_AGENTS = 0
     # Number of Predictors
-    PREDICTORS = 1
+    PREDICTORS = 2
     # Number of Trainers
-    TRAINERS = 1
+    TRAINERS = 2
 
     # Device
     DEVICE = 'gpu:0'
@@ -84,7 +84,7 @@ class Config:
 
     # Discount factor
     DISCOUNTING = True
-    DISCOUNT = 0.50
+    DISCOUNT = 0.10
     
     # Tmax
     TIME_MAX = 200
@@ -113,7 +113,7 @@ class Config:
 
     # Entropy regualrization hyper-parameter
     # BETA_START = 0.01
-    BETA_START = 0.1
+    BETA_START = 0.5
     BETA_END = 0.01
 
     # Learning rate
