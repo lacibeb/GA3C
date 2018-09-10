@@ -36,33 +36,7 @@ class Network(NetworkVP):
     def __init__(self, device, model_name, num_actions, state_dim):
         super(Network, self).__init__(device, model_name, num_actions, state_dim)
 
-    def _create_graph(self):
-        self.x = tf.placeholder(
-            tf.float32, [None, self.state_dim], name='X')
-        self.y_r = tf.placeholder(tf.float32, [None], name='Yr')
-
-        self.var_beta = tf.placeholder(tf.float32, name='beta', shape=[])
-        self.var_learning_rate = tf.placeholder(tf.float32, name='lr', shape=[])
-
-        self.global_step = tf.Variable(0, trainable=False, name='step')
-
-        # As implemented in A3C paper
-
-        # creating dense layers as in config
-        layercount = 0
-        for layer in Config.DENSE_LAYERS:
-            layercount += 1
-            if layercount == 1:
-                self.denselayer = self.dense_layer(self.x, layer, 'dense1_' + str(layercount) + '_p')
-            else:
-                self.denselayer = self.dense_layer(self.denselayer, layer, 'dense1_' + str(layercount) + '_p')
-            print(str(layercount) + '. layer: ' + str(layer) + ' dense neurons')
-
-        self.action_index = tf.placeholder(tf.float32, [None, self.num_actions])
-
-        self.logits_v = tf.squeeze(self.dense_layer(self.denselayer, 1, 'logits_v', func=None), axis=[1])
-        self.cost_v = 0.5 * tf.reduce_sum(tf.square(self.y_r - self.logits_v), axis=0)
-
+    def _postproc_graph(self):
         self.logits_p = self.dense_layer(self.denselayer, self.num_actions, 'logits_p', func=None)
         if Config.USE_LOG_SOFTMAX:
             self.softmax_p = tf.nn.softmax(self.logits_p)
@@ -86,70 +60,3 @@ class Network(NetworkVP):
         self.cost_p_1_agg = tf.reduce_sum(self.cost_p_1, axis=0)
         self.cost_p_2_agg = tf.reduce_sum(self.cost_p_2, axis=0)
         self.cost_p = -(self.cost_p_1_agg + self.cost_p_2_agg)
-
-        if Config.DUAL_RMSPROP:
-            self.opt_p = tf.train.RMSPropOptimizer(
-                learning_rate=self.var_learning_rate,
-                decay=Config.RMSPROP_DECAY,
-                momentum=Config.RMSPROP_MOMENTUM,
-                epsilon=Config.RMSPROP_EPSILON)
-
-            self.opt_v = tf.train.RMSPropOptimizer(
-                learning_rate=self.var_learning_rate,
-                decay=Config.RMSPROP_DECAY,
-                momentum=Config.RMSPROP_MOMENTUM,
-                epsilon=Config.RMSPROP_EPSILON)
-        else:
-            self.cost_all = self.cost_p + self.cost_v
-            self.opt = tf.train.RMSPropOptimizer(
-                learning_rate=self.var_learning_rate,
-                decay=Config.RMSPROP_DECAY,
-                momentum=Config.RMSPROP_MOMENTUM,
-                epsilon=Config.RMSPROP_EPSILON)
-
-        if Config.USE_GRAD_CLIP:
-            if Config.DUAL_RMSPROP:
-                self.opt_grad_v = self.opt_v.compute_gradients(self.cost_v)
-                self.opt_grad_v_clipped = [(tf.clip_by_norm(g, Config.GRAD_CLIP_NORM), v)
-                                           for g, v in self.opt_grad_v if not g is None]
-                self.train_op_v = self.opt_v.apply_gradients(self.opt_grad_v_clipped)
-
-                self.opt_grad_p = self.opt_p.compute_gradients(self.cost_p)
-                self.opt_grad_p_clipped = [(tf.clip_by_norm(g, Config.GRAD_CLIP_NORM), v)
-                                           for g, v in self.opt_grad_p if not g is None]
-                self.train_op_p = self.opt_p.apply_gradients(self.opt_grad_p_clipped)
-                self.train_op = [self.train_op_p, self.train_op_v]
-            else:
-                self.opt_grad = self.opt.compute_gradients(self.cost_all)
-                self.opt_grad_clipped = [(tf.clip_by_average_norm(g, Config.GRAD_CLIP_NORM), v) for g, v in
-                                         self.opt_grad if not g is None]
-                self.train_op = self.opt.apply_gradients(self.opt_grad_clipped)
-        else:
-            if Config.DUAL_RMSPROP:
-                self.train_op_v = self.opt_p.minimize(self.cost_v, global_step=self.global_step)
-                self.train_op_p = self.opt_v.minimize(self.cost_p, global_step=self.global_step)
-                self.train_op = [self.train_op_p, self.train_op_v]
-            else:
-                self.train_op = self.opt.minimize(self.cost_all, global_step=self.global_step)
-
-    def _create_tensor_board(self):
-        summaries = tf.get_collection(tf.GraphKeys.SUMMARIES)
-        summaries.append(tf.summary.scalar("Pcost_advantage", self.cost_p_1_agg))
-        summaries.append(tf.summary.scalar("Pcost_entropy", self.cost_p_2_agg))
-        summaries.append(tf.summary.scalar("Pcost", self.cost_p))
-        summaries.append(tf.summary.scalar("Vcost", self.cost_v))
-        summaries.append(tf.summary.scalar("LearningRate", self.var_learning_rate))
-        summaries.append(tf.summary.scalar("Beta", self.var_beta))
-        for var in tf.trainable_variables():
-            summaries.append(tf.summary.histogram("weights_%s" % var.name, var))
-
-        summaries.append(tf.summary.histogram("activation_lastdense", self.denselayer))
-
-        summaries.append(tf.summary.histogram("activation_v", self.logits_v))
-        summaries.append(tf.summary.histogram("activation_p", self.softmax_p))
-
-        # summaries = self.misc_tensor_board(summaries)
-
-        self.summary_op = tf.summary.merge(summaries)
-        self.log_writer = tf.summary.FileWriter("logs/%s" % self.model_name, self.sess.graph)
-

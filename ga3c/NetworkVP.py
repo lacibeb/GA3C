@@ -65,6 +65,11 @@ class Network:
                 
 
     def _create_graph(self):
+        self._core_graph()
+        self._postproc_graph()
+        self._opt_graph()
+
+    def _core_graph(self):
         self.x = tf.placeholder(
             tf.float32, [None, self.state_dim], name='X')
         self.y_r = tf.placeholder(tf.float32, [None], name='Yr')
@@ -76,18 +81,22 @@ class Network:
 
         # As implemented in A3C paper
 
-        self.p_d1 = self.dense_layer(self.x, 4, 'dense11_p', None)
-        self.p_d2 = self.dense_layer(self.p_d1, 256, 'dense12_p', None)
-        self.p_d3 = self.dense_layer(self.p_d2, 256, 'dense13_p', None)
-        self.p_d4 = self.dense_layer(self.p_d3, 100, 'dense14_p', tf.nn.sigmoid)
+        # creating dense layers as in config
+        layercount = 0
+        for layer in Config.DENSE_LAYERS:
+            layercount += 1
+            if layercount == 1:
+                self.denselayer = self.dense_layer(self.x, layer, 'dense1_' + str(layercount) + '_p')
+            else:
+                self.denselayer = self.dense_layer(self.denselayer, layer, 'dense1_' + str(layercount) + '_p')
+            print(str(layercount) + '. layer: ' + str(layer) + ' dense neurons')
+
         self.action_index = tf.placeholder(tf.float32, [None, self.num_actions])
 
-        self.d1 = self.dense_layer(self.p_d4, 64, 'dense1')
-
-        self.logits_v = tf.squeeze(self.dense_layer(self.d1, 1, 'logits_v', func=None), axis=[1])
-
+        self.logits_v = tf.squeeze(self.dense_layer(self.denselayer, 1, 'logits_v', func=None), axis=[1])
         self.cost_v = 0.5 * tf.reduce_sum(tf.square(self.y_r - self.logits_v), axis=0)
 
+    def _postproc_graph(self):
         # output, action
         self.logits_p = self._create_angle_output(self.d1, self.num_actions, 'logits_p', func=tf.nn.sigmoid)
 
@@ -104,6 +113,7 @@ class Network:
         self.cost_p_2_agg = tf.reduce_sum(self.cost_p_2, axis=0)
         self.cost_p = -(self.cost_p_1_agg + self.cost_p_2_agg)
         
+    def _opt_graph(self):
         if Config.DUAL_RMSPROP:
             self.opt_p = tf.train.RMSPropOptimizer(
                 learning_rate=self.var_learning_rate,
@@ -127,18 +137,19 @@ class Network:
         if Config.USE_GRAD_CLIP:
             if Config.DUAL_RMSPROP:
                 self.opt_grad_v = self.opt_v.compute_gradients(self.cost_v)
-                self.opt_grad_v_clipped = [(tf.clip_by_norm(g, Config.GRAD_CLIP_NORM),v) 
+                self.opt_grad_v_clipped = [(tf.clip_by_norm(g, Config.GRAD_CLIP_NORM), v)
                                             for g,v in self.opt_grad_v if not g is None]
                 self.train_op_v = self.opt_v.apply_gradients(self.opt_grad_v_clipped, global_step=self.global_step)
             
                 self.opt_grad_p = self.opt_p.compute_gradients(self.cost_p)
-                self.opt_grad_p_clipped = [(tf.clip_by_norm(g, Config.GRAD_CLIP_NORM),v)
+                self.opt_grad_p_clipped = [(tf.clip_by_norm(g, Config.GRAD_CLIP_NORM), v)
                                             for g,v in self.opt_grad_p if not g is None]
                 self.train_op_p = self.opt_p.apply_gradients(self.opt_grad_p_clipped, global_step=self.global_step)
                 self.train_op = [self.train_op_p, self.train_op_v]
             else:
                 self.opt_grad = self.opt.compute_gradients(self.cost_all)
-                self.opt_grad_clipped = [(tf.clip_by_average_norm(g, Config.GRAD_CLIP_NORM),v) for g,v in self.opt_grad]
+                self.opt_grad_clipped = [(tf.clip_by_average_norm(g, Config.GRAD_CLIP_NORM), v) for g, v in
+                                         self.opt_grad if not g is None]
                 self.train_op = self.opt.apply_gradients(self.opt_grad_clipped, global_step=self.global_step)
         else:
             if Config.DUAL_RMSPROP:
@@ -161,9 +172,8 @@ class Network:
         for var in tf.trainable_variables():
             summaries.append(tf.summary.histogram("weights_%s" % var.name, var))
 
-        summaries.append(tf.summary.histogram("activation_pd1", self.p_d1))
-        summaries.append(tf.summary.histogram("activation_pd2", self.p_d2))
-        summaries.append(tf.summary.histogram("activation_d2", self.d1))
+        summaries.append(tf.summary.histogram("activation_lastdense", self.denselayer))
+
         summaries.append(tf.summary.histogram("activation_v", self.logits_v))
         summaries.append(tf.summary.histogram("activation_p", self.softmax_p))
 
