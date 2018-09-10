@@ -83,7 +83,7 @@ class Config:
     # Algorithm parameters
 
     # Discount factor
-    DISCOUNTING = True
+    DISCOUNTING = False
     DISCOUNT = 0.99
     
     # Tmax
