@@ -25,7 +25,7 @@ class Super_Easy_Game():
             self.done = True
 
         if not self.done:
-            if self.game = 'Super_Easy_linear':
+            if self.game == 'Super_Easy_linear':
                 # we can change inner state witch action, basically it is an
                 self.inner_sate += action*0.01
                 self.inner_sate = np.clip(self.inner_sate, -self.action_bound, self.action_bound)
