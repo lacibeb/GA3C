@@ -91,4 +91,19 @@ class Environment:
         self.current_state = self._get_current_state()
         return reward, done
 
+    @staticmethod
+    def check_bounds(value, posbound, negbound = 0, turnaround = True):
+        # if out of bounds then check angle
+        if turnaround is False:
+            if value < negbound:
+                value = negbound
+            if value > posbound:
+                value = posbound
+        else:
+            size = posbound - negbound
+            if value < negbound:
+                value = posbound - ((negbound - value) % size)
+            if value > posbound:
+                value = ((value - posbound) % size) + negbound
+        return value
 

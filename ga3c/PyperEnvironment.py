@@ -39,22 +39,6 @@ class Environment(Env):
         # scaling state to be between -1 ... 1
 
 
-    @staticmethod
-    def check_bounds(value, posbound, negbound = 0, turnaround = True):
-        # if out of bounds then check angle
-        if turnaround is False:
-            if value < negbound:
-                value = negbound
-            if value > posbound:
-                value = posbound
-        else:
-            size = posbound - negbound
-            if value < negbound:
-                value = posbound - ((negbound - value) % size)
-            if value > posbound:
-                value = ((value - posbound) % size) + negbound
-        return value
-
     def step(self, action):
         # action randomisation
         # action = action + np.random.uniform(0.03, -0.03)
