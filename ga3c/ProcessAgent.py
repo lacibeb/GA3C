@@ -189,8 +189,8 @@ class ProcessAgent(Process):
                     self.training_q.put((x_, r_, a_, x2_, done_))
                     # print("shape_x " + str(x_.shape[0]))
                     # print("qsize: " + str(self.training_q.qsize()))
+                self.episode_log_q.put((datetime.now(), total_reward, total_length))
             except:
                 # if timout occurs it is possible due to end of training
                 continue
-            self.episode_log_q.put((datetime.now(), total_reward, total_length))
 
