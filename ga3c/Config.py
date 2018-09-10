@@ -198,7 +198,7 @@ class Config:
     # ------------------------------------
     # recommended game specific settings
 
-    EXPLORATION = True
+    EXPLORATION = False
     explore_start = 1.0            # exploration probability at start
     explore_stop = 0.01            # minimum exploration probability
     decay_rate = 0.0001            # exponential decay rate for exploration prob
