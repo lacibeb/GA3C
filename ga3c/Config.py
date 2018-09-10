@@ -83,7 +83,7 @@ class Config:
     # Algorithm parameters
 
     # Discount factor
-    DISCOUNTING = False
+    DISCOUNTING = True
     DISCOUNT = 0.99
     
     # Tmax
@@ -92,7 +92,7 @@ class Config:
     # Reward Clipping
     REWARD_RESIZE = True
     REWARD_FACTOR = 0.005
-    USE_INTERMEDIATE_REWARD = True
+    USE_INTERMEDIATE_REWARD = False
 
     REWARD_CLIPPING = True
     REWARD_MIN = -1
