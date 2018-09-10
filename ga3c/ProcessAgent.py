@@ -40,7 +40,8 @@ elif Config.GAME == 'Pendulum-v0':
     from EnvironmentGYM import Environment
 elif Config.GAME == 'CartPole-v0':
     from EnvironmentGYM import Environment
-
+elif Config.GAME == 'Super_Easy_linear':
+    from Environment_Easy import Environment
 from Experience import Experience
 
 
