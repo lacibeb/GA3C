@@ -24,7 +24,7 @@ class Super_Easy_Game():
         self.reward = 0.0
         self.done = False
         self.info = 'resetted'
-        self.inner_state.item(0) = np.random.rand(0, self.action_bound*2) - self.action_bound
+        self.inner_state[0] = np.random.rand(0, self.action_bound*2) - self.action_bound
         self.steps = 0
 
     def step(self, action):
@@ -37,11 +37,11 @@ class Super_Easy_Game():
         if not self.done:
             if self.game == 'Super_Easy_linear':
                 # we can change inner state witch action, basically it is an
-                self.inner_state.item(0) += action*0.01
-                self.inner_state.item(0) = np.clip(self.inner_state.item(0), -self.action_bound, self.action_bound)
+                self.inner_state[0] += action*0.01
+                self.inner_state[0] = np.clip(self.inner_state[0], -self.action_bound, self.action_bound)
 
                 # absolute function, to converge into zero
-                self.step_reward = 1 - np.abs(self.inner_state.item(0))
+                self.step_reward = 1 - np.abs(self.inner_state[0])
                 self.reward += self.step_reward
                 self.steps += 1
 
