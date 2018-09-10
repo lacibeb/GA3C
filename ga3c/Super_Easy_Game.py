@@ -36,9 +36,9 @@ class Super_Easy_Game():
         if not self.done:
             if self.game == 'Super_Easy_linear':
                 # we can change inner state witch action, basically it is an
-                print('action: ' + str(action) + 'innerstate: ' + str(self.inner_state[0]))
+                # print('action: ' + str(action) + 'innerstate: ' + str(self.inner_state[0]))
                 self.inner_state[0] = self.inner_state[0] + action*0.1
-                print('innerstate: ' + str(self.inner_state[0]))
+                # print('innerstate: ' + str(self.inner_state[0]))
                 if abs(self.inner_state[0]) > 1:
                     self.done = True
                     self.step_reward = -100
