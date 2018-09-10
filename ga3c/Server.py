@@ -194,7 +194,7 @@ class Server:
             self.remove_trainer()
 
         self.stats.exit_flag.value = 1
-        self.stats.join()
+        # self.stats.join()
 
         if Config.USE_REPLAY_MEMORY:
             self.dynamic_replay_filler.exit_flag = True
