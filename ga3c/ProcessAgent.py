@@ -180,7 +180,7 @@ class ProcessAgent(Process):
         # randomly sleep up to 1 second. helps agents boot smoothly.
         time.sleep(np.random.rand())
         np.random.seed(np.int32(time.time() % 1 * 1000 + self.id * 10))
-        while self.exit_flag.value is not True:
+        while self.exit_flag.value == 0:
             total_reward = 0
             total_length = 0
             #try:

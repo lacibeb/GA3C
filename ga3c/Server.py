@@ -105,7 +105,7 @@ class Server:
         self.agent_id += 1
 
     def remove_agent(self):
-        self.agents[-1].exit_flag.value = True
+        self.agents[-1].exit_flag.value = 1
         self.agents[-1].join()
         self.agents.pop()
 
@@ -193,7 +193,7 @@ class Server:
         while self.trainers:
             self.remove_trainer()
 
-        self.stats.exit_flag.value = True
+        self.stats.exit_flag.value = 1
         self.stats.join()
 
         if Config.USE_REPLAY_MEMORY:
