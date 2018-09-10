@@ -98,7 +98,7 @@ class Network:
 
     def _postproc_graph(self):
         # output, action
-        self.logits_p = self._create_angle_output(self.self.denselayer, self.num_actions, 'logits_p', func=tf.nn.sigmoid)
+        self.logits_p = self._create_angle_output(self.denselayer, self.num_actions, 'logits_p', func=tf.nn.sigmoid)
 
         #output softmax
         self.softmax_p = self.logits_p
