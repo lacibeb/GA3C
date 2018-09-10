@@ -40,12 +40,17 @@ class Super_Easy_Game():
             if self.game == 'Super_Easy_linear':
                 # we can change inner state witch action, basically it is an
                 self.inner_state[0] += action*0.01
-                self.inner_state[0] = np.clip(self.inner_state[0], -self.action_bound, self.action_bound)
+                if abs(self.inner_state[0]) > 1:
+                    self.done = True
+                    self.step_reward = -100
+                else:
+                    self.step_reward = 1 - np.abs(self.inner_state[0])
+
+                # self.inner_state[0] = np.clip(self.inner_state[0], -self.action_bound, self.action_bound)
 
                 # absolute function, to converge into zero
-                self.step_reward = 1 - np.abs(self.inner_state[0])
-                self.reward += self.step_reward
                 self.steps += 1
+                self.reward += self.step_reward
 
         return self.inner_state, self.step_reward, self.done, self.info
 
