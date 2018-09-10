@@ -7,6 +7,7 @@ class Super_Easy_Game():
 
         self.action_dim = 1
         self.action_bound = 1
+        self.state_dim = 1
 
         self.info = ''
         self.current_state = None

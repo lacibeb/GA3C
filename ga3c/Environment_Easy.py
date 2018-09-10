@@ -61,5 +61,5 @@ class Environment(Env):
         else:
             self.action_dim = self.game.action_dim
 
-        self.state_dim = self.game.observation_space.shape[0]
+        self.state_dim = self.game.state_dim
 
