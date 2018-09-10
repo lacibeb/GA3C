@@ -24,51 +24,42 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-# check python version; warn if not Python3
 import sys
-import warnings
-if sys.version_info < (3,0):
-    warnings.warn("Optimized for Python3. Performance may suffer under Python2.", Warning)
 
-import gym
+if sys.version_info >= (3, 0):
+    from queue import Queue
+else:
+    from Queue import Queue
+
+import numpy as np
+import scipy.misc as misc
 
 from Config import Config
-from Server import Server
+from EnvironmentGYM import Environment as Env
+from Super_Easy_Game import Super_Easy_Game
 
-# Parse arguments
-for i in range(1, len(sys.argv)):
-    # Config arguments should be in format of Config=Value
-    # For setting booleans to False use Config=
-    x, y = sys.argv[i].split('=')
-    setattr(Config, x, type(getattr(Config, x))(y))
+class Environment(Env):
+    def __init__(self):
+        self.game = Super_Easy_Game(Config.GAME, Config.CONTINUOUS_INPUT)
+        # TODO: only try
+        # https://github.com/openai/gym/issues/494
+        # conda install - c anaconda pyopengl
+        # conda install -c conda-forge xvfbwrapper
+        # force true clears directory
+        # export DISPLAY=:0.0 in etc/environment
+        #self.game = gym.wrappers.Monitor(self.game, 'pics/', force=True, mode='rgb_array', video_callable=lambda episode_id: True)
 
-# Adjust configs for Play mode
-if Config.PLAY_MODE:
-    Config.AGENTS = 1
-    Config.PREDICTORS = 1
-    Config.TRAINERS = 1
-    Config.DYNAMIC_SETTINGS = False
+        self.previous_state = None
+        self.current_state = None
+        self.total_reward = 0
 
-    Config.LOAD_CHECKPOINT = True
-    Config.TRAIN_MODELS = False
-    Config.SAVE_MODELS = False
+        self.reset()
 
-# for pyperrace the statedim is comming from game
-if Config.GAME == 'pyperrace':
-    Config.CONTINUOUS_INPUT = True
-    Config.DISCRATE_INPUT = False
-elif Config.GAME == 'Pendulum-v0':
-    Config.CONTINUOUS_INPUT = True
-    Config.DISCRATE_INPUT = False
-elif Config.GAME == 'CartPole-v0':
-    Config.CONTINUOUS_INPUT = False
-    Config.DISCRATE_INPUT = True
-elif Config.GAME == 'Super_Easy_linear':
-    Config.CONTINUOUS_INPUT = True
-    Config.DISCRATE_INPUT = False
+        if Config.CONTINUOUS_INPUT:
+            self.action_dim = self.game.action_dim
+            self.action_bound = self.game.action_bound
+        else:
+            self.action_dim = self.game.action_dim
 
+        self.state_dim = self.game.observation_space.shape[0]
 
-gym.undo_logger_setup()
-
-# Start main program
-Server().main()
