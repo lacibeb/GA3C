@@ -118,7 +118,7 @@ class Config:
 
     # Learning rate
     LEARNING_RATE_START = 0.01
-    LEARNING_RATE_END = 0.01
+    LEARNING_RATE_END = 0.001
 
     #Network structure
     DENSE_LAYERS = (1,)
