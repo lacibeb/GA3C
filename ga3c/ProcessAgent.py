@@ -144,9 +144,9 @@ class ProcessAgent(Process):
                 self.env.step(None)  # 0 == NOOP
                 continue
 
-            #print('state: ' + str(self.env.current_state))
+            print('state: ' + str(self.env.current_state))
             prediction, value = self.predict(self.env.current_state)
-            #print('pred: ' + str(prediction))
+            print('pred: ' + str(prediction))
 
             if Config.DISCRATE_INPUT:
                 action = self.select_action(self.actions, prediction)
@@ -154,7 +154,7 @@ class ProcessAgent(Process):
                 action = prediction
 
             reward, done = self.env.step(action)
-            #print('reward: ' + str(reward))
+            print('reward: ' + str(reward))
             reward_sum += reward
             exp = Experience(self.env.previous_state, action, prediction, reward, self.env.current_state, done)
             experiences.append(exp)
@@ -165,7 +165,6 @@ class ProcessAgent(Process):
                 terminal_reward = reward_sum
                 updated_exps = ProcessAgent._accumulate_rewards(experiences, self.discount_factor, terminal_reward)
                 x_, r_, a_, x2_, done_ = self.convert_data(updated_exps)
-                #print(r_)
                 yield x_, r_, a_, x2_, done_, reward_sum
 
                 # reset the tmax count
