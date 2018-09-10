@@ -193,7 +193,7 @@ class Server:
         while self.trainers:
             self.remove_trainer()
 
-        self.stats.exit_flag.Value = True
+        self.stats.exit_flag.value = True
         self.stats.join()
 
         if Config.USE_REPLAY_MEMORY:

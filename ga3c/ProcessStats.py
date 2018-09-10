@@ -69,7 +69,7 @@ class ProcessStats(Process):
             
             self.start_time = time.time()
             first_time = datetime.now()
-            while self.exit_flag.value == 0:
+            while self.exit_flag.value not True:
                 try:
                     episode_time, reward, length = self.episode_log_q.get(timeout=2)
                 except:
