@@ -29,9 +29,6 @@ class Super_Easy_Game():
         self.steps = 0
 
     def step(self, action):
-        if self.steps > 200:
-            self.done = True
-            print('start: ' + str(self.start) + ' end: ' + str(self.inner_state))
 
         if action is None:
             action = 0.0
@@ -39,17 +36,23 @@ class Super_Easy_Game():
         if not self.done:
             if self.game == 'Super_Easy_linear':
                 # we can change inner state witch action, basically it is an
-                self.inner_state[0] += action*0.1
+                print('action: ' + str(action) + 'innerstate: ' + str(self.inner_state[0]))
+                self.inner_state[0] = self.inner_state[0] + action*0.1
+                print('innerstate: ' + str(self.inner_state[0]))
                 if abs(self.inner_state[0]) > 1:
                     self.done = True
                     self.step_reward = -100
                 else:
                     self.step_reward = 1 - np.abs(self.inner_state[0])
-
+                print('reward: ' + str(self.step_reward))
                 # self.inner_state[0] = np.clip(self.inner_state[0], -self.action_bound, self.action_bound)
 
                 # absolute function, to converge into zero
                 self.steps += 1
+                if self.steps > 200:
+                    self.done = True
+                    print('start: ' + str(self.start) + ' end: ' + str(self.inner_state))
+
                 self.reward += self.step_reward
 
         return self.inner_state, self.step_reward, self.done, self.info
