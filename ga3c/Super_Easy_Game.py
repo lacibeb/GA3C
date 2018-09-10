@@ -39,7 +39,7 @@ class Super_Easy_Game():
         if not self.done:
             if self.game == 'Super_Easy_linear':
                 # we can change inner state witch action, basically it is an
-                self.inner_state[0] += action*0.01
+                self.inner_state[0] += action*0.1
                 if abs(self.inner_state[0]) > 1:
                     self.done = True
                     self.step_reward = -100
