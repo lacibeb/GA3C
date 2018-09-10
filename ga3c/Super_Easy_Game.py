@@ -12,10 +12,12 @@ class Super_Easy_Game():
         self.info = ''
         self.current_state = None
         self.steps = 0
-        self.inner_state = np.array([0.0])
+        self.inner_state = np.array([0.0, ])
         self.step_reward = 0
         self.reward = 0.0
         self.done = False
+
+        self.reset()
 
     def reset(self):
         self.step_reward = 0.0
