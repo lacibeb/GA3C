@@ -84,13 +84,13 @@ class Config:
 
     # Discount factor
     DISCOUNTING = True
-    DISCOUNT = 0.50
+    DISCOUNT = 0.80
     
     # Tmax
     TIME_MAX = 200
     
     # Reward Clipping
-    REWARD_RESIZE = True
+    REWARD_RESIZE = False
     REWARD_FACTOR = 0.005
     USE_INTERMEDIATE_REWARD = False
 
