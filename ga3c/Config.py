@@ -113,12 +113,12 @@ class Config:
 
     # Entropy regualrization hyper-parameter
     # BETA_START = 0.01
-    BETA_START = 0.15
+    BETA_START = 0.015
     BETA_END = 0.01
 
     # Learning rate
     LEARNING_RATE_START = 0.001
-    LEARNING_RATE_END = 0.0001
+    LEARNING_RATE_END = 0.00001
 
     #Network structure
     DENSE_LAYERS = (8, 40, 10)
@@ -198,7 +198,7 @@ class Config:
     # ------------------------------------
     # recommended game specific settings
 
-    EXPLORATION = False
+    EXPLORATION = True
     explore_start = 1.0            # exploration probability at start
     explore_stop = 0.01            # minimum exploration probability
     decay_rate = 0.0001            # exponential decay rate for exploration prob
