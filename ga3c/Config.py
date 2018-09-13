@@ -195,6 +195,10 @@ class Config:
         #USE_REPLAY_MEMORY = False
 
     USE_REPLAY_MEMORY = True
+    REPLAY_BUFFER_SIZE = 1000000
+    REPLAY_BUFFER_RANDOM_SEED = 12345
+    REPLAY_MIN_QUEUE_SIZE = 2
+
     RANDOM_SEED = 12345
 
     # ------------------------------------
