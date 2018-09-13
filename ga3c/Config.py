@@ -191,8 +191,10 @@ class Config:
         gamma = 0.99
         DISCOUNTING = False
     else:
-        USE_REPLAY_MEMORY = False
+        pass
+        #USE_REPLAY_MEMORY = False
 
+    USE_REPLAY_MEMORY = True
     RANDOM_SEED = 12345
 
     # ------------------------------------
