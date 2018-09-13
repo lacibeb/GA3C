@@ -84,10 +84,10 @@ class Config:
 
     # Discount factor
     DISCOUNTING = True
-    DISCOUNT = 0.00
+    DISCOUNT = 0.99
     
     # Tmax
-    TIME_MAX = 200
+    TIME_MAX = 1000
     
     # Reward Clipping
     REWARD_RESIZE = False
@@ -108,8 +108,8 @@ class Config:
     IMAGE_HEIGHT = 84
 
     # Total number of episodes and annealing frequency
-    EPISODES = 5000
-    ANNEALING_EPISODE_COUNT = 1000
+    EPISODES = 50000
+    ANNEALING_EPISODE_COUNT = 5000
 
     # Entropy regualrization hyper-parameter
     # BETA_START = 0.01
@@ -117,8 +117,8 @@ class Config:
     BETA_END = 0.01
 
     # Learning rate
-    LEARNING_RATE_START = 0.001
-    LEARNING_RATE_END = 0.00001
+    LEARNING_RATE_START = 0.0001
+    LEARNING_RATE_END = 0.0000001
 
     #Network structure
     DENSE_LAYERS = (8, 40, 10)
