@@ -73,7 +73,11 @@ class ProcessAgent(Process):
 
     @staticmethod
     def _accumulate_rewards(experiences, discount_factor, terminal_reward):
-        reward_sum = terminal_reward
+        if Config.REWARD_RESIZE:
+            reward_sum = terminal_reward * Config.REWARD_FACTOR
+        else:
+            reward_sum = terminal_reward
+
         for t in reversed(range(0, len(experiences)-1)):
             if Config.REWARD_RESIZE:
                 experiences[t].reward *= Config.REWARD_FACTOR
