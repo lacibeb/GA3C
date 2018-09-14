@@ -121,7 +121,7 @@ class Config:
     LEARNING_RATE_END = 0.00001
 
     #Network structure
-    DENSE_LAYERS = (8, 40, 10)
+    DENSE_LAYERS = (8, 400, 400)
     # RMSProp parameters
     # if False than ADAM optimizer only for ddpg
     RMSPROP = True
@@ -194,7 +194,7 @@ class Config:
         pass
         #USE_REPLAY_MEMORY = False
 
-    USE_REPLAY_MEMORY = True
+    USE_REPLAY_MEMORY = False
     REPLAY_BUFFER_SIZE = 1000000
     REPLAY_BUFFER_RANDOM_SEED = 12345
     REPLAY_MIN_QUEUE_SIZE = 2
