@@ -1,0 +1,7 @@
+2018.09.14.
+for tensboard to function had to upgrade tensorlfow
+pip install --ignore-installed --upgrade https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow_gpu-1.10.1-cp35-cp35m-linux_x86_64.whl
+only on head1
+not working needs cuda 9.0
+downgraded to
+pip install --ignore-installed --upgrade https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow_gpu-1.4.0-cp35-cp35m-linux_x86_64.whl

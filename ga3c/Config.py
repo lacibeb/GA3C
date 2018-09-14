@@ -108,8 +108,8 @@ class Config:
     IMAGE_HEIGHT = 84
 
     # Total number of episodes and annealing frequency
-    EPISODES = 50000
-    ANNEALING_EPISODE_COUNT = 10000
+    EPISODES = 500000
+    ANNEALING_EPISODE_COUNT = 100000
 
     # Entropy regualrization hyper-parameter
     # BETA_START = 0.01
@@ -117,7 +117,7 @@ class Config:
     BETA_END = 0.01
 
     # Learning rate
-    LEARNING_RATE_START = 0.001
+    LEARNING_RATE_START = 0.0001
     LEARNING_RATE_END = 0.000001
 
     #Network structure
@@ -207,4 +207,4 @@ class Config:
     EXPLORATION = True
     explore_start = 1.0            # exploration probability at start
     explore_stop = 0.01            # minimum exploration probability
-    decay_rate = 0.0001            # exponential decay rate for exploration prob
+    decay_rate = 0.00001            # exponential decay rate for exploration prob

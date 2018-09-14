@@ -51,4 +51,5 @@ LOGDIR=$(cat logdir.txt)
 echo $LOGDIR
 debugport=`expr $port + 1`
 
-tensorboard -H --logdir=$LOGDIR --port=$port --debugger_port=7000
+# tensorboard -H --logdir=$LOGDIR --port=$port --debugger_port=7000
+tensorboard -H --logdir=$LOGDIR --port=$port
