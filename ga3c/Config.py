@@ -75,7 +75,7 @@ class Config:
     DEVICE = 'gpu:0'
 
     # Enable the dynamic adjustment (+ waiting time to start it)
-    DYNAMIC_SETTINGS = False
+    DYNAMIC_SETTINGS = True
     DYNAMIC_SETTINGS_STEP_WAIT = 20
     DYNAMIC_SETTINGS_INITIAL_WAIT = 10
 
@@ -109,19 +109,19 @@ class Config:
 
     # Total number of episodes and annealing frequency
     EPISODES = 50000
-    ANNEALING_EPISODE_COUNT = 5000
+    ANNEALING_EPISODE_COUNT = 10000
 
     # Entropy regualrization hyper-parameter
     # BETA_START = 0.01
-    BETA_START = 0.015
+    BETA_START = 0.5
     BETA_END = 0.01
 
     # Learning rate
     LEARNING_RATE_START = 0.001
-    LEARNING_RATE_END = 0.00001
+    LEARNING_RATE_END = 0.000001
 
     #Network structure
-    DENSE_LAYERS = (8, 400, 400)
+    DENSE_LAYERS = (400, 400)
     # RMSProp parameters
     # if False than ADAM optimizer only for ddpg
     RMSPROP = True
