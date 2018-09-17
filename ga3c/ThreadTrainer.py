@@ -44,7 +44,7 @@ class ThreadTrainer(Thread):
         while not self.exit_flag:
             if Config.USE_REPLAY_MEMORY:
                 try:
-                    x__, a__, r__, done__, x2__ = self.server.replay_q.get(timeout=2)
+                    x__, a__, r__, done__, x2__ = self.server.replay_q.get(timeout=10)
                 except:
                     if self.exit_flag:
                         continue
@@ -52,7 +52,7 @@ class ThreadTrainer(Thread):
                 batch_size = 0
                 while batch_size <= Config.TRAINING_MIN_BATCH_SIZE:
                     try:
-                        x_, r_, a_, x2_, done_ = self.server.training_q.get(timeout=2)
+                        x_, r_, a_, x2_, done_ = self.server.training_q.get(timeout=10)
                     except:
                         if self.exit_flag: break
                         continue
