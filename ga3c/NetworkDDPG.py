@@ -235,7 +235,7 @@ class ActorNetwork(object):
     def predict(self, sess, inputs):
         prediction = sess.run(self.out, feed_dict={
                 self.inputs: inputs})
-        print('predddpg: ' + str(prediction))
+        # print('predddpg: ' + str(prediction))
         if Config.add_uncertainity:
             return prediction + self.uncertanity()
         if Config.add_OUnoise:
