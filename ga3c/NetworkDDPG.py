@@ -232,6 +232,7 @@ class ActorNetwork(object):
         })
 
     def predict(self, sess, inputs):
+        print('in prediction')
         prediction = sess.run(self.out, feed_dict={
                 self.inputs: inputs})
 
