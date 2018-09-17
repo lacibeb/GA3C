@@ -361,25 +361,22 @@ class CriticNetwork(object):
         # writer.close()
 
     def create_critic_network(self, scope='critic'):
-        with tf.name_scope(scope):
-            # inputs from higher level
-            # inputs = tflearn.input_data(shape=[None, self.state_dim], name='critic_input')
-            with tf.variable_scope('state'):
-                self.state_dnn = super(Network, Network)._create_DNN(self.inputs, Config._CRITIC_STATE_DENSE_LAYERS, scope + 'state')
+        # inputs from higher level
+        # inputs = tflearn.input_data(shape=[None, self.state_dim], name='critic_input')
+        self.state_dnn = super(Network, Network)._create_DNN(self.inputs, Config._CRITIC_STATE_DENSE_LAYERS, scope + '_state')
 
-            # Add the action tensor in the 2nd hidden layer
-            # Use two temp layers to get the corresponding weights and biases
-            # inputs from higher level
-            # action = tflearn.input_data(shape=[None, self.action_dim], name='critic_action_input')
-            with tf.variable_scope('action'):
-                self.action_dnn = super(Network, Network)._create_DNN(self.action, Config._CRITIC_ACTION_DENSE_LAYERS, scope + 'action')
+        # Add the action tensor in the 2nd hidden layer
+        # Use two temp layers to get the corresponding weights and biases
+        # inputs from higher level
+        # action = tflearn.input_data(shape=[None, self.action_dim], name='critic_action_input')
 
-            self.action_and_state = tf.add(self.state_dnn, self.action_dnn, name='critic_added_weights')
+        self.action_dnn = super(Network, Network)._create_DNN(self.action, Config._CRITIC_ACTION_DENSE_LAYERS, scope + '_action')
 
-            with tf.variable_scope('out'):
-                self.out_dnn = super(Network, Network)._create_DNN(self.action_and_state, Config._CRITIC_OUT_DENSE_LAYERS, scope + 'out')
+        self.action_and_state = tf.add(self.state_dnn, self.action_dnn, name='critic_added_weights')
 
-            return self.out_dnn
+        self.out_dnn = super(Network, Network)._create_DNN(self.action_and_state, Config._CRITIC_OUT_DENSE_LAYERS, scope + '_out')
+
+        return self.out_dnn
 
     def train(self, sess, inputs, action, predicted_q_value, learning_rate):
         with tf.variable_scope('critic'):
