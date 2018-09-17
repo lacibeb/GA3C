@@ -97,9 +97,9 @@ class Network(NetworkVP):
 
         # gradienseket ezzel kiolvassa a tensorflow graph-ból és visszamásolja
         grads = self.critic.action_gradients(self.sess, s_batch, a_outs)
-        print("grads: " + str(np.transpose(grads)))
-        print("a: " + str(np.transpose(a_batch)))
-        print("s: " + str(np.transpose(s_batch)))
+        print("grads: " + str(np.transpose(grads[:10])))
+        print("a: " + str(np.transpose(a_batch[:10])))
+        print("s: " + str(np.transpose(s_batch[:10])))
         self.actor.train(self.sess, s_batch, grads[0], self.learning_rate)
 
         # Update target networks
