@@ -73,4 +73,7 @@ class ThreadTrainer(Thread):
                 # print('a__: ' + str(x__))
                 # print('x2__: ' + str(x__))
                 # print('done__: ' + str(x__))
-                self.server.train_model(x__, r__, a__, x2__, done__, self.id)
+                try:
+                    self.server.train_model(x__, r__, a__, x2__, done__, self.id)
+                except:
+                    print('no values in training batch')
