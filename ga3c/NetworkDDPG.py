@@ -220,8 +220,7 @@ class ActorNetwork(object):
 
     def create_actor_network(self, scope='actor'):
         self.DNN = super(Network, Network)._create_DNN(self.inputs, Config.DENSE_LAYERS, scope)
-        out = tflearn.fully_connected(
-            self.DNN, self.action_dim, activation='tanh', weights_init=w_init, name='actor_output')
+        out = super(Network, Network)._create_DNN(self.DNN, (self.action_dim, ), 'actor_output')
         scaled_out = tf.multiply(self.DNN, self.action_bound)
         # scaled_out = np.sign(out)
         return out, scaled_out
