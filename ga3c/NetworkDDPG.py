@@ -34,22 +34,25 @@ class Network(NetworkVP):
 
     def _core_graph(self):
         # action input for critic output for actor
-        self.action_index = tflearn.input_data(shape=[None, self.num_actions], name='critic_action_input')
-        # state input
-        self.x = tflearn.input_data(shape=[None, self.state_dim], name='critic_input')
+        with tf.variable_scope('inputs'):
+            self.action_index = tflearn.input_data(shape=[None, self.num_actions], name='critic_action_input')
+            # state input
+            self.x = tflearn.input_data(shape=[None, self.state_dim], name='critic_input')
 
-        # critic out reference
-        self.y_r = tf.placeholder(tf.float32, [None], name='Yr')
+        with tf.variable_scope('Reference_reward'):
+            # critic out reference
+            self.y_r = tf.placeholder(tf.float32, [None], name='Yr')
 
-        self.action_bound = 1.0
-        self.var_learning_rate = tf.placeholder(tf.float32, name='lr', shape=[])
+        with tf.variable_scope('Learning_vars'):
+            self.action_bound = 1.0
+            self.var_learning_rate = tf.placeholder(tf.float32, name='lr', shape=[])
 
-        self.var_beta = tf.placeholder(tf.float32, name='beta', shape=[])
-        self.var_learning_rate = tf.placeholder(tf.float32, name='lr', shape=[])
-        self.q_max = tf.placeholder(tf.float32, name='Q_max', shape=[])
-        self.q_avg = tf.placeholder(tf.float32, name='Q_avg', shape=[])
+            self.var_beta = tf.placeholder(tf.float32, name='beta', shape=[])
+            self.var_learning_rate = tf.placeholder(tf.float32, name='lr', shape=[])
+            self.q_max = tf.placeholder(tf.float32, name='Q_max', shape=[])
+            self.q_avg = tf.placeholder(tf.float32, name='Q_avg', shape=[])
 
-        self.global_step = tf.Variable(0, trainable=False, name='step')
+            self.global_step = tf.Variable(0, trainable=False, name='step')
 
         self.actor_lr = Config.actor_lr
         self.critic_lr = Config.critic_lr
@@ -159,7 +162,7 @@ class ActorNetwork(object):
     """
 
     def __init__(self, state_dim, action_dim, action_bound, learning_rate, tau, inputs):
-        with tf.variable_scope('Critic_Agent'):
+        with tf.variable_scope('Actor_Agent'):
             self.state_dim = state_dim
             self.action_dim = action_dim
             self.action_bound = action_bound
