@@ -93,7 +93,7 @@ class Config:
     
     # Reward Clipping
     REWARD_RESIZE = False
-    REWARD_FACTOR = 0.0005
+    REWARD_FACTOR = 0.005
     USE_INTERMEDIATE_REWARD = False
 
     REWARD_CLIPPING = True

@@ -37,11 +37,12 @@ class Super_Easy_Game():
             if self.game == 'Super_Easy_linear':
                 # we can change inner state witch action, basically it is an
                 # print('action: ' + str(action) + 'innerstate: ' + str(self.inner_state[0]))
-                self.inner_state[0] = self.inner_state[0] + action*0.1
+                self.inner_state[0] = self.inner_state[0] + action*0.05
                 # print('innerstate: ' + str(self.inner_state[0]))
                 if abs(self.inner_state[0]) > 1:
                     self.done = True
                     self.step_reward = -100
+                    self.inner_state = np.clip(self.inner_state, 1, -1)
                 else:
                     self.step_reward = 1 - np.abs(self.inner_state[0])
                 # print('reward: ' + str(self.step_reward))
