@@ -190,7 +190,7 @@ class Config:
         # multiplayer to learning rate
         actor_lr = 0.1
         critic_lr = 1
-        tau = 0.001
+        tau = 0.01
         gamma = 0.99
         DISCOUNTING = False
         USE_INTERMEDIATE_REWARD = True
