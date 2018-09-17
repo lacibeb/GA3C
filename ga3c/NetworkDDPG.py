@@ -24,6 +24,14 @@ class Network(NetworkVP):
         self.critic.update_target_network(self.sess)
         print("target critic initialised")
 
+    def _opt_graph(self):
+        # inside actor and critic
+        pass
+
+    def _postproc_graph(self):
+        # inside actor and critic
+        pass
+
     def _core_graph(self):
         # action input for critic output for actor
         self.action_index = tflearn.input_data(shape=[None, self.num_actions], name='critic_action_input')
