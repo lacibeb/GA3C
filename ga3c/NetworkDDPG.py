@@ -425,7 +425,7 @@ class CriticNetwork(object):
 
     def train(self, sess, inputs, action, predicted_q_value, learning_rate):
         with tf.variable_scope('critic'):
-            return sess.run([self.out, self.train_op, self.loss], feed_dict={
+            return sess.run([self.out, self.train_op], feed_dict={
                 self.inputs: inputs,
                 self.action: action,
                 self.cr_learning_rate: self.learning_rate*learning_rate,
