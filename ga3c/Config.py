@@ -119,8 +119,8 @@ class Config:
     BETA_END = 0.01
 
     # Learning rate
-    LEARNING_RATE_START = 0.01
-    LEARNING_RATE_END = 0.001
+    LEARNING_RATE_START = 0.1
+    LEARNING_RATE_END = 0.01
 
     #Network structure
     DENSE_LAYERS = (8, 40, 10)
@@ -190,7 +190,7 @@ class Config:
         # multiplayer to learning rate
         actor_lr = 0.1
         critic_lr = 1
-        tau = 0.01
+        tau = 0.1
         gamma = 0.99
         DISCOUNTING = False
         USE_INTERMEDIATE_REWARD = True
