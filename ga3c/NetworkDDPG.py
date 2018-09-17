@@ -14,15 +14,16 @@ class Network(NetworkVP):
     def __init__(self, device, model_name, num_actions, state_dim):
         super(Network, self).__init__(device, model_name, num_actions, state_dim)
 
+        self.logging = 0.0, 0.0
+
+    def _postproc_graph(self):
         # Initialize target network weights
         self.actor.update_target_network(self.sess)
         print("target actor initialised")
         self.critic.update_target_network(self.sess)
         print("target critic initialised")
 
-        self.logging = 0.0, 0.0
-
-    def _create_graph(self):
+    def _core_graph(self):
         # action input for critic output for actor
         self.action_index = tflearn.input_data(shape=[None, self.num_actions], name='critic_action_input')
         # state input
@@ -413,12 +414,14 @@ class CriticNetwork(object):
 
     def train(self, sess, inputs, action, predicted_q_value, learning_rate):
         with tf.variable_scope('critic'):
-            return sess.run([self.out, self.train_op], feed_dict={
+            out, train_op, loss = sess.run([self.out, self.train_op, self.loss], feed_dict={
                 self.inputs: inputs,
                 self.action: action,
                 self.cr_learning_rate: self.learning_rate*learning_rate,
                 self.predicted_q_value: predicted_q_value
             })
+            print('loss: ' + str(self.loss))
+            return out, train_op
 
     def predict(self, sess, inputs, action):
         with tf.variable_scope('critic'):
