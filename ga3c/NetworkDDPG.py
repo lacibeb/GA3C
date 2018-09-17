@@ -215,7 +215,7 @@ class ActorNetwork(object):
 
     def create_actor_network(self, scope='actor'):
         with tf.name_scope(scope):
-            self.DNN = super(Network, Network)._create_DNN(self.x)
+            self.DNN = super(Network, Network)._create_DNN(self.inputs)
             scaled_out = tf.multiply(self.DNN, self.action_bound)
             # scaled_out = np.sign(out)
             return self.DNN, scaled_out
