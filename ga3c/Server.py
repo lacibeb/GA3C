@@ -170,10 +170,11 @@ class Server:
             self.model.beta = Config.BETA_START + beta_multiplier * step
 
             # random steps
-            explore_p = Config.explore_stop + (Config.explore_start - Config.explore_stop) * np.exp(
-                -Config.decay_rate * step)
-            for agent in self.agents:
-                agent.explore_p.Value = explore_p
+            if Config.EXPLORATION:
+                explore_p = Config.explore_stop + (Config.explore_start - Config.explore_stop) * np.exp(
+                    -Config.decay_rate * step)
+                for agent in self.agents:
+                    agent.explore_p.Value = explore_p
 
             # Saving is async - even if we start saving at a given episode, we may save the model at a later episode
             if Config.SAVE_MODELS and self.stats.should_save_model.value > 0:
