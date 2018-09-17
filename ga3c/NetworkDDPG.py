@@ -87,7 +87,7 @@ class Network(NetworkVP):
                 else:
                     y_i[k] = (r_batch[k] + self.critic.gamma * target_q[k][0])
 
-        #y_i = np.reshape(y_i, (batch_size, 1))
+        # y_i = np.reshape(y_i, (batch_size, 1))
 
         # Update the critic given the targets
         predicted_q_value, _ = self.critic.train(self.sess, s_batch, a_batch, y_i, self.learning_rate)
@@ -97,7 +97,9 @@ class Network(NetworkVP):
 
         # gradienseket ezzel kiolvassa a tensorflow graph-ból és visszamásolja
         grads = self.critic.action_gradients(self.sess, s_batch, a_outs)
-        # print("grads: " + str(grads))
+        print("grads: " + str(grads))
+        print("a: " + str(a_batch))
+        print("s: " + str(s_batch))
         self.actor.train(self.sess, s_batch, grads[0], self.learning_rate)
 
         # Update target networks
@@ -423,14 +425,12 @@ class CriticNetwork(object):
 
     def train(self, sess, inputs, action, predicted_q_value, learning_rate):
         with tf.variable_scope('critic'):
-            out, train_op, loss = sess.run([self.out, self.train_op, self.loss], feed_dict={
+            return sess.run([self.out, self.train_op, self.loss], feed_dict={
                 self.inputs: inputs,
                 self.action: action,
                 self.cr_learning_rate: self.learning_rate*learning_rate,
                 self.predicted_q_value: predicted_q_value
             })
-            print('loss: ' + str(self.loss))
-            return out, train_op
 
     def predict(self, sess, inputs, action):
         with tf.variable_scope('critic'):
