@@ -220,9 +220,11 @@ class ActorNetwork(object):
 
     def create_actor_network(self, scope='actor'):
         self.DNN = super(Network, Network)._create_DNN(self.inputs, Config.DENSE_LAYERS, scope)
+        out = tflearn.fully_connected(
+            self.DNN, self.action_dim, activation='tanh', weights_init=w_init, name='actor_output')
         scaled_out = tf.multiply(self.DNN, self.action_bound)
         # scaled_out = np.sign(out)
-        return self.DNN, scaled_out
+        return out, scaled_out
 
     def train(self, sess, inputs, a_gradient, learning_rate):
         sess.run(self.optimize, feed_dict={
@@ -385,8 +387,10 @@ class CriticNetwork(object):
 
         # self.out_dnn = super(Network, Network)._create_DNN(self.action_and_state, Config._CRITIC_OUT_DENSE_LAYERS, scope + '_out')
         self.out_dnn = super(Network, Network)._create_DNN(self.state_dnn, Config._CRITIC_OUT_DENSE_LAYERS,
-                                                           scope + '_out')
-        return self.out_dnn
+                                                           scope + '_out_dnn')
+        self.out = super(Network, Network)._create_DNN(self.state_dnn, (1, ),
+                                                           scope + 'critic_out')
+        return self.out
 
     def train(self, sess, inputs, action, predicted_q_value, learning_rate):
         with tf.variable_scope('critic'):
