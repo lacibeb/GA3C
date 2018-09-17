@@ -365,19 +365,19 @@ class CriticNetwork(object):
             # inputs from higher level
             # inputs = tflearn.input_data(shape=[None, self.state_dim], name='critic_input')
             with tf.variable_scope('state'):
-                self.state_dnn = super(Network, Network)._create_DNN(self.inputs, Config._CRITIC_STATE_DENSE_LAYERS, 'state')
+                self.state_dnn = super(Network, Network)._create_DNN(self.inputs, Config._CRITIC_STATE_DENSE_LAYERS, scope + 'state')
 
             # Add the action tensor in the 2nd hidden layer
             # Use two temp layers to get the corresponding weights and biases
             # inputs from higher level
             # action = tflearn.input_data(shape=[None, self.action_dim], name='critic_action_input')
             with tf.variable_scope('action'):
-                self.action_dnn = super(Network, Network)._create_DNN(self.action, Config._CRITIC_ACTION_DENSE_LAYERS, 'action')
+                self.action_dnn = super(Network, Network)._create_DNN(self.action, Config._CRITIC_ACTION_DENSE_LAYERS, scope + 'action')
 
             self.action_and_state = tf.add(self.state_dnn, self.action_dnn, name='critic_added_weights')
 
             with tf.variable_scope('out'):
-                self.out_dnn = super(Network, Network)._create_DNN(self.action_and_state, Config._CRITIC_OUT_DENSE_LAYERS, 'out')
+                self.out_dnn = super(Network, Network)._create_DNN(self.action_and_state, Config._CRITIC_OUT_DENSE_LAYERS, scope + 'out')
 
             return self.out_dnn
 
