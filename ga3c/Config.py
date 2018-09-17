@@ -188,10 +188,10 @@ class Config:
 
         # with DDPG
         # multiplayer to learning rate
-        actor_lr = 0.1
+        actor_lr = 0.0001
         critic_lr = 1
         tau = 0.1
-        gamma = 0.99
+        gamma = 0.5
         DISCOUNTING = False
         USE_INTERMEDIATE_REWARD = True
 
