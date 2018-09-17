@@ -1,0 +1,55 @@
+#jobname
+#PBS -N ga3c_t1_board
+
+#max runtime
+#PBS -l walltime=05:00:00:00
+
+#resources: node->server(max 5), ppn->cpu core per server (max 24), gpus-> (max 2)
+##PBS -l nodes=1:ppn=24:gpus=1:default
+
+#creating error files, and output files
+#PBS -e tboard_error.txt
+#PBS -o tboard_output.txt
+
+#further examples for resourse
+#1 node 1 core (max 120)
+#PBS -l nodes=1:ppn=1
+
+#1 node 24 core 2 gpu this is the maximum for servers
+##PBS -l nodes=1:ppn=24:gpus=2:default
+
+#sript run
+#PBS -S /bin/bash
+
+#activateing environment
+source activate Ehak_gpu
+
+#running python code, saving terminal output to file for further analisys
+
+#step into working directory, where the qsub is ran
+cd $PBS_O_WORKDIR
+ 
+#tensorboard -H --logdir=./results/tf_ddpg --port=6007
+
+# https://unix.stackexchange.com/questions/55913/whats-the-easiest-way-to-find-an-unused-local-port
+port=6007
+quit=0
+
+while [ "$quit" -ne 1 ]; do
+  netstat -a | grep $port >> /dev/null
+  if [ $? -gt 0 ]; then
+    quit=1
+  else
+    port=`expr $port + 1`
+  fi
+done
+
+echo "Connected to this port:"
+echo $port > tensorboard.port.$port
+
+LOGDIR=$(cat logdir.txt)
+echo $LOGDIR
+debugport=`expr $port + 1`
+
+# tensorboard -H --logdir=$LOGDIR --port=$port --debugger_port=7000
+tensorboard -H --logdir=$LOGDIR --port=$port

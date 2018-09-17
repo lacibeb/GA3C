@@ -31,7 +31,7 @@ import tensorflow as tf
 
 from Config import Config
 
-
+# from tensorflow.python import debug as tf_debug
 
 class Network:
     def __init__(self, device, model_name, num_actions, state_dim):
@@ -56,6 +56,10 @@ class Network:
                         allow_soft_placement=True,
                         log_device_placement=False,
                         gpu_options=tf.GPUOptions(allow_growth=True)))
+
+                # tensorboard debugger
+                # do not have the new tensorflow
+                # self.sess = tf_debug.TensorBoardDebugWrapperSession(self.sess, 'localhost:7000')
                 self.sess.run(tf.global_variables_initializer())
 
                 if Config.TENSORBOARD: self._create_tensor_board()
