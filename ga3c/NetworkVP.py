@@ -93,15 +93,15 @@ class Network:
 
     # creating dnn from config with fullyconnected layers
     @staticmethod
-    def _create_DNN(input, layers):
+    def _create_DNN(input, layers, name = ''):
         # creating dense layers as in config
         layercount = 0
         for layer in layers:
             layercount += 1
             if layercount == 1:
-                output = Network.dense_layer(input, layer, 'dense1_' + str(layercount) + '_p')
+                output = Network.dense_layer(input, layer, name + 'dense1_' + str(layercount) + '_p')
             else:
-                output = Network.dense_layer(output, layer, 'dense1_' + str(layercount) + '_p')
+                output = Network.dense_layer(output, layer, name + 'dense1_' + str(layercount) + '_p')
             print(str(layercount) + '. layer: ' + str(layer) + ' dense neurons')
         return output
 
