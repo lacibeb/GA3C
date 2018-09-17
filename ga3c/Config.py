@@ -40,7 +40,9 @@ class Config:
     # Network selection
     # define input
     # NETWORK = 'GA3C_notimageinput'
-    NETWORK = 'GA3C_notimageinput_continuos'
+    # NETWORK = 'GA3C_notimageinput_continuos'
+    NETWORK = 'DDPG'
+
     DISCRATE_INPUT = False
     CONTINUOUS_INPUT = True
     # if discrate input but continuos environment
@@ -63,7 +65,7 @@ class Config:
     
     # If the dynamic configuration is on, these are the initial values.
     # Number of Agents
-    AGENTS = 16
+    AGENTS = 1
     # Number of human reference Agents from Agents AGENTS=humref+regular
     HUMAN_REF_AGENTS = 0
     # Number of Predictors
@@ -118,7 +120,7 @@ class Config:
 
     # Learning rate
     LEARNING_RATE_START = 0.001
-    LEARNING_RATE_END = 0.00001
+    LEARNING_RATE_END = 0.001
 
     #Network structure
     DENSE_LAYERS = (8, 40, 10)
@@ -139,7 +141,10 @@ class Config:
     LOG_EPSILON = 1e-6
     # Training min batch size - increasing the batch size increases the stability of the algorithm, but make learning slower
     TRAINING_MIN_BATCH_SIZE = 64
-    
+
+    # using replay memory for training instead of A3C
+    USE_REPLAY_MEMORY = True
+
     #########################################################################
     # Log and save
 
@@ -179,10 +184,7 @@ class Config:
         add_OUnoise = True
 
         USE_REPLAY_MEMORY = True
-        REPLAY_BUFFER_SIZE = 1000000
-        REPLAY_BUFFER_RANDOM_SEED = 12345
-        REPLAY_MIN_QUEUE_SIZE = 2
-        DDPG_FUTURE_REWARD_CALC = True
+
         # with DDPG
         # multiplayer to learning rate
         actor_lr = 0.3
@@ -190,21 +192,20 @@ class Config:
         tau = 0.001
         gamma = 0.99
         DISCOUNTING = False
-    else:
-        pass
-        #USE_REPLAY_MEMORY = False
 
-    USE_REPLAY_MEMORY = True
-    REPLAY_BUFFER_SIZE = 1000000
-    REPLAY_BUFFER_RANDOM_SEED = 12345
-    REPLAY_MIN_QUEUE_SIZE = 2
+    if USE_REPLAY_MEMORY:
+        REPLAY_BUFFER_SIZE = 1000000
+        REPLAY_BUFFER_RANDOM_SEED = 12345
+        REPLAY_MIN_QUEUE_SIZE = 2
 
     RANDOM_SEED = 12345
 
     # ------------------------------------
     # recommended game specific settings
 
-    EXPLORATION = True
-    explore_start = 1.0            # exploration probability at start
-    explore_stop = 0.01            # minimum exploration probability
-    decay_rate = 0.0001            # exponential decay rate for exploration prob
+    # EXPLORATION = True
+    EXPLORATION = False
+    if EXPLORATION:
+        explore_start = 1.0            # exploration probability at start
+        explore_stop = 0.01            # minimum exploration probability
+        decay_rate = 0.0001            # exponential decay rate for exploration prob
