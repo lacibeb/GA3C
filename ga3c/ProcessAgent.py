@@ -117,7 +117,7 @@ class ProcessAgent(Process):
 
     def predict(self, state):
         # put the state in the prediction q
-        print(str(state))
+        # print(str(state))
         self.prediction_q.put((self.id, state))
         # wait for the prediction to come back
         p, v = self.wait_q.get(timeout=2)
@@ -148,7 +148,7 @@ class ProcessAgent(Process):
                 self.env.step(None)  # 0 == NOOP
                 continue
 
-            # print('state: ' + str(self.env.current_state))
+            print('state: ' + str(self.env.current_state))
             prediction, value = self.predict(self.env.current_state)
             print('pred: ' + str(prediction))
 
