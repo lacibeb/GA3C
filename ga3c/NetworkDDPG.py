@@ -14,9 +14,10 @@ class Network(NetworkVP):
     def __init__(self, device, model_name, num_actions, state_dim):
         super(Network, self).__init__(device, model_name, num_actions, state_dim)
 
+        self._init_target_networks()
         self.logging = 0.0, 0.0
 
-    def _postproc_graph(self):
+    def _init_target_networks(self):
         # Initialize target network weights
         self.actor.update_target_network(self.sess)
         print("target actor initialised")
