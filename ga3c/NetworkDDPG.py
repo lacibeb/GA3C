@@ -107,7 +107,7 @@ class Network(NetworkVP):
         self.critic.update_target_network(self.sess)
 
         # not calling log because server calls it
-        print('q_max, q_avg: ' + str(np.amax(predicted_q_value)) + ', '+ str(np.average(predicted_q_value))
+        print('q_max, q_avg: ' + str(np.amax(predicted_q_value)) + ', '+ str(np.average(predicted_q_value)))
         self.logging = np.amax(predicted_q_value), np.average(predicted_q_value)
 
     def log(self, x, y_r, a, training_step):
