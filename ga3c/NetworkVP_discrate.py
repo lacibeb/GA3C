@@ -37,7 +37,7 @@ class Network(NetworkVP):
         super(Network, self).__init__(device, model_name, num_actions, state_dim)
 
     def _postproc_graph(self):
-        self.logits_p = self.dense_layer(self.denselayer, self.num_actions, 'logits_p', func=None)
+        self.logits_p = self.dense_layer(self.DNN, self.num_actions, 'logits_p', func=None)
         if Config.USE_LOG_SOFTMAX:
             self.softmax_p = tf.nn.softmax(self.logits_p)
             self.log_softmax_p = tf.nn.log_softmax(self.logits_p)

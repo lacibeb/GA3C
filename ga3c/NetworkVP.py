@@ -85,24 +85,29 @@ class Network:
 
         # As implemented in A3C paper
 
-        # creating dense layers as in config
-        layercount = 0
-        for layer in Config.DENSE_LAYERS:
-            layercount += 1
-            if layercount == 1:
-                self.denselayer = self.dense_layer(self.x, layer, 'dense1_' + str(layercount) + '_p')
-            else:
-                self.denselayer = self.dense_layer(self.denselayer, layer, 'dense1_' + str(layercount) + '_p')
-            print(str(layercount) + '. layer: ' + str(layer) + ' dense neurons')
-
+        self.DNN = self._create_DNN(self.x, Config.DENSE_LAYERS)
         self.action_index = tf.placeholder(tf.float32, [None, self.num_actions])
 
-        self.logits_v = tf.squeeze(self.dense_layer(self.denselayer, 1, 'logits_v', func=None), axis=[1])
+        self.logits_v = tf.squeeze(self.dense_layer(self.DNN, 1, 'logits_v', func=None), axis=[1])
         self.cost_v = 0.5 * tf.reduce_sum(tf.square(self.y_r - self.logits_v), axis=0)
+
+    # creating dnn from config with fullyconnected layers
+    @staticmethod
+    def _create_DNN(input, layers):
+        # creating dense layers as in config
+        layercount = 0
+        for layer in layers:
+            layercount += 1
+            if layercount == 1:
+                output = Network.dense_layer(input, layer, 'dense1_' + str(layercount) + '_p')
+            else:
+                output = Network.dense_layer(output, layer, 'dense1_' + str(layercount) + '_p')
+            print(str(layercount) + '. layer: ' + str(layer) + ' dense neurons')
+        return output
 
     def _postproc_graph(self):
         # output, action
-        self.logits_p = self._create_angle_output(self.denselayer, self.num_actions, 'logits_p', func=tf.nn.sigmoid)
+        self.logits_p = self._create_angle_output(self.DNN, self.num_actions, 'logits_p', func=tf.nn.sigmoid)
 
         #output softmax
         self.softmax_p = self.logits_p
@@ -176,7 +181,7 @@ class Network:
         for var in tf.trainable_variables():
             summaries.append(tf.summary.histogram("weights_%s" % var.name, var))
 
-        summaries.append(tf.summary.histogram("activation_lastdense", self.denselayer))
+        summaries.append(tf.summary.histogram("activation_lastdense", self.DNN))
 
         summaries.append(tf.summary.histogram("activation_v", self.logits_v))
         summaries.append(tf.summary.histogram("activation_p", self.softmax_p))
@@ -205,7 +210,8 @@ class Network:
 
         return output
 
-    def dense_layer(self, input, out_dim, name, func=tf.nn.tanh):
+    @staticmethod
+    def dense_layer(input, out_dim, name, func=tf.nn.tanh):
         in_dim = input.get_shape().as_list()[-1]
         # with lot of input it is OK
         d = 1.0 / np.sqrt(in_dim)
@@ -222,6 +228,8 @@ class Network:
                 output = func(output)
 
         return output
+
+    _ANS = dense_layer.__func__()  # call the staticmethod
 
     def conv2d_layer(self, input, filter_size, out_dim, name, strides, func=tf.nn.relu):
         in_dim = input.get_shape().as_list()[-1]

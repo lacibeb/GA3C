@@ -184,6 +184,9 @@ class Config:
         add_OUnoise = False
         DDPG_FUTURE_REWARD_CALC = True
 
+        _CRITIC_STATE_DENSE_LAYERS = (10, 10)
+        _CRITIC_ACTION_DENSE_LAYERS = (10, )
+        _CRITIC_OUT_DENSE_LAYERS = (10, 10)
         USE_REPLAY_MEMORY = True
 
         # with DDPG

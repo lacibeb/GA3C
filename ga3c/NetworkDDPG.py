@@ -215,30 +215,11 @@ class ActorNetwork(object):
 
     def create_actor_network(self, scope='actor'):
         with tf.name_scope(scope):
-            net1 = tflearn.fully_connected(self.inputs, 400, name='actor_fc1')
-            net2 = tflearn.layers.normalization.batch_normalization(net1, name='actor_norm1')
-            net3 = tflearn.activations.relu(net2)
-            net4 = tflearn.fully_connected(net3, 300, name='actor_fc2')
-            net5 = tflearn.layers.normalization.batch_normalization(net4, name='actor_norm2')
-            net6 = tflearn.activations.relu(net5)
-            #net7 = tflearn.fully_connected(net6, 30, name='actor_fc3')
-            #net8 = tflearn.layers.normalization.batch_normalization(net7, name='actor_norm3')
-            #net9 = tflearn.activations.relu(net8)
-            #net10 = tflearn.fully_connected(net9, 10, name='actor_fc4')
-            #net11 = tflearn.layers.normalization.batch_normalization(net10, name='actor_norm4')
-            #net12 = tflearn.activations.relu(net11)
-            """ 
-            net = tflearn.fully_connected(net, 30)
-            net = tflearn.layers.normalization.batch_normalization(net)
-            net = tflearn.activations.relu(net)
-            net = tflearn.fully_connected(net, 30)
-            net = tflearn.layers.normalization.batch_normalization(net)
-            net = tflearn.activations.relu(net)
-            """
+            self.DNN = self._create_DNN(self.x)
             # Final layer weights are init to Uniform[-3e-3, 3e-3]
             w_init = tflearn.initializations.uniform(minval=-0.003, maxval=0.003)
             out = tflearn.fully_connected(
-                net6, self.action_dim, activation='tanh', weights_init=w_init, name='actor_output')
+                self.DNN, self.action_dim, activation='tanh', weights_init=w_init, name='actor_output')
             # Scale output to -action_bound to action_bound
 
             scaled_out = tf.multiply(out, self.action_bound)
@@ -389,41 +370,20 @@ class CriticNetwork(object):
         with tf.name_scope(scope):
             # inputs from higher level
             # inputs = tflearn.input_data(shape=[None, self.state_dim], name='critic_input')
-            net = tflearn.fully_connected(self.inputs, 400, name='critic_fc1')
-            net = tflearn.layers.normalization.batch_normalization(net, name='critic_norm1')
-            net = tflearn.activations.relu(net)
-
-            t1 = tflearn.fully_connected(net, 300, name='critic_fc2')
+            self.state_dnn = Network._create_DNN(self.x, Config._CRITIC_STATE_DENSE_LAYERS)
 
             # Add the action tensor in the 2nd hidden layer
             # Use two temp layers to get the corresponding weights and biases
             # inputs from higher level
             # action = tflearn.input_data(shape=[None, self.action_dim], name='critic_action_input')
-            t2 = tflearn.fully_connected(self.action, 300, name='critic_norm2')
+            self.action_dnn = Network._create_DNN(self.action, Config._CRITIC_ACTION_DENSE_LAYERS)
 
-            add_t2 = tf.add(tf.matmul(self.action, t2.W), t2.b, name='critic_t2_add')
+            self.action_and_state = tf.add(tf.add(self.state_dnn.w, self.action_dnn.w, name='critic_added_weights'),
+                                           self.state_dnn.b, name='critic_state_and_action')
 
-            net = tflearn.activation(tf.add(tf.matmul(net, t1.W), add_t2), activation='relu', name='critic_relu')
+            self.out_dnn = Network._create_DNN(self.action_and_state, Config._CRITIC_OUT_DENSE_LAYERS)
 
-            # net = tflearn.fully_connected(net, 90)
-            # net = tflearn.layers.normalization.batch_normalization(net)
-            # net = tflearn.activations.relu(net)
-            #
-            # net = tflearn.fully_connected(net, 40)
-            # net = tflearn.layers.normalization.batch_normalization(net)
-            # net = tflearn.activations.relu(net)
-            #
-            # net = tflearn.fully_connected(net, 20)
-            # net = tflearn.layers.normalization.batch_normalization(net)
-            # net = tflearn.activations.relu(net)
-
-            # linear layer connected to 1 output representing Q(s,a)
-            # Weights are init to Uniform[-3e-3, 3e-3]
-            w_init = tflearn.initializations.uniform(minval=-0.003, maxval=0.003)
-            out = tflearn.fully_connected(net, 1, weights_init=w_init, name='critic_output')
-            # self.model = model = tflearn.DNN(out)
-
-            return out
+            return self.out_dnn
 
     def train(self, sess, inputs, action, predicted_q_value, learning_rate):
         with tf.variable_scope('critic'):
