@@ -374,8 +374,7 @@ class CriticNetwork(object):
             with tf.variable_scope('action'):
                 self.action_dnn = super(Network, Network)._create_DNN(self.action, Config._CRITIC_ACTION_DENSE_LAYERS, 'action')
 
-            self.action_and_state = tf.add(tf.add(self.state_dnn.W, self.action_dnn.W, name='critic_added_weights'),
-                                           self.state_dnn.b, name='critic_state_and_action')
+            self.action_and_state = tf.add(self.state_dnn.W, self.action_dnn.W, name='critic_added_weights')
 
             with tf.variable_scope('out'):
                 self.out_dnn = super(Network, Network)._create_DNN(self.action_and_state, Config._CRITIC_OUT_DENSE_LAYERS, 'out')
