@@ -182,6 +182,7 @@ class Config:
     if NETWORK == 'DDPG':
         add_uncertainity = False
         add_OUnoise = True
+        DDPG_FUTURE_REWARD_CALC = True
 
         USE_REPLAY_MEMORY = True
 
