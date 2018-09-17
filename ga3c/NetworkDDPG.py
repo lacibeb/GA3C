@@ -35,13 +35,11 @@ class Network(NetworkVP):
     def _core_graph(self):
         # action input for critic output for actor
         with tf.variable_scope('inputs'):
-            self.action_index = tflearn.input_data(shape=[None, self.num_actions], name='critic_action_input')
+            self.action_index = tflearn.input_data(shape=[None, self.num_actions], name='actions')
             # state input
-            self.x = tflearn.input_data(shape=[None, self.state_dim], name='critic_input')
-
-        with tf.variable_scope('Reference_reward'):
+            self.x = tflearn.input_data(shape=[None, self.state_dim], name='state')
             # critic out reference
-            self.y_r = tf.placeholder(tf.float32, [None], name='Yr')
+            self.y_r = tf.placeholder(tf.float32, [None], name='Y_r')
 
         with tf.variable_scope('Learning_vars'):
             self.action_bound = 1.0
@@ -171,58 +169,60 @@ class ActorNetwork(object):
 
             # Actor Network
             self.inputs = inputs
-            self.out, self.scaled_out = self.create_actor_network(scope='actor')
+            with tf.variable_scope('actor'):
+                self.out, self.scaled_out = self.create_actor_network(scope='actor')
 
-            self.network_params = tf.trainable_variables()
+                self.network_params = tf.trainable_variables()
 
-            # Target Network
-            self.target_inputs = inputs
-            self.target_out, self.target_out = self.create_actor_network(
-                scope='actor_target')
+            with tf.variable_scope('actor_target'):
+                # Target Network
+                self.target_inputs = inputs
+                self.target_out, self.target_out = self.create_actor_network(
+                    scope='actor_target')
 
-            self.target_network_params = tf.trainable_variables()[
-                                         len(self.network_params):]
+                self.target_network_params = tf.trainable_variables()[
+                                             len(self.network_params):]
 
-            # Op for periodically updating target network with online network
-            # weights
-            self.update_target_network_params = \
-                [self.target_network_params[i].assign(tf.multiply(self.network_params[i], self.tau) +
-                                                      tf.multiply(self.target_network_params[i], 1. - self.tau))
-                 for i in range(len(self.target_network_params))]
+                # Op for periodically updating target network with online network
+                # weights
+                self.update_target_network_params = \
+                    [self.target_network_params[i].assign(tf.multiply(self.network_params[i], self.tau) +
+                                                          tf.multiply(self.target_network_params[i], 1. - self.tau))
+                     for i in range(len(self.target_network_params))]
 
-            # This gradient will be provided by the critic network
-            self.action_gradient = tf.placeholder(tf.float32, [None, self.action_dim], name='actor_action_grad')
+            with tf.variable_scope('actor_learning'):
+                # This gradient will be provided by the critic network
+                self.action_gradient = tf.placeholder(tf.float32, [None, self.action_dim], name='actor_action_grad')
 
-            # Combine the gradients here
-            # TODOdone:  miért minus az action gradient?
-            # http://pemami4911.github.io/blog/2016/08/21/ddpg-rl.html
-            self.actor_gradients = tf.gradients(
-                self.out, self.network_params, -self.action_gradient, name='actor_grads')
+                # Combine the gradients here
+                # TODOdone:  miért minus az action gradient?
+                # http://pemami4911.github.io/blog/2016/08/21/ddpg-rl.html
+                self.actor_gradients = tf.gradients(
+                    self.out, self.network_params, -self.action_gradient, name='actor_grads')
 
-            self.a_learning_rate = tf.placeholder(tf.float32, name='cr_learning_rate')
+                self.a_learning_rate = tf.placeholder(tf.float32, name='cr_learning_rate')
 
-            # Optimization Op
-            self.optimize = tf.train.AdamOptimizer(self.a_learning_rate). \
-                apply_gradients(zip(self.actor_gradients, self.network_params), name='actor_optimize')
+                # Optimization Op
+                self.optimize = tf.train.AdamOptimizer(self.a_learning_rate). \
+                    apply_gradients(zip(self.actor_gradients, self.network_params), name='actor_optimize')
 
-            self.num_trainable_vars = len(
-                self.network_params) + len(self.target_network_params)
+                self.num_trainable_vars = len(
+                    self.network_params) + len(self.target_network_params)
 
-            # initialise variables
-            # init = tf.global_variables_initializer()
-            # self.sess.run(init)
+                # initialise variables
+                # init = tf.global_variables_initializer()
+                # self.sess.run(init)
 
-            # writer = tf.summary.FileWriter(args['summary_dir'], self.sess.graph)
-            # writer.close()
-            if Config.add_OUnoise:
-                self.actor_noise = OrnsteinUhlenbeckActionNoise(mu=np.zeros(self.action_dim))
+                # writer = tf.summary.FileWriter(args['summary_dir'], self.sess.graph)
+                # writer.close()
+                if Config.add_OUnoise:
+                    self.actor_noise = OrnsteinUhlenbeckActionNoise(mu=np.zeros(self.action_dim))
 
     def create_actor_network(self, scope='actor'):
-        with tf.name_scope(scope):
-            self.DNN = super(Network, Network)._create_DNN(self.inputs, Config.DENSE_LAYERS, scope)
-            scaled_out = tf.multiply(self.DNN, self.action_bound)
-            # scaled_out = np.sign(out)
-            return self.DNN, scaled_out
+        self.DNN = super(Network, Network)._create_DNN(self.inputs, Config.DENSE_LAYERS, scope)
+        scaled_out = tf.multiply(self.DNN, self.action_bound)
+        # scaled_out = np.sign(out)
+        return self.DNN, scaled_out
 
     def train(self, sess, inputs, a_gradient, learning_rate):
         sess.run(self.optimize, feed_dict={
@@ -295,92 +295,95 @@ class CriticNetwork(object):
 
             self.inputs = inputs
             self.action = action
-            self.out = self.create_critic_network(scope='critic')
+            with tf.variable_scope('critic'):
+                self.out = self.create_critic_network()
 
-            self.network_params = tf.trainable_variables()[num_actor_vars:]
+                self.network_params = tf.trainable_variables()[num_actor_vars:]
 
             # Target Network
             self.target_inputs = inputs
             self.target_action = action
-            self.target_out = self.create_critic_network(scope='critic_target')
+            with tf.variable_scope('critic_target'):
+                self.target_out = self.create_critic_network()
 
-            self.target_network_params = tf.trainable_variables()[(len(self.network_params) + num_actor_vars):]
+                self.target_network_params = tf.trainable_variables()[(len(self.network_params) + num_actor_vars):]
 
-            # Op for periodically updating target network with online network
-            # weights with regularization
-            self.update_target_network_params = \
-                [self.target_network_params[i].assign(
-                    tf.add(tf.multiply(self.network_params[i], self.tau),
-                           tf.multiply(self.target_network_params[i], 1. - self.tau, name='mult_params_' + str(i)),
-                           name='add_params_' + str(i)))
-                    for i in range(len(self.target_network_params))]
+                # Op for periodically updating target network with online network
+                # weights with regularization
+                self.update_target_network_params = \
+                    [self.target_network_params[i].assign(
+                        tf.add(tf.multiply(self.network_params[i], self.tau),
+                               tf.multiply(self.target_network_params[i], 1. - self.tau, name='mult_params_' + str(i)),
+                               name='add_params_' + str(i)))
+                        for i in range(len(self.target_network_params))]
 
-            # Network target (y_i)
-            self.predicted_q_value = y_r
+                # Network target (y_i)
+                self.predicted_q_value = y_r
 
-            self.learning_rate = learning_rate
-            self.cr_learning_rate = tf.placeholder(tf.float32, name='cr_learning_rate')
+            with tf.variable_scope('critic_learning'):
+                self.learning_rate = learning_rate
+                self.cr_learning_rate = tf.placeholder(tf.float32, name='cr_learning_rate')
 
-            # Define loss and optimization Op
-            self.loss = tflearn.mean_square(self.predicted_q_value, self.out)
+                # Define loss and optimization Op
+                self.loss = tflearn.mean_square(self.predicted_q_value, self.out)
 
-            # Get the gradient of the net w.r.t. the action.
-            # For each action in the minibatch (i.e., for each x in xs),
-            # this will sum up the gradients of each critic output in the minibatch
-            # w.r.t. that action. Each output is independent of all
-            # actions except for one.
-            # self.action_grads = tf.gradients(self.out, self.action, name='critic_action_grads')
-            # self.action_grads = self.opt_grad_mod
-            self.action_grads = tf.gradients(self.out, self.action, name='critic_action_grads')
+                # Get the gradient of the net w.r.t. the action.
+                # For each action in the minibatch (i.e., for each x in xs),
+                # this will sum up the gradients of each critic output in the minibatch
+                # w.r.t. that action. Each output is independent of all
+                # actions except for one.
+                # self.action_grads = tf.gradients(self.out, self.action, name='critic_action_grads')
+                # self.action_grads = self.opt_grad_mod
+                self.action_grads = tf.gradients(self.out, self.action, name='critic_action_grads')
 
-            if Config.RMSPROP:
-                # no dual optimization
-                # if Config.DUAL_RMSPROP:
-                self.opt_loss = tf.train.RMSPropOptimizer(
-                    learning_rate=self.cr_learning_rate,
-                    decay=Config.RMSPROP_DECAY,
-                    momentum=Config.RMSPROP_MOMENTUM,
-                    epsilon=Config.RMSPROP_EPSILON)
+                if Config.RMSPROP:
+                    # no dual optimization
+                    # if Config.DUAL_RMSPROP:
+                    self.opt_loss = tf.train.RMSPropOptimizer(
+                        learning_rate=self.cr_learning_rate,
+                        decay=Config.RMSPROP_DECAY,
+                        momentum=Config.RMSPROP_MOMENTUM,
+                        epsilon=Config.RMSPROP_EPSILON)
 
-                # gradiens for critic
-                self.opt_grad = self.opt_loss.compute_gradients(self.loss)
+                    # gradiens for critic
+                    self.opt_grad = self.opt_loss.compute_gradients(self.loss)
 
-                if Config.USE_GRAD_CLIP:
-                    # clipping gradient
-                    self.opt_grad_mod = [(tf.clip_by_norm(g, Config.GRAD_CLIP_NORM),v)
-                                                    for g,v in self.opt_grad if not g is None]
+                    if Config.USE_GRAD_CLIP:
+                        # clipping gradient
+                        self.opt_grad_mod = [(tf.clip_by_norm(g, Config.GRAD_CLIP_NORM),v)
+                                                        for g,v in self.opt_grad if not g is None]
+                    else:
+                        self.opt_grad_mod = self.opt_grad
+
+                    self.train_op = self.opt_loss.apply_gradients(self.opt_grad_mod)
                 else:
-                    self.opt_grad_mod = self.opt_grad
-
-                self.train_op = self.opt_loss.apply_gradients(self.opt_grad_mod)
-            else:
-                self.train_op = tf.train.AdamOptimizer(
-                learning_rate=self.cr_learning_rate).minimize(self.loss)
+                    self.train_op = tf.train.AdamOptimizer(
+                    learning_rate=self.cr_learning_rate).minimize(self.loss)
 
 
-        # initialise variables
-        # init = tf.global_variables_initializer()
-        # self.sess.run(init)
+            # initialise variables
+            # init = tf.global_variables_initializer()
+            # self.sess.run(init)
 
-        # writer = tf.summary.FileWriter(args['summary_dir'], self.sess.graph)
-        # writer.close()
+            # writer = tf.summary.FileWriter(args['summary_dir'], self.sess.graph)
+            # writer.close()
 
     def create_critic_network(self, scope='critic'):
         # inputs from higher level
         # inputs = tflearn.input_data(shape=[None, self.state_dim], name='critic_input')
-        with tf.variable_scope(scope):
-            self.state_dnn = super(Network, Network)._create_DNN(self.inputs, Config._CRITIC_STATE_DENSE_LAYERS, scope + '_state')
 
-            # Add the action tensor in the 2nd hidden layer
-            # Use two temp layers to get the corresponding weights and biases
-            # inputs from higher level
-            # action = tflearn.input_data(shape=[None, self.action_dim], name='critic_action_input')
+        self.state_dnn = super(Network, Network)._create_DNN(self.inputs, Config._CRITIC_STATE_DENSE_LAYERS, scope + '_state')
 
-            self.action_dnn = super(Network, Network)._create_DNN(self.action, Config._CRITIC_ACTION_DENSE_LAYERS, scope + '_action')
+        # Add the action tensor in the 2nd hidden layer
+        # Use two temp layers to get the corresponding weights and biases
+        # inputs from higher level
+        # action = tflearn.input_data(shape=[None, self.action_dim], name='critic_action_input')
 
-            self.action_and_state = tf.add(self.state_dnn, self.action_dnn, name='critic_added_weights')
+        self.action_dnn = super(Network, Network)._create_DNN(self.action, Config._CRITIC_ACTION_DENSE_LAYERS, scope + '_action')
 
-            self.out_dnn = super(Network, Network)._create_DNN(self.action_and_state, Config._CRITIC_OUT_DENSE_LAYERS, scope + '_out')
+        self.action_and_state = tf.add(self.state_dnn, self.action_dnn, name='critic_added_weights')
+
+        self.out_dnn = super(Network, Network)._create_DNN(self.action_and_state, Config._CRITIC_OUT_DENSE_LAYERS, scope + '_out')
 
         return self.out_dnn
 
