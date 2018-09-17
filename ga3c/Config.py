@@ -181,15 +181,15 @@ class Config:
     # use ddpg model it works only with continuous input
     if NETWORK == 'DDPG':
         add_uncertainity = False
-        add_OUnoise = True
+        add_OUnoise = False
         DDPG_FUTURE_REWARD_CALC = True
 
         USE_REPLAY_MEMORY = True
 
         # with DDPG
         # multiplayer to learning rate
-        actor_lr = 0.3
-        critic_lr = 2
+        actor_lr = 0.1
+        critic_lr = 1
         tau = 0.001
         gamma = 0.99
         DISCOUNTING = False

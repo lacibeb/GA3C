@@ -97,9 +97,9 @@ class Network(NetworkVP):
 
         # gradienseket ezzel kiolvassa a tensorflow graph-ból és visszamásolja
         grads = self.critic.action_gradients(self.sess, s_batch, a_outs)
-        print("grads: " + str(np.transpose(grads[0][:10])))
-        print("a: " + str(np.transpose(a_batch[:10])))
-        print("s: " + str(np.transpose(s_batch[:10])))
+        # print("grads: " + str(np.transpose(grads[0][:10])))
+        # print("a: " + str(np.transpose(a_batch[:10])))
+        # print("s: " + str(np.transpose(s_batch[:10])))
         self.actor.train(self.sess, s_batch, grads[0], self.learning_rate)
 
         # Update target networks
@@ -107,6 +107,7 @@ class Network(NetworkVP):
         self.critic.update_target_network(self.sess)
 
         # not calling log because server calls it
+        print('q_max, q_avg: ' + str(np.amax(predicted_q_value)) + ', '+ str(np.average(predicted_q_value))
         self.logging = np.amax(predicted_q_value), np.average(predicted_q_value)
 
     def log(self, x, y_r, a, training_step):
