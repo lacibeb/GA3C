@@ -215,16 +215,10 @@ class ActorNetwork(object):
 
     def create_actor_network(self, scope='actor'):
         with tf.name_scope(scope):
-            self.DNN = self._create_DNN(self.x)
-            # Final layer weights are init to Uniform[-3e-3, 3e-3]
-            w_init = tflearn.initializations.uniform(minval=-0.003, maxval=0.003)
-            out = tflearn.fully_connected(
-                self.DNN, self.action_dim, activation='tanh', weights_init=w_init, name='actor_output')
-            # Scale output to -action_bound to action_bound
-
-            scaled_out = tf.multiply(out, self.action_bound)
+            self.DNN = super(Network, Network)._create_DNN(self.x)
+            scaled_out = tf.multiply(self.DNN, self.action_bound)
             # scaled_out = np.sign(out)
-            return out, scaled_out
+            return self.DNN, scaled_out
 
     def train(self, sess, inputs, a_gradient, learning_rate):
         sess.run(self.optimize, feed_dict={
@@ -370,18 +364,18 @@ class CriticNetwork(object):
         with tf.name_scope(scope):
             # inputs from higher level
             # inputs = tflearn.input_data(shape=[None, self.state_dim], name='critic_input')
-            self.state_dnn = Network._create_DNN(self.x, Config._CRITIC_STATE_DENSE_LAYERS)
+            self.state_dnn = super(Network, Network)._create_DNN(self.x, Config._CRITIC_STATE_DENSE_LAYERS)
 
             # Add the action tensor in the 2nd hidden layer
             # Use two temp layers to get the corresponding weights and biases
             # inputs from higher level
             # action = tflearn.input_data(shape=[None, self.action_dim], name='critic_action_input')
-            self.action_dnn = Network._create_DNN(self.action, Config._CRITIC_ACTION_DENSE_LAYERS)
+            self.action_dnn = super(Network, Network)._create_DNN(self.action, Config._CRITIC_ACTION_DENSE_LAYERS)
 
             self.action_and_state = tf.add(tf.add(self.state_dnn.w, self.action_dnn.w, name='critic_added_weights'),
                                            self.state_dnn.b, name='critic_state_and_action')
 
-            self.out_dnn = Network._create_DNN(self.action_and_state, Config._CRITIC_OUT_DENSE_LAYERS)
+            self.out_dnn = super(Network, Network)._create_DNN(self.action_and_state, Config._CRITIC_OUT_DENSE_LAYERS)
 
             return self.out_dnn
 

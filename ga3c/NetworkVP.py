@@ -229,8 +229,6 @@ class Network:
 
         return output
 
-    _ANS = dense_layer.__func__()  # call the staticmethod
-
     def conv2d_layer(self, input, filter_size, out_dim, name, strides, func=tf.nn.relu):
         in_dim = input.get_shape().as_list()[-1]
         d = 1.0 / np.sqrt(filter_size * filter_size * in_dim)
