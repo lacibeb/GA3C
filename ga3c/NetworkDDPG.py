@@ -232,10 +232,8 @@ class ActorNetwork(object):
         })
 
     def predict(self, sess, inputs):
-        print('in prediction')
         prediction = sess.run(self.out, feed_dict={
                 self.inputs: inputs})
-        print(str(prediction))
 
         if Config.add_uncertainity:
             return prediction + self.uncertanity()
