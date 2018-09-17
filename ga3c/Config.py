@@ -111,7 +111,7 @@ class Config:
 
     # Total number of episodes and annealing frequency
     EPISODES = 50000
-    ANNEALING_EPISODE_COUNT = 5000
+    ANNEALING_EPISODE_COUNT = 1000
 
     # Entropy regualrization hyper-parameter
     # BETA_START = 0.01
@@ -119,7 +119,7 @@ class Config:
     BETA_END = 0.01
 
     # Learning rate
-    LEARNING_RATE_START = 0.001
+    LEARNING_RATE_START = 0.01
     LEARNING_RATE_END = 0.001
 
     #Network structure
