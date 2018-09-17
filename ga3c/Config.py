@@ -193,6 +193,7 @@ class Config:
         tau = 0.001
         gamma = 0.99
         DISCOUNTING = False
+        USE_INTERMEDIATE_REWARD = True
 
     if USE_REPLAY_MEMORY:
         REPLAY_BUFFER_SIZE = 1000000
