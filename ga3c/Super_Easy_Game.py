@@ -24,7 +24,7 @@ class Super_Easy_Game():
         self.reward = 0.0
         self.done = False
         self.info = 'resetted'
-        self.inner_state[0] = np.random.random_sample()*self.action_bound*2 - self.action_bound
+        self.inner_state[0] = np.random.random_sample()*self.action_bound*2.0 - self.action_bound
         self.start = self.inner_state.copy()
         self.steps = 0
 
@@ -50,7 +50,7 @@ class Super_Easy_Game():
 
                 # absolute function, to converge into zero
                 self.steps += 1
-                if self.steps > 200:
+                if self.steps > 200.0:
                     self.done = True
                     # print('start: ' + str(self.start) + ' end: ' + str(self.inner_state))
 
