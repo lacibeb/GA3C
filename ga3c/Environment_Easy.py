@@ -31,8 +31,8 @@ if sys.version_info >= (3, 0):
 else:
     from Queue import Queue
 
-import numpy as np
-import scipy.misc as misc
+# import numpy as np
+# import scipy.misc as misc
 
 from Config import Config
 from EnvironmentGYM import Environment as Env
