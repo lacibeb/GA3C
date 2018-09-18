@@ -110,17 +110,17 @@ class Config:
     IMAGE_HEIGHT = 84
 
     # Total number of episodes and annealing frequency
-    EPISODES = 5
+    EPISODES = 5000
     ANNEALING_EPISODE_COUNT = 1000
 
     # Entropy regualrization hyper-parameter
     # BETA_START = 0.01
-    BETA_START = 0.015
+    BETA_START = 0.5
     BETA_END = 0.01
 
     # Learning rate
-    LEARNING_RATE_START = 0.1
-    LEARNING_RATE_END = 0.01
+    LEARNING_RATE_START = 0.01
+    LEARNING_RATE_END = 0.0001
 
     #Network structure
     DENSE_LAYERS = (8, 40, 10)
@@ -209,7 +209,7 @@ class Config:
     # recommended game specific settings
 
     # EXPLORATION = True
-    EXPLORATION = False
+    EXPLORATION = True
     if EXPLORATION:
         explore_start = 1.0            # exploration probability at start
         explore_stop = 0.01            # minimum exploration probability
