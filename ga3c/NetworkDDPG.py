@@ -221,7 +221,7 @@ class ActorNetwork(object):
     def create_actor_network(self, scope='actor'):
         self.DNN = super(Network, Network)._create_DNN(self.inputs, Config.DENSE_LAYERS, scope)
         out = super(Network, Network)._create_DNN(self.DNN, (self.action_dim, ), 'actor_output')
-        scaled_out = tf.multiply(self.DNN, self.action_bound)
+        scaled_out = tf.multiply(out, self.action_bound)
         # scaled_out = np.sign(out)
         return out, scaled_out
 
@@ -388,7 +388,7 @@ class CriticNetwork(object):
         self.out_dnn = super(Network, Network)._create_DNN(self.state_dnn, Config._CRITIC_OUT_DENSE_LAYERS,
                                                            scope + '_out_dnn')
         self.out = super(Network, Network)._create_DNN(self.state_dnn, (1, ),
-                                                           scope + 'critic_out')
+                                                           scope + '_critic_out')
         return self.out
 
     def train(self, sess, inputs, action, predicted_q_value, learning_rate):
