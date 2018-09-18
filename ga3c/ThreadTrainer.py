@@ -69,8 +69,8 @@ class ThreadTrainer(Thread):
 
             if Config.TRAIN_MODELS:
                 print('x__: ' + str(x__))
-                print('r__: ' + str(x__))
-                print('a__: ' + str(x__))
-                print('x2__: ' + str(x__))
-                print('done__: ' + str(x__))
+                print('r__: ' + str(r__))
+                print('a__: ' + str(a__))
+                print('x2__: ' + str(x2__))
+                print('done__: ' + str(done__))
                 self.server.train_model(x__, r__, a__, x2__, done__, self.id)
