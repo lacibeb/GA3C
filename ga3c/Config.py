@@ -40,8 +40,8 @@ class Config:
     # Network selection
     # define input
     # NETWORK = 'GA3C_notimageinput'
-    # NETWORK = 'GA3C_notimageinput_continuos'
-    NETWORK = 'DDPG'
+    NETWORK = 'GA3C_notimageinput_continuos'
+    # NETWORK = 'DDPG'
 
     DISCRATE_INPUT = False
     CONTINUOUS_INPUT = True
