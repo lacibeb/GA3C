@@ -143,7 +143,7 @@ class Config:
     TRAINING_MIN_BATCH_SIZE = 64
 
     # using replay memory for training instead of A3C
-    USE_REPLAY_MEMORY = True
+    USE_REPLAY_MEMORY = False
 
     #########################################################################
     # Log and save
