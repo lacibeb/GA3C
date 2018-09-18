@@ -68,9 +68,9 @@ class ThreadTrainer(Thread):
                     batch_size += x_.shape[0]
 
             if Config.TRAIN_MODELS:
-                # print('x__: ' + str(x__))
-                # print('r__: ' + str(x__))
-                # print('a__: ' + str(x__))
-                # print('x2__: ' + str(x__))
-                # print('done__: ' + str(x__))
+                print('x__: ' + str(x__))
+                print('r__: ' + str(x__))
+                print('a__: ' + str(x__))
+                print('x2__: ' + str(x__))
+                print('done__: ' + str(x__))
                 self.server.train_model(x__, r__, a__, x2__, done__, self.id)
