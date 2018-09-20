@@ -31,11 +31,11 @@ import tensorflow as tf
 
 from Config import Config
 
-from NetworkVP_original import Network as NetworkVP
+from NetworkVP_original import Network as NetworkVP_original
 
 # from tensorflow.python import debug as tf_debug
 
-class Network(NetworkVP):
+class Network(NetworkVP_original):
     def __init__(self, device, model_name, num_actions, state_dim):
         self.state_dim = state_dim
 

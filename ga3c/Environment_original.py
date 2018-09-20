@@ -76,6 +76,10 @@ class Environment:
     def get_num_actions(self):
         return self.game.env.action_space.n
 
+    def get_state_dim(self):
+        # not used for atars games
+        return None
+
     def reset(self):
         self.total_reward = 0
         self.frame_q.queue.clear()

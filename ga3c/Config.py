@@ -30,8 +30,6 @@ class Config:
     # Game configuration
 
     # Name of the game, with version (e.g. PongDeterministic-v0)
-    # TODO atary option is not working yet
-    # TODO atary games works with image input(missing) and dicrate output(this is implemented)
     GAME = 'PongDeterministic-v0'
     # GAME = 'Pendulum-v0'
     # GAME = 'Super_Easy_linear'
