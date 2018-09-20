@@ -25,31 +25,12 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 class Config:
-
     #########################################################################
     # Game configuration
 
     # Name of the game, with version (e.g. PongDeterministic-v0)
-    GAME = 'PongDeterministic-v0'
-    # GAME = 'Pendulum-v0'
-    # GAME = 'Super_Easy_linear'
-    # GAME = 'CartPole-v0'
-    #########################################################################
-    # Network selection
-    # define input
-    # NETWORK = 'GA3C_notimageinput'
-    NETWORK = 'GA3C_original'
-    # NETWORK = 'GA3C_notimageinput_continuos'
-    # NETWORK = 'DDPG'
+    ATARI_GAME = 'PongDeterministic-v0'
 
-    DISCRATE_INPUT = False
-    CONTINUOUS_INPUT = True
-    # if discrate input but continuos environment
-    DISCRATE_TO_CONTINUOUS_CONVERSION = False
-    CONTINUOUS_INPUT_PARTITIONS = 8
-    # GAME = 'pyperrace'
-    # network tester for pyperrace creates action map pictures with state scanning
-    USE_NETWORK_TESTER = False
     # Enable to see the trained agent in action
     PLAY_MODE = False
     # Enable to train
@@ -57,16 +38,14 @@ class Config:
     # Load old models. Throws if the model doesn't exist
     LOAD_CHECKPOINT = False
     # If 0, the latest checkpoint is loaded
-    LOAD_EPISODE = 0 
+    LOAD_EPISODE = 0
 
     #########################################################################
     # Number of agents, predictors, trainers and other system settings
-    
+
     # If the dynamic configuration is on, these are the initial values.
     # Number of Agents
     AGENTS = 32
-    # Number of human reference Agents from Agents AGENTS=humref+regular
-    HUMAN_REF_AGENTS = 0
     # Number of Predictors
     PREDICTORS = 2
     # Number of Trainers
@@ -84,18 +63,12 @@ class Config:
     # Algorithm parameters
 
     # Discount factor
-    DISCOUNTING = True
     DISCOUNT = 0.99
-    
+
     # Tmax
     TIME_MAX = 5
 
     # Reward Clipping
-    REWARD_RESIZE = False
-    REWARD_FACTOR = 0.005
-    USE_INTERMEDIATE_REWARD = False
-
-    REWARD_CLIPPING = True
     REWARD_MIN = -1
     REWARD_MAX = 1
 
@@ -113,7 +86,6 @@ class Config:
     ANNEALING_EPISODE_COUNT = 400000
 
     # Entropy regualrization hyper-parameter
-    # BETA_START = 0.01
     BETA_START = 0.01
     BETA_END = 0.01
 
@@ -121,18 +93,14 @@ class Config:
     LEARNING_RATE_START = 0.0003
     LEARNING_RATE_END = 0.0003
 
-    #Network structure
-    DENSE_LAYERS = (8, 40, 10)
     # RMSProp parameters
-    # if False than ADAM optimizer only for ddpg
-    RMSPROP = True
     RMSPROP_DECAY = 0.99
     RMSPROP_MOMENTUM = 0.0
     RMSPROP_EPSILON = 0.1
 
     # Dual RMSProp - we found that using a single RMSProp for the two cost function works better and faster
     DUAL_RMSPROP = False
-    
+
     # Gradient clipping
     USE_GRAD_CLIP = False
     GRAD_CLIP_NORM = 40.0
@@ -141,14 +109,11 @@ class Config:
     # Training min batch size - increasing the batch size increases the stability of the algorithm, but make learning slower
     TRAINING_MIN_BATCH_SIZE = 0
 
-    # using replay memory for training instead of A3C
-    USE_REPLAY_MEMORY = False
-
     #########################################################################
     # Log and save
 
     # Enable TensorBoard
-    TENSORBOARD = True
+    TENSORBOARD = False
     # Update TensorBoard every X training steps
     TENSORBOARD_UPDATE_FREQUENCY = 1000
 
@@ -156,7 +121,7 @@ class Config:
     SAVE_MODELS = True
     # Save every SAVE_FREQUENCY episodes
     SAVE_FREQUENCY = 1000
-    
+
     # Print stats every PRINT_STATS_FREQUENCY episodes
     PRINT_STATS_FREQUENCY = 1
     # The window to average stats
@@ -169,47 +134,8 @@ class Config:
 
     #########################################################################
     # More experimental parameters here
-    
+
     # Minimum policy
-    # MIN_POLICY = 0.0
     MIN_POLICY = 0.0
     # Use log_softmax() instead of log(softmax())
-    # not used with continuous
     USE_LOG_SOFTMAX = False
-
-    # use ddpg model it works only with continuous input
-    if NETWORK == 'DDPG':
-        add_uncertainity = False
-        add_OUnoise = False
-        DDPG_FUTURE_REWARD_CALC = True
-
-        _CRITIC_STATE_DENSE_LAYERS = (10, 10)
-        _CRITIC_ACTION_DENSE_LAYERS = (10, )
-        _CRITIC_OUT_DENSE_LAYERS = (10, 10)
-        USE_REPLAY_MEMORY = True
-
-        # with DDPG
-        # multiplayer to learning rate
-        actor_lr = 0.0001
-        critic_lr = 1
-        tau = 0.1
-        gamma = 0.5
-        DISCOUNTING = False
-        USE_INTERMEDIATE_REWARD = True
-
-    if USE_REPLAY_MEMORY:
-        REPLAY_BUFFER_SIZE = 1000000
-        REPLAY_BUFFER_RANDOM_SEED = 12345
-        REPLAY_MIN_QUEUE_SIZE = 2
-
-    RANDOM_SEED = 12345
-
-    # ------------------------------------
-    # recommended game specific settings
-
-    # EXPLORATION = True
-    EXPLORATION = False
-    if EXPLORATION:
-        explore_start = 1.0            # exploration probability at start
-        explore_stop = 0.01            # minimum exploration probability
-        decay_rate = 0.0001            # exponential decay rate for exploration prob
