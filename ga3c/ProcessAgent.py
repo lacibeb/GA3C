@@ -192,7 +192,7 @@ class ProcessAgent(Process):
             total_length = 0
             try:
                 for x_, r_, a_, x2_, done_, reward_sum in self.run_episode():
-                    print('x_: ' + str(x_.shape()))
+                    print('x_: ' + str(x_.shape))
                     # print('r_: ' + str(r_))
                     # print('a_: ' + str(a_))
                     # print('x2_: ' + str(x2_))
