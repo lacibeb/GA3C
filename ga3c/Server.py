@@ -40,6 +40,8 @@ elif Config.GAME == 'CartPole-v0':
     from EnvironmentGYM import Environment
 elif Config.GAME == 'Super_Easy_linear':
     from Environment_Easy import Environment
+elif Config.GAME == 'PongDeterministic-v0':
+    from Environment_original import Environment
 
 if Config.NETWORK == 'DDPG':
     from NetworkDDPG import Network
@@ -47,6 +49,8 @@ elif Config.NETWORK == 'GA3C_notimageinput_continuos':
     from NetworkVP import Network
 elif Config.NETWORK == 'GA3C_notimageinput':
     from NetworkVP_discrate import Network
+elif Config.NETWORK == 'GA3C_original':
+    from NetworkVP_original import Network
 
 from ProcessAgent import ProcessAgent
 from ProcessHRAgent import ProcessHRAgent

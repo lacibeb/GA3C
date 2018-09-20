@@ -66,7 +66,9 @@ elif Config.GAME == 'CartPole-v0':
 elif Config.GAME == 'Super_Easy_linear':
     Config.CONTINUOUS_INPUT = True
     Config.DISCRATE_INPUT = False
-
+elif Config.GAME == 'PongDeterministic-v0':
+    Config.CONTINUOUS_INPUT = False
+    Config.DISCRATE_INPUT = True
 
 gym.undo_logger_setup()
 

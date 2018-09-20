@@ -42,6 +42,8 @@ elif Config.GAME == 'CartPole-v0':
     from EnvironmentGYM import Environment
 elif Config.GAME == 'Super_Easy_linear':
     from Environment_Easy import Environment
+elif Config.GAME == 'PongDeterministic-v0':
+    from Environment_original import Environment
 from Experience import Experience
 
 
