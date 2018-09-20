@@ -191,21 +191,21 @@ class ProcessAgent(Process):
         while self.exit_flag.value == 0:
             total_reward = 0
             total_length = 0
-            # try:
-            for x_, r_, a_, x2_, done_, reward_sum in self.run_episode():
-                print('x_: ' + str(x_))
-                print('r_: ' + str(r_))
-                print('a_: ' + str(a_))
-                print('x2_: ' + str(x2_))
-                print('done_: ' + str(done_))
-                total_reward += reward_sum
-                total_length += len(r_) + 1  # +1 for last frame that we drop
-                self.training_q.put((x_, r_, a_, x2_, done_))
-                # print("shape_x " + str(x_.shape[0]))
-                # print("qsize: " + str(self.training_q.qsize()))
-            self.episode_log_q.put((datetime.now(), total_reward, total_length))
-            # except:
-            #     # print('Process Agent ' + str(self.id) + ': Timeout Error')
-            #     # if timout occurs it is possible due to end of training
-            #     continue
+            try:
+                for x_, r_, a_, x2_, done_, reward_sum in self.run_episode():
+                    print('x_: ' + str(x_))
+                    print('r_: ' + str(r_))
+                    print('a_: ' + str(a_))
+                    print('x2_: ' + str(x2_))
+                    print('done_: ' + str(done_))
+                    total_reward += reward_sum
+                    total_length += len(r_) + 1  # +1 for last frame that we drop
+                    self.training_q.put((x_, r_, a_, x2_, done_))
+                    # print("shape_x " + str(x_.shape[0]))
+                    # print("qsize: " + str(self.training_q.qsize()))
+                self.episode_log_q.put((datetime.now(), total_reward, total_length))
+            except TimeoutError as err:
+                # print('Process Agent ' + str(self.id) + ': Timeout Error')
+                # if timout occurs it is possible due to end of training
+                continue
 

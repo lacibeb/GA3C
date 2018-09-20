@@ -46,6 +46,7 @@ class Environment:
         self.previous_state = None
         self.current_state = None
         self.total_reward = 0
+        self.action_dim = self.get_num_actions()
 
         self.reset()
 
