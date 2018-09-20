@@ -44,7 +44,16 @@ class ThreadPredictor(Thread):
 
     def run(self):
         ids = np.zeros(Config.PREDICTION_BATCH_SIZE, dtype=np.uint16)
-        states = np.zeros((Config.PREDICTION_BATCH_SIZE, self.state_dim), dtype=np.float32)
+        # for games those have simple 1d output
+        if isinstance(self.state_dim, int):
+            state_dim = (Config.PREDICTION_BATCH_SIZE, self.state_dim)
+        # for games those have complex output for example 3d, or 4d image
+        else:
+            state_dim = (Config.PREDICTION_BATCH_SIZE, )
+            for i in self.state_dim:
+                state_dim = state_dim + (i,)
+
+        states = np.zeros(state_dim, dtype=np.float32)
 
         while not self.exit_flag:
             try:
