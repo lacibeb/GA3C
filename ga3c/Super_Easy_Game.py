@@ -50,9 +50,9 @@ class Super_Easy_Game():
 
                 # absolute function, to converge into zero
                 self.steps += 1
-                if self.steps > 200.0:
-                    self.done = True
-                    # print('start: ' + str(self.start) + ' end: ' + str(self.inner_state))
+                # if self.steps > 200.0:
+                #     self.done = True
+                # print('start: ' + str(self.start) + ' end: ' + str(self.inner_state))
 
                 self.reward += self.step_reward
 
