@@ -92,13 +92,16 @@ class Environment(Env):
             # print('action aft: ' + str(action))
 
         if Config.DISCRATE_INPUT:
-            env_action = np.zeros(self.action_dim, np.dtype(int))
+            env_action_array = np.zeros(self.action_dim, np.dtype(int))
             if action is None:
                 action = 0
-            env_action[action] = 1
-            # debug try
-            # TODO not nice
+            env_action_array[action] = 1
+
+            # different from games, not implemented correctly
+            # only one action (atary)
             env_action = action
+            # array of actions (gym)
+            # env_action = env_action_array
 
         self.previous_state = self.current_state
         self.current_state, reward, done, info = self.game.step(env_action)

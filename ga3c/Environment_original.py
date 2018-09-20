@@ -87,7 +87,30 @@ class Environment:
         self.previous_state = self.current_state = None
 
     def step(self, action):
-        observation, reward, done, _ = self.game.step(action)
+        env_action = None
+
+        if Config.CONTINUOUS_INPUT:
+            if action is None:
+                action = np.zeros(self.action_dim)
+            action = self.check_bounds(action, 1.0, -1.0, True)
+            # Game requires input -180..180 int
+            # print('action bef: ' + str(self.action_bound))
+            env_action = action * self.action_bound
+            # print('action aft: ' + str(action))
+
+        if Config.DISCRATE_INPUT:
+            env_action_array = np.zeros(self.action_dim, np.dtype(int))
+            if action is None:
+                action = 0
+            env_action_array[action] = 1
+
+            # different from games, not implemented correctly
+            # only one action (atary)
+            env_action = action
+            # array of actions (gym)
+            # env_action = env_action_array
+
+        observation, reward, done, _ = self.game.step(env_action)
 
         self.total_reward += reward
         self._update_frame_q(observation)
