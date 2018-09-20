@@ -110,7 +110,9 @@ class Environment:
             # array of actions (gym)
             # env_action = env_action_array
 
+        print('env action: ' + str(env_action))
         observation, reward, done, _ = self.game.step(env_action)
+        print('observation: ' + str(observation))
 
         self.total_reward += reward
         self._update_frame_q(observation)
