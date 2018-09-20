@@ -192,11 +192,11 @@ class ProcessAgent(Process):
             total_length = 0
             try:
                 for x_, r_, a_, x2_, done_, reward_sum in self.run_episode():
-                    # print('x_: ' + str(x_))
-                    # print('r_: ' + str(r_))
-                    # print('a_: ' + str(a_))
-                    # print('x2_: ' + str(x2_))
-                    # print('done_: ' + str(done_))
+                    print('x_: ' + str(x_))
+                    print('r_: ' + str(r_))
+                    print('a_: ' + str(a_))
+                    print('x2_: ' + str(x2_))
+                    print('done_: ' + str(done_))
                     total_reward += reward_sum
                     total_length += len(r_) + 1  # +1 for last frame that we drop
                     self.training_q.put((x_, r_, a_, x2_, done_))
