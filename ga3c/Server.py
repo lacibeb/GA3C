@@ -164,6 +164,7 @@ class Server:
             for trainer in self.trainers:
                 trainer.enabled = False
 
+        print("Server: all processes and threads started")
         learning_rate_multiplier = (
                                        Config.LEARNING_RATE_END - Config.LEARNING_RATE_START) / Config.ANNEALING_EPISODE_COUNT
 
