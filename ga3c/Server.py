@@ -100,7 +100,7 @@ class Server:
             self.tester_predictor = ThreadPredictor(self, 0, self.get_state_dim(), self.tester_prediction_q)
             self.network_tester_process = NetworkTester(100, self.tester_prediction_q)
 
-        print("Server initialized")
+        print("Server: Server initialized")
 
     def add_agent(self):
         self.agents.append(

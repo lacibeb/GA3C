@@ -38,6 +38,7 @@ class ThreadTrainer(Thread):
         self.id = id
         self.server = server
         self.exit_flag = False
+        print('Thread Trainer '+ str(id) + ': started')
 
     def run(self):
         # print("thread started: " + str(self.id))

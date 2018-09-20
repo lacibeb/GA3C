@@ -71,7 +71,7 @@ class ProcessAgent(Process):
         self.exit_flag = Value('i', 0)
         self.time_count = 0
         self.explore_p = Value('i', 0)
-
+        print('Process Agent '+ str(id) + ': started')
 
     @staticmethod
     def _accumulate_rewards(experiences, discount_factor, terminal_reward):

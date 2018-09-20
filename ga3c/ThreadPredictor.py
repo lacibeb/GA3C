@@ -41,6 +41,7 @@ class ThreadPredictor(Thread):
         self.id = id
         self.server = server
         self.exit_flag = False
+        print('Thread Predictor '+ str(id) + ': started')
 
     def run(self):
         ids = np.zeros(Config.PREDICTION_BATCH_SIZE, dtype=np.uint16)
