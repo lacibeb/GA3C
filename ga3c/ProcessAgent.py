@@ -123,7 +123,7 @@ class ProcessAgent(Process):
         # print(str(state))
         self.prediction_q.put((self.id, state))
         # wait for the prediction to come back
-        p, v = self.wait_q.get(timeout=2)
+        p, v = self.wait_q.get(timeout=10)
         return p, v
 
     def select_action(self, actions, prediction):
@@ -192,7 +192,7 @@ class ProcessAgent(Process):
             total_length = 0
             try:
                 for x_, r_, a_, x2_, done_, reward_sum in self.run_episode():
-                    print('x_: ' + str(x_.shape))
+                    # print('x_: ' + str(x_.shape))
                     # print('r_: ' + str(r_))
                     # print('a_: ' + str(a_))
                     # print('x2_: ' + str(x2_))

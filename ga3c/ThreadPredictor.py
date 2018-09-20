@@ -58,7 +58,7 @@ class ThreadPredictor(Thread):
 
         while not self.exit_flag:
             try:
-                ids[0], states[0] = self.server.prediction_q.get(timeout=2)
+                ids[0], states[0] = self.server.prediction_q.get(timeout=10)
             except TimeoutError as err:
                 continue
                 print('Thread Predictor ' + str(self.id) + ': Timeout Error')
@@ -66,7 +66,7 @@ class ThreadPredictor(Thread):
             size = 1
             while size < Config.PREDICTION_BATCH_SIZE and not self.prediction_q.empty():
                 try:
-                    ids[size], states[size] = self.server.prediction_q.get(timeout=2)
+                    ids[size], states[size] = self.server.prediction_q.get(timeout=10)
                 except TimeoutError as err:
                     print('Thread Predictor ' + str(self.id) + ': Timeout Error')
                     continue
