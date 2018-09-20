@@ -204,7 +204,7 @@ class ProcessAgent(Process):
                     # print("qsize: " + str(self.training_q.qsize()))
                 self.episode_log_q.put((datetime.now(), total_reward, total_length))
             except:
-                print('Process Agent ' + str(id) + ': Timeout Error')
+                print('Process Agent ' + str(self.id) + ': Timeout Error')
                 # if timout occurs it is possible due to end of training
                 continue
 
