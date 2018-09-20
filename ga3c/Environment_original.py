@@ -78,7 +78,7 @@ class Environment:
 
     def get_state_dim(self):
         # not used for atars games
-        return None
+        return (Config.PREDICTION_BATCH_SIZE, Config.IMAGE_HEIGHT, Config.IMAGE_WIDTH, Config.STACKED_FRAMES, )
 
     def reset(self):
         self.total_reward = 0
