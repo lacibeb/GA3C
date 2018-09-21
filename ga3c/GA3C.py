@@ -73,6 +73,6 @@ elif Config.GAME == 'PongDeterministic-v0':
     Config.DISCRATE_INPUT = True
 
 
-    # Start main program
-    Server().main()
-    gym.undo_logger_setup()
+# Start main program
+Server().main()
+gym.undo_logger_setup()
