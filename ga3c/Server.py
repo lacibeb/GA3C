@@ -40,6 +40,8 @@ elif Config.GAME == 'CartPole-v0':
     from EnvironmentGYM import Environment
 elif Config.GAME == 'Super_Easy_linear':
     from Environment_Easy import Environment
+elif Config.GAME == 'PongDeterministic-v0':
+    from Environment_original import Environment
 
 if Config.NETWORK == 'DDPG':
     from NetworkDDPG import Network
@@ -47,6 +49,8 @@ elif Config.NETWORK == 'GA3C_notimageinput_continuos':
     from NetworkVP import Network
 elif Config.NETWORK == 'GA3C_notimageinput':
     from NetworkVP_discrate import Network
+elif Config.NETWORK == 'GA3C_original':
+    from NetworkVP_original import Network
 
 from ProcessAgent import ProcessAgent
 from ProcessHRAgent import ProcessHRAgent
@@ -96,7 +100,7 @@ class Server:
             self.tester_predictor = ThreadPredictor(self, 0, self.get_state_dim(), self.tester_prediction_q)
             self.network_tester_process = NetworkTester(100, self.tester_prediction_q)
 
-        print("Server initialized")
+        print("Server: Server initialized")
 
     def add_agent(self):
         self.agents.append(
@@ -160,6 +164,7 @@ class Server:
             for trainer in self.trainers:
                 trainer.enabled = False
 
+        print("Server: all processes and threads started")
         learning_rate_multiplier = (
                                        Config.LEARNING_RATE_END - Config.LEARNING_RATE_START) / Config.ANNEALING_EPISODE_COUNT
 
@@ -170,10 +175,11 @@ class Server:
             self.model.beta = Config.BETA_START + beta_multiplier * step
 
             # random steps
-            explore_p = Config.explore_stop + (Config.explore_start - Config.explore_stop) * np.exp(
-                -Config.decay_rate * step)
-            for agent in self.agents:
-                agent.explore_p.Value = explore_p
+            if Config.EXPLORATION:
+                explore_p = Config.explore_stop + (Config.explore_start - Config.explore_stop) * np.exp(
+                    -Config.decay_rate * step)
+                for agent in self.agents:
+                    agent.explore_p.Value = explore_p
 
             # Saving is async - even if we start saving at a given episode, we may save the model at a later episode
             if Config.SAVE_MODELS and self.stats.should_save_model.value > 0:

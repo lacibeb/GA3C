@@ -41,28 +41,41 @@ class ThreadPredictor(Thread):
         self.id = id
         self.server = server
         self.exit_flag = False
+        print('Thread Predictor '+ str(id) + ': initialized')
 
     def run(self):
         ids = np.zeros(Config.PREDICTION_BATCH_SIZE, dtype=np.uint16)
-        states = np.zeros((Config.PREDICTION_BATCH_SIZE, self.state_dim), dtype=np.float32)
+        # for games those have simple 1d output
+        if isinstance(self.state_dim, int):
+            state_dim = (Config.PREDICTION_BATCH_SIZE, self.state_dim)
+        # for games those have complex output for example 3d, or 4d image
+        else:
+            state_dim = (Config.PREDICTION_BATCH_SIZE, )
+            for i in self.state_dim:
+                state_dim = state_dim + (i,)
+
+        states = np.zeros(state_dim, dtype=np.float32)
 
         while not self.exit_flag:
             try:
-                ids[0], states[0] = self.server.prediction_q.get(timeout=2)
-            except:
+                ids[0], states[0] = self.server.prediction_q.get(timeout=10)
+            except TimeoutError as err:
                 continue
+                print('Thread Predictor ' + str(self.id) + ': Timeout Error')
+                print('log: ', str(ids) + ', ' + str(states))
             size = 1
             while size < Config.PREDICTION_BATCH_SIZE and not self.prediction_q.empty():
                 try:
-                    ids[size], states[size] = self.server.prediction_q.get(timeout=2)
-                except:
+                    ids[size], states[size] = self.server.prediction_q.get(timeout=10)
+                except TimeoutError as err:
+                    print('Thread Predictor ' + str(self.id) + ': Timeout Error')
                     continue
                 size += 1
 
             batch = states[:size]
             p, v = self.server.model.predict_p_and_v(batch)
-            #print(str(p))
-            #print(str(v))
+            # print('Predictor p: ' + str(p))
+            # print('   s: ' + str(v))
             for i in range(size):
                 if ids[i] < len(self.server.agents):
                     self.server.agents[ids[i]].wait_q.put((p[i], v[i]))

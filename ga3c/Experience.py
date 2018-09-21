@@ -32,3 +32,12 @@ class Experience:
         self.reward = reward
         self.done = done
         self.next_state = next_state
+
+    def __str__(self):
+        tmp_str = 'state: ' + str(self.state)
+        tmp_str += ' action: ' + str(self.action)
+        tmp_str += ' prediction: ' + str(self.prediction)
+        tmp_str += ' reward: ' + str(self.reward)
+        tmp_str += ' done: ' + str(self.done)
+        tmp_str += ' next_state: ' + str(self.next_state)
+        return tmp_str

@@ -38,22 +38,23 @@ class ThreadTrainer(Thread):
         self.id = id
         self.server = server
         self.exit_flag = False
+        print('Thread Trainer '+ str(id) + ': initialized')
 
     def run(self):
         # print("thread started: " + str(self.id))
         while not self.exit_flag:
             if Config.USE_REPLAY_MEMORY:
                 try:
-                    x__, a__, r__, done__, x2__ = self.server.replay_q.get(timeout=2)
-                except:
+                    x__, a__, r__, done__, x2__ = self.server.replay_q.get(timeout=10)
+                except TimeoutError as err:
                     if self.exit_flag:
                         continue
             else:
                 batch_size = 0
                 while batch_size <= Config.TRAINING_MIN_BATCH_SIZE:
                     try:
-                        x_, r_, a_, x2_, done_ = self.server.training_q.get(timeout=2)
-                    except:
+                        x_, r_, a_, x2_, done_ = self.server.training_q.get(timeout=10)
+                    except TimeoutError as err:
                         if self.exit_flag: break
                         continue
 
@@ -69,8 +70,8 @@ class ThreadTrainer(Thread):
 
             if Config.TRAIN_MODELS:
                 # print('x__: ' + str(x__))
-                # print('r__: ' + str(x__))
-                # print('a__: ' + str(x__))
-                # print('x2__: ' + str(x__))
-                # print('done__: ' + str(x__))
+                # print('r__: ' + str(r__))
+                # print('a__: ' + str(a__))
+                # print('x2__: ' + str(x2__))
+                # print('done__: ' + str(done__))
                 self.server.train_model(x__, r__, a__, x2__, done__, self.id)

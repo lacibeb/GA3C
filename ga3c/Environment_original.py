@@ -35,51 +35,59 @@ import numpy as np
 import scipy.misc as misc
 
 from Config import Config
-from Environment import Environment as Env
-import gym
+from GameManager import GameManager
 
 
-class Environment(Env):
+class Environment:
     def __init__(self):
-        self.game = gym.make(Config.GAME)
-        # TODO: only try
-        # https://github.com/openai/gym/issues/494
-        # conda install - c anaconda pyopengl
-        # conda install -c conda-forge xvfbwrapper
-        # force true clears directory
-        # export DISPLAY=:0.0 in etc/environment
-        #self.game = gym.wrappers.Monitor(self.game, 'pics/', force=True, mode='rgb_array', video_callable=lambda episode_id: True)
-
-        self.game.seed(Config.RANDOM_SEED)
-
+        self.game = GameManager(Config.GAME, display=Config.PLAY_MODE)
+        self.nb_frames = Config.STACKED_FRAMES
+        self.frame_q = Queue(maxsize=self.nb_frames)
         self.previous_state = None
         self.current_state = None
         self.total_reward = 0
+        self.action_dim = self.get_num_actions()
 
         self.reset()
 
-        if Config.CONTINUOUS_INPUT:
-            self.action_dim = self.game.action_space.shape[0]
-            self.action_bound = self.game.action_space.high
-        else:
-            self.action_dim = self.game.action_space.n
+    @staticmethod
+    def _rgb2gray(rgb):
+        return np.dot(rgb[..., :3], [0.299, 0.587, 0.114])
 
-        self.state_dim = self.game.observation_space.shape[0]
+    @staticmethod
+    def _preprocess(image):
+        image = Environment._rgb2gray(image)
+        image = misc.imresize(image, [Config.IMAGE_HEIGHT, Config.IMAGE_WIDTH], 'bilinear')
+        image = image.astype(np.float32) / 128.0 - 1.0
+        return image
+
+    def _get_current_state(self):
+        if not self.frame_q.full():
+            return None  # frame queue is not full yet.
+        x_ = np.array(self.frame_q.queue)
+        x_ = np.transpose(x_, [1, 2, 0])  # move channels
+        return x_
+
+    def _update_frame_q(self, frame):
+        if self.frame_q.full():
+            self.frame_q.get()
+        image = Environment._preprocess(frame)
+        self.frame_q.put(image)
 
     def get_num_actions(self):
-        return self.action_dim
+        return self.game.env.action_space.n
 
     def get_state_dim(self):
-        return self.state_dim
+        # not used for atars games
+        return [Config.IMAGE_HEIGHT, Config.IMAGE_WIDTH, Config.STACKED_FRAMES]
 
     def reset(self):
-        self.game.reset()
-        # self.current_state, r, done, info = self.game.step(np.float32([0.0]))
-        # self.current_state = np.reshape(self.current_state, -1)
+        self.total_reward = 0
+        self.frame_q.queue.clear()
+        self._update_frame_q(self.game.reset())
+        self.previous_state = self.current_state = None
 
     def step(self, action):
-        # action randomisation
-        # action = action + np.random.uniform(0.03, -0.03)
         env_action = None
 
         if Config.CONTINUOUS_INPUT:
@@ -103,11 +111,13 @@ class Environment(Env):
             # array of actions (gym)
             # env_action = env_action_array
 
+        # print('env action: ' + str(env_action))
+        observation, reward, done, _ = self.game.step(env_action)
+        # print('observation: ' + str(observation))
+
+        self.total_reward += reward
+        self._update_frame_q(observation)
+
         self.previous_state = self.current_state
-        self.current_state, reward, done, info = self.game.step(env_action)
-        self.current_state = np.reshape(self.current_state, -1)
-
+        self.current_state = self._get_current_state()
         return reward, done
-
-#    def __delete__(self, instance):
-#        self.vdisplay.stop()

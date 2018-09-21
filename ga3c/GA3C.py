@@ -35,40 +35,44 @@ import gym
 from Config import Config
 from Server import Server
 
-# Parse arguments
-for i in range(1, len(sys.argv)):
-    # Config arguments should be in format of Config=Value
-    # For setting booleans to False use Config=
-    x, y = sys.argv[i].split('=')
-    setattr(Config, x, type(getattr(Config, x))(y))
 
-# Adjust configs for Play mode
-if Config.PLAY_MODE:
-    Config.AGENTS = 1
-    Config.PREDICTORS = 1
-    Config.TRAINERS = 1
-    Config.DYNAMIC_SETTINGS = False
+if __name__ == '__main__':
+    # Parse arguments
+    for i in range(1, len(sys.argv)):
+        # Config arguments should be in format of Config=Value
+        # For setting booleans to False use Config=
+        x, y = sys.argv[i].split('=')
+        setattr(Config, x, type(getattr(Config, x))(y))
 
-    Config.LOAD_CHECKPOINT = True
-    Config.TRAIN_MODELS = False
-    Config.SAVE_MODELS = False
+    # Adjust configs for Play mode
+    if Config.PLAY_MODE:
+        Config.AGENTS = 1
+        Config.PREDICTORS = 1
+        Config.TRAINERS = 1
+        Config.DYNAMIC_SETTINGS = False
 
-# for pyperrace the statedim is comming from game
-if Config.GAME == 'pyperrace':
-    Config.CONTINUOUS_INPUT = True
-    Config.DISCRATE_INPUT = False
-elif Config.GAME == 'Pendulum-v0':
-    Config.CONTINUOUS_INPUT = True
-    Config.DISCRATE_INPUT = False
-elif Config.GAME == 'CartPole-v0':
-    Config.CONTINUOUS_INPUT = False
-    Config.DISCRATE_INPUT = True
-elif Config.GAME == 'Super_Easy_linear':
-    Config.CONTINUOUS_INPUT = True
-    Config.DISCRATE_INPUT = False
+        Config.LOAD_CHECKPOINT = True
+        Config.TRAIN_MODELS = False
+        Config.SAVE_MODELS = False
+
+    # for pyperrace the statedim is comming from game
+    if Config.GAME == 'pyperrace':
+        Config.CONTINUOUS_INPUT = True
+        Config.DISCRATE_INPUT = False
+    elif Config.GAME == 'Pendulum-v0':
+        Config.CONTINUOUS_INPUT = True
+        Config.DISCRATE_INPUT = False
+    elif Config.GAME == 'CartPole-v0':
+        Config.CONTINUOUS_INPUT = False
+        Config.DISCRATE_INPUT = True
+    elif Config.GAME == 'Super_Easy_linear':
+        Config.CONTINUOUS_INPUT = True
+        Config.DISCRATE_INPUT = False
+    elif Config.GAME == 'PongDeterministic-v0':
+        Config.CONTINUOUS_INPUT = False
+        Config.DISCRATE_INPUT = True
 
 
-gym.undo_logger_setup()
-
-# Start main program
-Server().main()
+        # Start main program
+        Server().main()
+        gym.undo_logger_setup()

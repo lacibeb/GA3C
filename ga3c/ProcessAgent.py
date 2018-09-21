@@ -42,6 +42,8 @@ elif Config.GAME == 'CartPole-v0':
     from EnvironmentGYM import Environment
 elif Config.GAME == 'Super_Easy_linear':
     from Environment_Easy import Environment
+elif Config.GAME == 'PongDeterministic-v0':
+    from Environment_original import Environment
 from Experience import Experience
 
 
@@ -70,6 +72,8 @@ class ProcessAgent(Process):
         self.time_count = 0
         self.explore_p = Value('i', 0)
 
+        print('Process Agent '+ str(id) + ': started')
+
     @staticmethod
     def _accumulate_rewards(experiences, discount_factor, terminal_reward):
         if Config.REWARD_RESIZE:
@@ -92,6 +96,7 @@ class ProcessAgent(Process):
             else:
                 # with intermediate rewards
                 experiences[t].reward = r
+
 
         # original
         return experiences[:-1]
@@ -119,14 +124,14 @@ class ProcessAgent(Process):
         # print(str(state))
         self.prediction_q.put((self.id, state))
         # wait for the prediction to come back
-        p, v = self.wait_q.get(timeout=2)
+        p, v = self.wait_q.get(timeout=10)
         return p, v
 
     def select_action(self, actions, prediction):
         if Config.PLAY_MODE:
             action = np.argmax(prediction)
         else:
-            if Config.EXPLORATION and self.explore_p.value > np.random.rand():
+            if Config.EXPLORATION and (self.explore_p.value > np.random.rand()):
                 action = self.env.game.action_space.sample()
             else:
                 action = np.random.choice(actions, p=prediction)
@@ -159,12 +164,13 @@ class ProcessAgent(Process):
             # print('reward: ' + str(reward))
             reward_sum += reward
             exp = Experience(self.env.previous_state, action, prediction, reward, self.env.current_state, done)
+            # print(exp)
             experiences.append(exp)
 
             if done or self.time_count == Config.TIME_MAX:
-                #terminal_reward = 0 if done else value
+                terminal_reward = 0 if done else value
                 # with pyperrace the final reward is always in last step, it always plays until the end
-                terminal_reward = reward_sum
+                #terminal_reward = reward_sum
                 updated_exps = ProcessAgent._accumulate_rewards(experiences, self.discount_factor, terminal_reward)
                 x_, r_, a_, x2_, done_ = self.convert_data(updated_exps)
                 yield x_, r_, a_, x2_, done_, reward_sum
@@ -187,13 +193,19 @@ class ProcessAgent(Process):
             total_length = 0
             try:
                 for x_, r_, a_, x2_, done_, reward_sum in self.run_episode():
+                    # print('x_: ' + str(x_))
+                    # print('r_: ' + str(r_))
+                    # print('a_: ' + str(a_))
+                    # print('x2_: ' + str(x2_))
+                    # print('done_: ' + str(done_))
                     total_reward += reward_sum
                     total_length += len(r_) + 1  # +1 for last frame that we drop
                     self.training_q.put((x_, r_, a_, x2_, done_))
                     # print("shape_x " + str(x_.shape[0]))
                     # print("qsize: " + str(self.training_q.qsize()))
                 self.episode_log_q.put((datetime.now(), total_reward, total_length))
-            except:
+            except TimeoutError as err:
+                # print('Process Agent ' + str(self.id) + ': Timeout Error')
                 # if timout occurs it is possible due to end of training
                 continue
 
