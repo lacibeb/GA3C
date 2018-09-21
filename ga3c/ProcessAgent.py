@@ -70,7 +70,6 @@ class ProcessAgent(Process):
         self.time_count = 0
         self.explore_p = Value('i', 0)
 
-
     @staticmethod
     def _accumulate_rewards(experiences, discount_factor, terminal_reward):
         if Config.REWARD_RESIZE:
@@ -87,17 +86,17 @@ class ProcessAgent(Process):
             else:
                 r = experiences[t].reward
 
-            # with intermediate rewards
-            if Config.USE_INTERMEDIATE_REWARD:
-                experiences[t].reward = r
-            else:
-                experiences[t].reward = reward_sum + r
-
             if Config.DISCOUNTING:
-                reward_sum = discount_factor * reward_sum
+                reward_sum = discount_factor * reward_sum + r
+                experiences[t].reward = reward_sum
+            else:
+                # with intermediate rewards
+                experiences[t].reward = r
 
-        # return experiences[:-1]
-        return experiences
+        # original
+        return experiences[:-1]
+        # returning last one too
+        # return experiences
 
     def convert_data(self, experiences):
         x_ = np.array([exp.state for exp in experiences])
