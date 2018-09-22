@@ -1,5 +1,5 @@
 #jobname
-#PBS -N ga3c_t1
+#PBS -N ga3c_or_work
 
 #max runtime
 #PBS -l walltime=01:01:00:00
@@ -16,7 +16,7 @@
 ##PBS -l nodes=1:ppn=1
 
 #1 node 24 core 2 gpu this is the maximum for servers
-#PBS -l nodes=1:ppn=24:gpus=2:default
+#PBS -l nodes=compute5:ppn=12:gpus=1:default
 
 #sript run
 #PBS -S /bin/bash
@@ -115,4 +115,7 @@ echo $LOGDIR > logdir.txt
 qsub tensorboard.pbs
 
 ./_clean.sh
-./_train.sh
+
+mkdir checkpoints > /dev/null 2>&1
+mkdir logs > /dev/null 2>&1
+python GA3C.py GAME='CartPole-v0' NETWORK='GA3C_notimageinput'
