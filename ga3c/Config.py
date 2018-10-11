@@ -88,11 +88,11 @@ class Config:
     DISCOUNT = 0.99
     
     # Tmax
-    TIME_MAX = 50
-
+    TIME_MAX = 5
+    
     # Reward Clipping
     REWARD_RESIZE = False
-    REWARD_FACTOR = 0.005
+    REWARD_FACTOR = 0.0005
     USE_INTERMEDIATE_REWARD = False
 
     REWARD_CLIPPING = True
