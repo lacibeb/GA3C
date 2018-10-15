@@ -118,4 +118,4 @@ qsub tensorboard.pbs
 
 mkdir checkpoints > /dev/null 2>&1
 mkdir logs > /dev/null 2>&1
-python GA3C.py GAME='CartPole-v0' NETWORK='GA3C_notimageinput'
+python GA3C.py GAME='Pendulum-v0' NETWORK='GA3C_notimageinput_continuos'

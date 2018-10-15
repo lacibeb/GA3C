@@ -1,5 +1,5 @@
 #jobname
-#PBS -N ga3c_pend_1
+#PBS -N ga3c_pend_ddpg_1
 
 #max runtime
 #PBS -l walltime=01:01:00:00
@@ -118,4 +118,4 @@ qsub tensorboard.pbs
 
 mkdir checkpoints > /dev/null 2>&1
 mkdir logs > /dev/null 2>&1
-python GA3C.py GAME='CartPole-v0' NETWORK='GA3C_notimageinput'
+python GA3C.py GAME='Pendulum-v0' NETWORK='DDPG'

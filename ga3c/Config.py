@@ -34,6 +34,7 @@ class Config:
     GAME = 'Pendulum-v0'
     # GAME = 'Super_Easy_linear'
     # GAME = 'CartPole-v0'
+    # GAME = 'pyperrace'
     #########################################################################
     # Network selection
     # define input
