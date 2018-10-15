@@ -1,5 +1,5 @@
 #jobname
-#PBS -N ga3c_or_work
+#PBS -N ga3c_pend_1
 
 #max runtime
 #PBS -l walltime=01:01:00:00
