@@ -241,8 +241,8 @@ class ActorNetwork(object):
         if Config.add_OUnoise:
             return prediction + self.actor_noise()
         # it is angle, have to be rotated around
-        # return np.clip(prediction, self.action_bound, -self.action_bound)
-        return self.check_bounds(prediction, self.action_bound, -self.action_bound, True)
+        return np.clip(prediction, self.action_bound, -self.action_bound)
+        #return self.check_bounds(prediction, self.action_bound, -self.action_bound, True)
 
     @staticmethod
     def check_bounds(value, posbound, negbound = 0, turnaround = True):
