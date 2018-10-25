@@ -33,8 +33,8 @@ class Config:
     # GAME = 'PongDeterministic-v0'
     GAME = 'Pyperrace'
 
-    STATE_DIM = 'error'
-    ACTION_DIM = 'error'
+    STATE_DIM = 4
+    ACTION_DIM = 1
 
     # Enable to see the trained agent in action
     SHOW_WINDOW = False
