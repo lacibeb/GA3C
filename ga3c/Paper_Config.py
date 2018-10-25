@@ -61,3 +61,4 @@ class Config:
     logging_debug = False
     logging_step = False
 
+    RANDOM_START = True

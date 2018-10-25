@@ -574,8 +574,15 @@ class PaperRaceEnv:
             self.player = self.getplayer(player)
         self.log('\n      --' + self.player.name + ': ', "game")
         self.log('\n        ', "game")
-        # kezdeti sebeesseg, ahogy a kornyezet adja
-        self.v = np.array(self.starting_spd)
+
+        # random start to encourage learning
+        if Config.RANDOM_START:
+            speed = np.random.rand()*150
+            direction = np.random.rand()*2*np.pi
+            self.v = np.random([np.cos(direction)*speed, np.sin(direction)*speed])
+        else:
+            # kezdeti sebeesseg, ahogy a kornyezet adja
+            self.v = np.array(self.starting_spd)
 
         # sebesség mellé a kezdeti poz. is kell. Ez a kezdőpozíció beállítása:
         self.pos = np.array(self.starting_pos)
