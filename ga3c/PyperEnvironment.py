@@ -45,7 +45,7 @@ class Environment(Env):
 
         self.check_bounds(action, 1.0, -1.0, True)
         # Game requires input -180..180 int
-        action = int(round(action * 180.0))
+        action = int(np.round(action * 180.0))
 
         # game step
         v_new, pos_new, step_reward, pos_reward = self.game.step(action, GameConfig.SHOW_WINDOW, draw_text='little_reward',
