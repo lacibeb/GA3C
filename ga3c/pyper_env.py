@@ -579,7 +579,7 @@ class PaperRaceEnv:
         if Config.RANDOM_START:
             speed = np.random.rand()*150
             direction = np.random.rand()*2*np.pi
-            self.v = np.random([np.cos(direction)*speed, np.sin(direction)*speed])
+            self.v = np.array([np.cos(direction)*speed, np.sin(direction)*speed])
         else:
             # kezdeti sebeesseg, ahogy a kornyezet adja
             self.v = np.array(self.starting_spd)
