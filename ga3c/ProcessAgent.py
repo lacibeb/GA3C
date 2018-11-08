@@ -99,9 +99,9 @@ class ProcessAgent(Process):
 
 
         # original
-        return experiences[:-1]
+        # return experiences[:-1]
         # returning last one too
-        # return experiences
+        return experiences
 
     def convert_data(self, experiences):
         x_ = np.array([exp.state for exp in experiences])
@@ -174,8 +174,8 @@ class ProcessAgent(Process):
                 updated_exps = ProcessAgent._accumulate_rewards(experiences, self.discount_factor, terminal_reward)
                 x_, r_, a_, x2_, done_ = self.convert_data(updated_exps)
                 # if not x_:
-                print('exp: ' + str(experiences))
-                print('expces: ' + str(updated_exps))
+                #print('exp: ' + str(experiences))
+                #print('expces: ' + str(updated_exps))
 
                 yield x_, r_, a_, x2_, done_, reward_sum
 
