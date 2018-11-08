@@ -137,6 +137,11 @@ class PaperRaceEnv:
         self.dists_in, self.dists_in_pos = self.__get_dists_in(False) # a kezdőponttól való "távolságot" tárolja a reward fv-hez
         self.dists_out, self.dists_out_pos = self.__get_dists_out(False) # a kezdőponttól való "távolságot" tárolja
 
+        self.outside_sections = self.create_side_sections(self.dists_out_pos)
+        self.inside_sections = self.create_side_sections(self.dists_in_pos)
+        print(str(self.outside_sections))
+        print(str(self.inside_sections))
+
         self.dist_in_max = len(self.dists_in_pos)
         self.dist_out_max = len(self.dists_out_pos)
 
@@ -209,6 +214,38 @@ class PaperRaceEnv:
 
         if Config.USE_LIDAR:
             self.lidar_channels = np.empty([Config.LIDAR_CHANNELS])
+
+    @staticmethod
+    def create_side_sections(points):
+        start_point_index = 0
+        start_point = points[start_point_index]
+
+        sections = []
+        i = 0
+        # goes throug every points
+        for point in points:
+            if i > 0:
+                end_point_index=i
+                end_point = points[end_point_index]
+
+            # check for every point between if close to section
+            error_high = False
+            for j in range(start_point_index + 1, end_point_index):
+                d = np.linalg.norm(np.cross(end_point - start_point, start_point - points[i])) / np.linalg.norm(end_point - start_point)
+                if d > Config.LIDAR_MAX_LENGTH:
+                    error_high = True
+                    break
+
+            if error_high:
+                sections.append([start_point, points[end_point_index-1]])
+                start_point_index = end_point_index-1
+                start_point = points[start_point_index]
+            i += 1
+
+        # at the end the last section is added
+        sections.append([start_point, points[end_point_index]])
+
+        return sections
 
     def calc_game_reward(self):
         # calculating gmae raward based on position if not completed
@@ -496,6 +533,8 @@ class PaperRaceEnv:
 
         if Config.USE_LIDAR:
             self.update_lidar_channels()
+            print('lidarch: ')
+            print(str(self.lidar_channels))
 
         # Ha akarjuk, akkor itt rajzoljuk ki az aktualis lepes abrajat (lehet maskor kene)
         if draw: # kirajzolja az autót

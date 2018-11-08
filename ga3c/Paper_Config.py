@@ -70,3 +70,7 @@ class Config:
     # at least two -> start angle
     LIDAR_CHANNELS = 10
     LIDAR_MAX_LENGTH = 500
+
+    # dividing track side to sections
+    # dividing is dinamic, if the error is bigger than SIDE_SECTION_MAX_ERROR then start a new section
+    SIDE_SECTION_MAX_ERROR = 5
