@@ -73,6 +73,7 @@ class ThreadPredictor(Thread):
                 size += 1
 
             batch = states[:size]
+            print('batch: '+ str(batch))
             p, v = self.server.model.predict_p_and_v(batch)
             # print('Predictor p: ' + str(p))
             # print('   s: ' + str(v))
