@@ -137,6 +137,8 @@ class PaperRaceEnv:
         self.dists_in, self.dists_in_pos = self.__get_dists_in(False) # a kezdőponttól való "távolságot" tárolja a reward fv-hez
         self.dists_out, self.dists_out_pos = self.__get_dists_out(False) # a kezdőponttól való "távolságot" tárolja
 
+        print(str(self.dists_in))
+
         self.outside_sections = self.create_side_sections(self.dists_out_pos)
         self.inside_sections = self.create_side_sections(self.dists_in_pos)
         print(str(self.outside_sections))
@@ -236,7 +238,7 @@ class PaperRaceEnv:
             error_high = False
             for j in range(start_point_index + 1, end_point_index):
                 d = np.linalg.norm(np.cross(end_point - start_point, start_point - points[j])) / np.linalg.norm(end_point - start_point)
-                print('distance: '+ str(d)+' stpoint: ' + str(start_point) + 'point: ' + str(points[j]) + ' endpoint: ' + str(end_point))
+                #print('distance: '+ str(d)+' stpoint: ' + str(start_point) + 'point: ' + str(points[j]) + ' endpoint: ' + str(end_point))
                 if d > Config.LIDAR_MAX_LENGTH:
                     error_high = True
                     break
