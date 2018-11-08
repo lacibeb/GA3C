@@ -164,7 +164,7 @@ class ProcessAgent(Process):
             # print('reward: ' + str(reward))
             reward_sum += reward
             exp = Experience(self.env.previous_state, action, prediction, reward, self.env.current_state, done)
-            print(exp)
+            #print(exp)
             experiences.append(exp)
 
             if done or self.time_count == Config.TIME_MAX:
@@ -173,6 +173,7 @@ class ProcessAgent(Process):
                 #terminal_reward = reward_sum
                 updated_exps = ProcessAgent._accumulate_rewards(experiences, self.discount_factor, terminal_reward)
                 x_, r_, a_, x2_, done_ = self.convert_data(updated_exps)
+                print('x_: ' + str(x_))
                 yield x_, r_, a_, x2_, done_, reward_sum
 
                 # reset the tmax count
