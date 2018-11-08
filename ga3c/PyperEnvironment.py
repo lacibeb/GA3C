@@ -61,7 +61,7 @@ class Environment(Env):
 
         # if we are using lidar get the channel and also scale to 0..1
         if GameConfig.USE_LIDAR:
-            lidar_channels = self.game.get_lidar_channels()/GameConfig.Config.LIDAR_MAX_LENGTH
+            lidar_channels = self.game.get_lidar_channels()/GameConfig.LIDAR_MAX_LENGTH
 
         # no image, only pos and speed is the observation
 
