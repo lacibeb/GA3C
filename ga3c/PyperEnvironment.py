@@ -30,7 +30,10 @@ class Environment(Env):
 
     @staticmethod
     def get_state_dim():
-        return GameConfig.STATE_DIM
+        if GameConfig.USE_LIDAR:
+            GameConfig.STATE_DIM + GameConfig.LIDAR_CHANNELS
+        else:
+            return GameConfig.STATE_DIM
 
     def reset(self):
         self.game.reset(GameConfig.SHOW_WINDOW)

@@ -152,6 +152,9 @@ class PaperRaceEnv:
         # refference is made now switched to game car
         self.set_car(car_name)
 
+        if Config.USE_LIDAR:
+            self.lidar_channels = np.empty([Config.LIDAR_CHANNELS])
+
 
     def reset(self, drawing = False):
         """ha vmiért vége egy menetnek, meghívódik"""
@@ -203,6 +206,9 @@ class PaperRaceEnv:
         if drawing:
             self.draw_clear()
             self.draw_track()
+
+        if Config.USE_LIDAR:
+            self.lidar_channels = np.empty([Config.LIDAR_CHANNELS])
 
     def calc_game_reward(self):
         # calculating gmae raward based on position if not completed
@@ -310,7 +316,9 @@ class PaperRaceEnv:
         # saving variables
         self.last_step_time = self.step_time
 
-        crosses, self.step_time, section_nr, start, self.finish = self.sectionpass(self.pos_last, self.v)
+        crosses, time_to_reach, section_nr, start, self.finish = self.sectionpass(self.pos_last, self.v)
+
+        self.step_time = max(0, min(time_to_reach, 1))
 
         if self.finish:
             finish_pos = self.pos_last + self.v * self.step_time
@@ -486,6 +494,9 @@ class PaperRaceEnv:
 
         self.update_state()
 
+        if Config.USE_LIDAR:
+            self.update_lidar_channels()
+
         # Ha akarjuk, akkor itt rajzoljuk ki az aktualis lepes abrajat (lehet maskor kene)
         if draw: # kirajzolja az autót
             self.draw_step(draw_text, draw_info_X, draw_info_Y)
@@ -589,7 +600,38 @@ class PaperRaceEnv:
 
         self.curr_dist_in, self.curr_pos_in, self.curr_dist_out, self.curr_pos_out = self.get_pos_ref_on_side(self.pos)
 
+
+        if Config.USE_LIDAR:
+            self.update_lidar_channels()
+
         return self.pos, self.v
+
+    def update_lidar_channels(self):
+        if self.finish:
+            for i in range(self.lidar_channels):
+                self.lidar_channels[i] = 0.0
+        else:
+            for i in range(self.lidar_channels):
+                # ckecking is done with speed so speed length will lidar max length
+                # like this time_to_reach is proportional to the distance
+                # and we want the speed to be in changing angles
+                if Config.LIDAR_CHANNELS = 1:
+                    diff_angle = 0
+                else:
+                    diff_angle = (Config.LIDAR_START_ANGLE-Config.LIDAR_END_ANGLE)/(Config.LIDAR_CHANNELS-1)
+                angle = (Config.LIDAR_START_ANGLE + i*diff_angle)*np.pi*/180
+
+                direction = self.v / np.linalg.norm(self.v)
+
+                cos_theta, sin_theta = np.cos(angle), np.sin(angle)
+                direction[0] = direction[0] * cos_theta - direction[1] * sin_theta
+                direction[1] = direction[0] * sin_theta + direction[1] * cos_theta
+
+                crosses, distance, section_nr, start, finish = self.sectionpass(self.pos, self.v)
+
+                distance = max(0, min(distance, Config.LIDAR_MAX_LENGTH))
+
+                self.lidar_channels[i] = distance
 
     # give section with 2 points, a point and a speed vector, if it goes through this sections returns true
     def check_if_crossed(self, pos, spd, section):
@@ -659,7 +701,7 @@ class PaperRaceEnv:
                 sc_cross, sc_t2 = self.check_if_crossed(pos, spd, self.start_line)
                 if sc_cross:
                     section_nr = i
-                    ret_t2 = t2
+                    ret_t2 = sc_t2
 
         crosses = start or end or sc_cross
 

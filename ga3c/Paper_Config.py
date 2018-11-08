@@ -62,3 +62,11 @@ class Config:
     logging_step = False
 
     RANDOM_START = True
+
+    USE_LIDAR = False
+    # in degrees 0 is forward + direction
+    LIDAR_START_ANGLE = -90
+    LIDAR_END_ANGLE = 90
+    # at least two -> start angle
+    LIDAR_CHANNELS = 10
+    LIDAR_MAX_LENGTH = 500
