@@ -658,7 +658,7 @@ class PaperRaceEnv:
                     diff_angle = 0
                 else:
                     diff_angle = (Config.LIDAR_START_ANGLE-Config.LIDAR_END_ANGLE)/(Config.LIDAR_CHANNELS-1)
-                angle = (Config.LIDAR_START_ANGLE + i*diff_angle)*np.pi*/180
+                angle = (Config.LIDAR_START_ANGLE + i*diff_angle)*np.pi/180
 
                 direction = self.v / np.linalg.norm(self.v)
 
