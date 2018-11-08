@@ -68,7 +68,7 @@ class Config:
     LIDAR_START_ANGLE = -90
     LIDAR_END_ANGLE = 90
     # at least two -> start angle
-    LIDAR_CHANNELS = 10
+    LIDAR_CHANNELS = 100
     LIDAR_MAX_LENGTH = 500
 
     # dividing track side to sections
