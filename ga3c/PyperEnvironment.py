@@ -31,15 +31,17 @@ class Environment(Env):
     @staticmethod
     def get_state_dim():
         if GameConfig.USE_LIDAR:
-            return GameConfig.STATE_DIM
-            # + GameConfig.LIDAR_CHANNELS
+            return GameConfig.STATE_DIM + GameConfig.LIDAR_CHANNELS
         else:
             return GameConfig.STATE_DIM
 
     def reset(self):
         self.game.reset(GameConfig.SHOW_WINDOW)
         pos, v = self.game.start_game()
-        self.current_state = np.array([v[0]/400.0, v[1]/400.0, (pos[0]/900.0)-1, (pos[1]/900.0-1)])
+        self.current_state = np.array([v[0] / 400.0, v[1] / 400.0, (pos[0] / 900.0) - 1, (pos[1] / 900.0 - 1)])
+
+        if GameConfig.USE_LIDAR:
+            self.current_state = np.concatenate(self.current_state, self.game.get_lidar_channels())
         # scaling state to be between -1 ... 1
 
 
@@ -57,7 +59,12 @@ class Environment(Env):
 
         end, time, last_t_diff, game_reward, game_ref_reward = self.game.getstate()
 
+        # if we are using lidar get the channel and also scale to 0..1
+        if GameConfig.USE_LIDAR:
+            lidar_channels = self.game.get_lidar_channels()/GameConfig.Config.LIDAR_MAX_LENGTH
+
         # no image, only pos and speed is the observation
+
         observation = [v_new[0], v_new[1], pos_new[0], pos_new[1]]
 
         self.previous_state = self.current_state
@@ -65,6 +72,8 @@ class Environment(Env):
         self.current_state = np.array([v_new[0]/400.0, v_new[1]/400.0, (pos_new[0]/900.0)-1, (pos_new[1]/900.0-1)])
         # scaling state to be between -1 ... 1
 
+        if GameConfig.USE_LIDAR:
+            self.current_state = np.concatenate(self.current_state, self.game.get_lidar_channels())
 
         done = end
 

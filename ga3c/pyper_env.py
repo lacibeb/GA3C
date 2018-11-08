@@ -217,7 +217,7 @@ class PaperRaceEnv:
             self.draw_track()
 
         if Config.USE_LIDAR:
-            self.lidar_channels = np.empty([Config.LIDAR_CHANNELS])
+            self.lidar_channels = np.zeros([Config.LIDAR_CHANNELS])
 
     @staticmethod
     def create_side_sections(points):
@@ -656,6 +656,9 @@ class PaperRaceEnv:
 
         return self.pos, self.v
 
+    def get_lidar_channels(self):
+        return self.lidar_channels
+
     def update_lidar_channels(self):
         if self.finish:
             for i in range(Config.LIDAR_CHANNELS):
@@ -678,7 +681,7 @@ class PaperRaceEnv:
 
                 direction = self.v / np.linalg.norm(self.v)
 
-                print('pos: ' + str(self.pos) + ' direction: ' + str(direction))
+                #print('pos: ' + str(self.pos) + ' direction: ' + str(direction))
 
                 cos_theta, sin_theta = np.cos(angle), np.sin(angle)
                 direction[0] = direction[0] * cos_theta - direction[1] * sin_theta
@@ -686,7 +689,7 @@ class PaperRaceEnv:
 
                 #crosses, distance, section_nr, start, finish = self.sectionpass(self.pos, self.v)
 
-                print('angle: ' + str(angle) + 'pos: ' + str(self.pos) + ' direction: ' + str(direction))
+                #print('angle: ' + str(angle) + 'pos: ' + str(self.pos) + ' direction: ' + str(direction))
                 for section in self.outside_sections:
                     cross, distanceout = self.check_if_crossed(self.pos, direction, section)
                     #print('din: ' + str(distanceout), cross)
@@ -699,7 +702,7 @@ class PaperRaceEnv:
                     if (distancein > 0.0) and (distancein < distance):
                         distance = distancein
 
-                print('din: ' + str(distancein) + 'dout: ' + str(distanceout))
+                #print('din: ' + str(distancein) + 'dout: ' + str(distanceout))
 
                 self.lidar_channels[i] = distance
 
