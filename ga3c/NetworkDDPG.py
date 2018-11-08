@@ -261,6 +261,7 @@ class ActorNetwork(object):
         return value
 
     def predict_target(self, sess, inputs):
+        print(str(inputs))
         return sess.run(self.target_out, feed_dict={
             self.target_inputs: inputs
         })
