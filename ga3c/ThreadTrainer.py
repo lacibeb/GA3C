@@ -68,7 +68,7 @@ class ThreadTrainer(Thread):
                         done__ = np.concatenate((done__, done_))
                     batch_size += x_.shape[0]
 
-            if Config.TRAIN_MODELS:
+            if Config.TRAIN_MODELS and not self.exit_flag and x__.shape[0] > 0:
                 print('x__: ' + str(x__))
                 # print('r__: ' + str(r__))
                 # print('a__: ' + str(a__))
