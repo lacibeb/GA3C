@@ -237,21 +237,21 @@ class PaperRaceEnv:
             error_high = False
             for j in range(start_point_index + 1, end_point_index):
                 d = np.linalg.norm(np.cross(end_point - start_point, start_point - points[j])) / np.linalg.norm(end_point - start_point)
-                print('distance: '+ str(d)+' stpoint: ' + str(start_point) + 'point: ' + str(points[j]) + ' endpoint: ' + str(end_point))
+                #print('distance: '+ str(d)+' stpoint: ' + str(start_point) + 'point: ' + str(points[j]) + ' endpoint: ' + str(end_point))
                 if d > Config.SIDE_SECTION_MAX_ERROR:
                     error_high = True
                     break
 
             if error_high:
                 print([start_point, points[end_point_index-1]])
-                sections.append([start_point, points[end_point_index-1]])
+                sections.append([start_point[0], start_point[1], points[end_point_index-1][0], points[end_point_index-1][1]])
                 start_point_index = end_point_index-1
                 start_point = points[start_point_index]
             i += 1
 
         # at the end the last section is added
-        print([start_point, points[end_point_index - 1]])
-        sections.append([start_point, points[end_point_index]])
+        # print([start_point, points[end_point_index - 1]])
+        sections.append([start_point[0], start_point[1], points[end_point_index][0], points[end_point_index][1]])
 
         return sections
 
