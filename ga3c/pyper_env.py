@@ -676,7 +676,17 @@ class PaperRaceEnv:
 
                 crosses, distance, section_nr, start, finish = self.sectionpass(self.pos, self.v)
 
-                distance = max(0, min(distance, Config.LIDAR_MAX_LENGTH))
+                for section in self.outside_sections:
+                    cross, distanceout = self.check_if_crossed(self.pos, direction, self.section)
+                    if cross:
+                        break
+
+                for section in self.inside_sections:
+                    cross, distancein = self.check_if_crossed(self.pos, direction, self.section)
+                    if cross:
+                        break
+
+                distance = max(0, min(distancein, distanceout, Config.LIDAR_MAX_LENGTH))
 
                 self.lidar_channels[i] = distance
 
