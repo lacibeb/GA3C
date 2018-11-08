@@ -73,4 +73,4 @@ class Config:
 
     # dividing track side to sections
     # dividing is dinamic, if the error is bigger than SIDE_SECTION_MAX_ERROR then start a new section
-    SIDE_SECTION_MAX_ERROR = 5
+    SIDE_SECTION_MAX_ERROR = 3
