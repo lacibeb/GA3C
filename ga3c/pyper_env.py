@@ -696,11 +696,10 @@ class PaperRaceEnv:
 
                 for section in self.inside_sections:
                     cross, distancein = self.check_if_crossed(self.pos, direction, section)
-                    if (distanceout > 0.0) and (distanceout < distance):
-                        distance = distanceout
+                    if (distancein > 0.0) and (distancein < distance):
+                        distance = distancein
 
                 print('din: ' + str(distancein) + 'dout: ' + str(distanceout))
-                distance = min(max(distancein, 0), max(distanceout, 0), Config.LIDAR_MAX_LENGTH)
 
                 self.lidar_channels[i] = distance
 
