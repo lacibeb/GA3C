@@ -687,11 +687,13 @@ class PaperRaceEnv:
                     cross, distanceout = self.check_if_crossed(self.pos, direction, section)
                     #print('din: ' + str(distanceout), cross)
                     if cross and (distanceout > 0.0):
+                        print('break')
                         break
 
                 for section in self.inside_sections:
                     cross, distancein = self.check_if_crossed(self.pos, direction, section)
                     if cross and (distancein > 0.0):
+                        print('break')
                         break
 
                 print('din: ' + str(distancein) + 'dout: ' + str(distanceout))
