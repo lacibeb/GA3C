@@ -243,7 +243,7 @@ class PaperRaceEnv:
                     break
 
             if error_high:
-                print([start_point, points[end_point_index-1]])
+                #print([start_point, points[end_point_index-1]])
                 sections.append([start_point[0], start_point[1], points[end_point_index-1][0], points[end_point_index-1][1]])
                 start_point_index = end_point_index-1
                 start_point = points[start_point_index]

@@ -31,7 +31,7 @@ class Environment(Env):
     @staticmethod
     def get_state_dim():
         if GameConfig.USE_LIDAR:
-            GameConfig.STATE_DIM + GameConfig.LIDAR_CHANNELS
+            GameConfig.STATE_DIM# + GameConfig.LIDAR_CHANNELS
         else:
             return GameConfig.STATE_DIM
 
