@@ -217,8 +217,7 @@ class PaperRaceEnv:
 
     @staticmethod
     def create_side_sections(points):
-        for i in points:
-            points[i] = np.array(points[i])
+        points = np.array(points)
         start_point_index = 0
         start_point = points[start_point_index]
 
