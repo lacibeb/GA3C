@@ -652,10 +652,10 @@ class PaperRaceEnv:
 
     def update_lidar_channels(self):
         if self.finish:
-            for i in range(self.lidar_channels):
+            for i in range(Config.LIDAR_CHANNELS):
                 self.lidar_channels[i] = 0.0
         else:
-            for i in range(self.lidar_channels):
+            for i in range(Config.LIDAR_CHANNELS):
                 # ckecking is done with speed so speed length will lidar max length
                 # like this time_to_reach is proportional to the distance
                 # and we want the speed to be in changing angles
