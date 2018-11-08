@@ -1179,9 +1179,11 @@ class PaperRaceEnv:
 
             if np.array_equal(point, start_point): # ha visszaértünk az elejére, akkor leállunk
                 break
-            # if on the edge of screen -> open track we stop
-            if point[0] == 0 or point[1] == 0 :
+
+            # ha lemegyünk a képről akkor is leállunk
+            if (point[0] <= 0 or point[1] <= 0 or point[0] >= self.trk.shape[1] or point[1] >= self.trk.shape[0]):
                 break
+
 
         return dist_dict_in, dist_points
 
@@ -1251,7 +1253,7 @@ class PaperRaceEnv:
             if np.array_equal(point, start_point): # ha visszaértünk az elejére, akkor leállunk
                 break
             # ha lemegyünk a képről akkor is leállunk
-            if (point[0] < 0 or point[1] < 0 or point[0] >= self.trk.shape[1] or point[1] >= self.trk.shape[0]):
+            if (point[0] <= 0 or point[1] <= 0 or point[0] >= self.trk.shape[1] or point[1] >= self.trk.shape[0]):
                 break
 
             dist_dict_out[tuple(point)] = dist # a pontot belerakjuk a dictionarybe
