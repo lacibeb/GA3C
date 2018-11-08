@@ -228,6 +228,7 @@ class PaperRaceEnv:
                 end_point_index = i
                 end_point = points[end_point_index]
             else:
+                i += 1
                 continue
 
             # check for every point between if close to section
