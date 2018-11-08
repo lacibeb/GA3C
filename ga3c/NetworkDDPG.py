@@ -409,6 +409,7 @@ class CriticNetwork(object):
             })
 
     def predict_target(self, sess, inputs, action):
+        print(str(inputs))
         with tf.variable_scope('critic'):
             return sess.run(self.target_out, feed_dict={
                 self.target_inputs: inputs,
