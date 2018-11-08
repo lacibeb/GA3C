@@ -544,8 +544,8 @@ class PaperRaceEnv:
 
         if Config.USE_LIDAR:
             self.update_lidar_channels()
-            print('lidarch: ')
-            print(str(self.lidar_channels))
+            #print('lidarch: ')
+            #print(str(self.lidar_channels))
 
         # Ha akarjuk, akkor itt rajzoljuk ki az aktualis lepes abrajat (lehet maskor kene)
         if draw: # kirajzolja az autót

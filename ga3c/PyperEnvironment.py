@@ -90,7 +90,7 @@ class Environment(Env):
             else:
                 reward = step_reward * 0.01
                 self.total_reward += reward
-
+        print('curr st: ' + str(self.current_state))
         return reward, done
 
     def steps_with_reference(self):
