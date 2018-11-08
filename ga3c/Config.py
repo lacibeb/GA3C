@@ -89,7 +89,7 @@ class Config:
     DISCOUNT = 0.5
     
     # Tmax
-    TIME_MAX = 5
+    TIME_MAX = 10
     
     # Reward Clipping
     REWARD_RESIZE = False
@@ -116,11 +116,11 @@ class Config:
     # Entropy regualrization hyper-parameter
     # BETA_START = 0.01
     BETA_START = 0.1
-    BETA_END = 0.001
+    BETA_END = 0.01
 
     # Learning rate
-    LEARNING_RATE_START = 0.003
-    LEARNING_RATE_END = 0.00003
+    LEARNING_RATE_START = 0.03
+    LEARNING_RATE_END = 0.003
 
     #Network structure
     DENSE_LAYERS = (20, 400, 100)
@@ -208,8 +208,8 @@ class Config:
     # ------------------------------------
     # recommended game specific settings
 
-    EXPLORATION = True
-    #EXPLORATION = False
+    #EXPLORATION = True
+    EXPLORATION = False
     if EXPLORATION:
         explore_start = 1.0            # exploration probability at start
         explore_stop = 0.01            # minimum exploration probability
