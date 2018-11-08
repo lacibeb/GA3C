@@ -40,8 +40,8 @@ class Config:
     # define input
     # NETWORK = 'GA3C_notimageinput'
     # NETWORK = 'GA3C_original'
-    NETWORK = 'GA3C_notimageinput_continuos'
-    # NETWORK = 'DDPG'
+    # NETWORK = 'GA3C_notimageinput_continuos'
+    NETWORK = 'DDPG'
 
     DISCRATE_INPUT = False
     CONTINUOUS_INPUT = True
@@ -184,9 +184,9 @@ class Config:
         add_OUnoise = False
         DDPG_FUTURE_REWARD_CALC = True
 
-        _CRITIC_STATE_DENSE_LAYERS = (10, 10)
-        _CRITIC_ACTION_DENSE_LAYERS = (10, )
-        _CRITIC_OUT_DENSE_LAYERS = (10, 10)
+        _CRITIC_STATE_DENSE_LAYERS = (100, 100)
+        _CRITIC_ACTION_DENSE_LAYERS = (100, )
+        _CRITIC_OUT_DENSE_LAYERS = (100, 100)
         USE_REPLAY_MEMORY = True
 
         # with DDPG

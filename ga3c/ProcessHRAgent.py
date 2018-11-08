@@ -49,7 +49,8 @@ class ProcessHRAgent(ProcessAgent):
         # action in -1 .. 1
         # add randomness to it
         env_action = env_action + np.random.uniform(0.03, -0.03)
-        env_action = self.env.check_bounds(env_action, 1.0, -1.0, True)
+        #env_action = self.env.check_bounds(env_action, 1.0, -1.0, True)
+        env_action = max(min(env_action, 1.0), -1.0)
         # print("env_a: " + str(env_action))
         if Config.CONTINUOUS_INPUT:
             # action already ok
