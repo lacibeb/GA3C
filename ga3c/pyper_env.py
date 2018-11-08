@@ -685,12 +685,13 @@ class PaperRaceEnv:
                 print('angle: ' + str(angle) + 'pos: ' + str(self.pos) + ' direction: ' + str(direction))
                 for section in self.outside_sections:
                     cross, distanceout = self.check_if_crossed(self.pos, direction, section)
-                    if cross:
+                    #print('din: ' + str(distanceout), cross)
+                    if cross and distanceout > 0:
                         break
 
                 for section in self.inside_sections:
                     cross, distancein = self.check_if_crossed(self.pos, direction, section)
-                    if cross:
+                    if cross and distancein > 0:
                         break
 
                 print('din: ' + str(distancein) + 'dout: ' + str(distanceout))
