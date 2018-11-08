@@ -41,7 +41,7 @@ class Environment(Env):
         self.current_state = np.array([v[0] / 400.0, v[1] / 400.0, (pos[0] / 900.0) - 1, (pos[1] / 900.0 - 1)])
 
         if GameConfig.USE_LIDAR:
-            self.current_state = np.concatenate(self.current_state, self.game.get_lidar_channels())
+            self.current_state = np.append(self.current_state, self.game.get_lidar_channels())
         # scaling state to be between -1 ... 1
 
 
@@ -73,7 +73,7 @@ class Environment(Env):
         # scaling state to be between -1 ... 1
 
         if GameConfig.USE_LIDAR:
-            self.current_state = np.concatenate(self.current_state, self.game.get_lidar_channels())
+            self.current_state = np.append(self.current_state, self.game.get_lidar_channels())
 
         done = end
 
