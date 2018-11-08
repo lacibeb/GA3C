@@ -164,7 +164,7 @@ class ProcessAgent(Process):
             # print('reward: ' + str(reward))
             reward_sum += reward
             exp = Experience(self.env.previous_state, action, prediction, reward, self.env.current_state, done)
-            # print(exp)
+            print(exp)
             experiences.append(exp)
 
             if done or self.time_count == Config.TIME_MAX:
