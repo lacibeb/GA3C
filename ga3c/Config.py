@@ -93,8 +93,8 @@ class Config:
     
     # Reward Clipping
     REWARD_RESIZE = False
-    REWARD_FACTOR = 0.0005
-    USE_INTERMEDIATE_REWARD = False
+    REWARD_FACTOR = 1
+    USE_INTERMEDIATE_REWARD = True
 
     REWARD_CLIPPING = True
     REWARD_MIN = -1
@@ -110,8 +110,8 @@ class Config:
     IMAGE_HEIGHT = 84
 
     # Total number of episodes and annealing frequency
-    EPISODES = 40000000
-    ANNEALING_EPISODE_COUNT = 400000
+    EPISODES = 40000
+    ANNEALING_EPISODE_COUNT = 4000
 
     # Entropy regualrization hyper-parameter
     # BETA_START = 0.01
@@ -208,9 +208,9 @@ class Config:
     # ------------------------------------
     # recommended game specific settings
 
-    # EXPLORATION = True
-    EXPLORATION = False
+    EXPLORATION = True
+    #EXPLORATION = False
     if EXPLORATION:
         explore_start = 1.0            # exploration probability at start
         explore_stop = 0.01            # minimum exploration probability
-        decay_rate = 0.0001            # exponential decay rate for exploration prob
+        decay_rate = 0.001            # exponential decay rate for exploration prob
