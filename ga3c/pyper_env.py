@@ -661,14 +661,15 @@ class PaperRaceEnv:
             for i in range(Config.LIDAR_CHANNELS):
                 self.lidar_channels[i] = 0.0
         else:
+            if Config.LIDAR_CHANNELS == 1:
+                diff_angle = 0
+            else:
+                diff_angle = (abs(Config.LIDAR_START_ANGLE - Config.LIDAR_END_ANGLE)) / (Config.LIDAR_CHANNELS - 1)
+
             for i in range(Config.LIDAR_CHANNELS):
                 # ckecking is done with speed so speed length will lidar max length
                 # like this time_to_reach is proportional to the distance
                 # and we want the speed to be in changing angles
-                if Config.LIDAR_CHANNELS == 1:
-                    diff_angle = 0
-                else:
-                    diff_angle = (Config.LIDAR_START_ANGLE-Config.LIDAR_END_ANGLE)/(Config.LIDAR_CHANNELS-1)
                 angle = (Config.LIDAR_START_ANGLE + i*diff_angle)*np.pi/180
 
                 direction = self.v / np.linalg.norm(self.v)
@@ -692,6 +693,7 @@ class PaperRaceEnv:
                     if cross:
                         break
 
+                print('din: ' + str(distancein) + 'dout: ' + str(distanceout))
                 distance = max(0, min(distancein, distanceout, Config.LIDAR_MAX_LENGTH))
 
                 self.lidar_channels[i] = distance
