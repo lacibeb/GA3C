@@ -235,8 +235,8 @@ class PaperRaceEnv:
             # check for every point between if close to section
             error_high = False
             for j in range(start_point_index + 1, end_point_index):
-                d = np.linalg.norm(np.cross(end_point - start_point, start_point - points[i])) / np.linalg.norm(end_point - start_point)
-                print('distance: '+ str(d)+' stpoint: ' + str(start_point) + 'point: ' + str(points[i]) + ' endpoint: ' + str(end_point))
+                d = np.linalg.norm(np.cross(end_point - start_point, start_point - points[j])) / np.linalg.norm(end_point - start_point)
+                print('distance: '+ str(d)+' stpoint: ' + str(start_point) + 'point: ' + str(points[j]) + ' endpoint: ' + str(end_point))
                 if d > Config.LIDAR_MAX_LENGTH:
                     error_high = True
                     break
