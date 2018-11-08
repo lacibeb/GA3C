@@ -673,13 +673,15 @@ class PaperRaceEnv:
 
                 direction = self.v / np.linalg.norm(self.v)
 
+                print('pos: ' + str(self.pos) + ' direction: ' + str(direction))
+
                 cos_theta, sin_theta = np.cos(angle), np.sin(angle)
                 direction[0] = direction[0] * cos_theta - direction[1] * sin_theta
                 direction[1] = direction[0] * sin_theta + direction[1] * cos_theta
 
                 #crosses, distance, section_nr, start, finish = self.sectionpass(self.pos, self.v)
 
-                print('pos: ' + str(self.pos) + ' direction: ' + str(direction))
+                print('angle: ' + str(angle) + 'pos: ' + str(self.pos) + ' direction: ' + str(direction))
                 for section in self.outside_sections:
                     cross, distanceout = self.check_if_crossed(self.pos, direction, section)
                     if cross:
