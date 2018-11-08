@@ -105,7 +105,6 @@ class ProcessAgent(Process):
 
     def convert_data(self, experiences):
         x_ = np.array([exp.state for exp in experiences])
-        print('x_: ' + str(x_))
         x2_ = np.array([exp.next_state for exp in experiences])
         done_ = np.array([exp.done for exp in experiences])
         if Config.CONTINUOUS_INPUT:
@@ -152,7 +151,7 @@ class ProcessAgent(Process):
                 self.env.step(None)  # 0 == NOOP
                 continue
 
-            #print('state: ' + str(self.env.current_state))
+            print('state: ' + str(self.env.current_state))
             prediction, value = self.predict(self.env.current_state)
             # print('pred: ' + str(prediction))
 
