@@ -1179,6 +1179,9 @@ class PaperRaceEnv:
 
             if np.array_equal(point, start_point): # ha visszaértünk az elejére, akkor leállunk
                 break
+            # if on the edge of screen -> open track we stop
+            if point[0] == 0 or point[1] == 0 :
+                break
 
         return dist_dict_in, dist_points
 
