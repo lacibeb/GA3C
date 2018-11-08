@@ -65,13 +65,13 @@ class Config:
     
     # If the dynamic configuration is on, these are the initial values.
     # Number of Agents
-    AGENTS = 1
+    AGENTS = 32
     # Number of human reference Agents from Agents AGENTS=humref+regular
-    HUMAN_REF_AGENTS = 0
+    HUMAN_REF_AGENTS = 2
     # Number of Predictors
-    PREDICTORS = 1
+    PREDICTORS = 2
     # Number of Trainers
-    TRAINERS = 1
+    TRAINERS = 2
 
     # Device
     DEVICE = 'gpu:0'
