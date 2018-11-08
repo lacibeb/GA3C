@@ -63,7 +63,7 @@ class Config:
 
     RANDOM_START = True
 
-    USE_LIDAR = False
+    USE_LIDAR = True
     # in degrees 0 is forward + direction
     LIDAR_START_ANGLE = -90
     LIDAR_END_ANGLE = 90
