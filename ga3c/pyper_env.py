@@ -137,8 +137,6 @@ class PaperRaceEnv:
         self.dists_in, self.dists_in_pos = self.__get_dists_in(False) # a kezdőponttól való "távolságot" tárolja a reward fv-hez
         self.dists_out, self.dists_out_pos = self.__get_dists_out(False) # a kezdőponttól való "távolságot" tárolja
 
-        print(str(self.dists_in))
-
         self.outside_sections = self.create_side_sections(self.dists_out_pos)
         self.inside_sections = self.create_side_sections(self.dists_in_pos)
         print(str(self.outside_sections))
@@ -244,12 +242,14 @@ class PaperRaceEnv:
                     break
 
             if error_high:
+                print([start_point, points[end_point_index-1]])
                 sections.append([start_point, points[end_point_index-1]])
                 start_point_index = end_point_index-1
                 start_point = points[start_point_index]
             i += 1
 
         # at the end the last section is added
+        print([start_point, points[end_point_index - 1]])
         sections.append([start_point, points[end_point_index]])
 
         return sections
