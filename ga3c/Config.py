@@ -86,7 +86,7 @@ class Config:
 
     # Discount factor
     DISCOUNTING = True
-    DISCOUNT = 0.99
+    DISCOUNT = 0.5
     
     # Tmax
     TIME_MAX = 5
