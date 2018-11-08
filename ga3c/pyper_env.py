@@ -654,7 +654,7 @@ class PaperRaceEnv:
                 # ckecking is done with speed so speed length will lidar max length
                 # like this time_to_reach is proportional to the distance
                 # and we want the speed to be in changing angles
-                if Config.LIDAR_CHANNELS = 1:
+                if Config.LIDAR_CHANNELS == 1:
                     diff_angle = 0
                 else:
                     diff_angle = (Config.LIDAR_START_ANGLE-Config.LIDAR_END_ANGLE)/(Config.LIDAR_CHANNELS-1)
