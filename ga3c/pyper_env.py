@@ -694,7 +694,7 @@ class PaperRaceEnv:
                         break
 
                 print('din: ' + str(distancein) + 'dout: ' + str(distanceout))
-                distance = max(0, min(distancein, distanceout, Config.LIDAR_MAX_LENGTH))
+                distance = min(max(distancein, 0), max(distanceout, 0), Config.LIDAR_MAX_LENGTH)
 
                 self.lidar_channels[i] = distance
 
